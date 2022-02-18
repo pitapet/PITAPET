@@ -1,0 +1,115 @@
+/* Global */
+:root {
+  /* Color */
+  --color-white: #ffffff;
+  --color-light-white: #e1e2e1;
+  --color-dark-white: #bdbdbd;
+  --color-pink: #fe918d;
+  --color-purple: #8c52ff;
+  --color-dark-pink: #ff6863;
+  --color-dark-grey: #4d4d4d;
+  --color-grey: #616161;
+  --color-light-grey: #7c7979;
+  --color-blue: #0288d1;
+  --color-dark-blue: #005b9f;
+  --color-light-blue: #5eb8ff;
+  --color-yellow: #fff7d1;
+  --color-orange: #feb546;
+  --color-black: #000000;
+  --color-green: #00695c;
+  --color-dark-green: #002232;
+  --color-light-green: #4e7589;
+  --color-bg-green: #20495c;
+
+  /* Font size */
+  --font-large: 48px;
+  --font-medium: 28px;
+  --font-regular: 18px;
+  --font-small: 16px;
+  --font-micro: 14px;
+
+  /* Font weight */
+  --weight-bold: 700;
+  --weight-semi-bold: 600;
+  --weight-regular: 400;
+
+  /* Size */
+  --size-border-radius: 4px;
+
+  /* Annimation */
+  --animation-duration: 300ms;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+ul {
+  padding-left: 0;
+}
+
+li {
+  list-style: none;
+}
+
+a:link,
+a:visited,
+a:active {
+  text-decoration: none;
+  color: var(--color-black);
+}
+
+.fp-prev {
+  margin-left: 40px;
+}
+
+.fp-next {
+  margin-right: 40px;
+}
+
+body {
+  font-family: "Gowun Dodum", sans-serif;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+#fullpage {
+  text-align: center;
+}
+
+#header {
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
+  width: 100%;
+  top: 0;
+  padding: 40px;
+  z-index: 100;
+  background: transparent;
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo__img {
+  width: 30px;
+}
+
+.header__menu {
+  display: flex;
+  align-items: center;
+  font-size: 30px;
+}
+
+.header__menu li {
+  margin: 0 15px;
+  list-style: none;
+}

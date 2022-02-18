@@ -1,0 +1,222 @@
+/* Global */
+:root {
+  /* Color */
+  --color-white: #ffffff;
+  --color-light-white: #e1e2e1;
+  --color-dark-white: #bdbdbd;
+  --color-pink: #fe918d;
+  --color-purple: #8c52ff;
+  --color-dark-pink: #ff6863;
+  --color-dark-grey: #4d4d4d;
+  --color-grey: #616161;
+  --color-light-grey: #7c7979;
+  --color-blue: #0288d1;
+  --color-dark-blue: #005b9f;
+  --color-light-blue: #5eb8ff;
+  --color-yellow: #fff7d1;
+  --color-orange: #feb546;
+  --color-black: #000000;
+  --color-green: #00695c;
+  --color-dark-green: #002232;
+  --color-light-green: #4e7589;
+  --color-bg-green: #20495c;
+
+  /* Font size */
+  --font-large: 48px;
+  --font-medium: 28px;
+  --font-regular: 18px;
+  --font-small: 16px;
+  --font-micro: 14px;
+
+  /* Font weight */
+  --weight-bold: 700;
+  --weight-semi-bold: 600;
+  --weight-regular: 400;
+
+  /* Size */
+  --size-border-radius: 4px;
+
+  /* Annimation */
+  --animation-duration: 300ms;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+ul {
+  padding-left: 0;
+}
+
+li {
+  list-style: none;
+}
+
+a:link,
+a:visited,
+a:active {
+  text-decoration: none;
+  color: var(--color-black);
+}
+
+.fp-prev {
+  margin-left: 40px;
+}
+
+.fp-next {
+  margin-right: 40px;
+}
+
+body {
+  font-family: "Gowun Dodum", sans-serif;
+  position: relative;
+  text-align: center;
+  background: linear-gradient(141deg, #ccc 25%, #eee 40%, #ddd 55%);
+  color: #555;
+  font-weight: 300;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
+#fullpage {
+  text-align: center;
+}
+
+#header {
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
+  width: 100%;
+  top: 0;
+  padding: 40px;
+  z-index: 100;
+  background: transparent;
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo__img {
+  width: 30px;
+}
+
+.header__menu {
+  display: flex;
+  align-items: center;
+  font-size: 30px;
+}
+
+.header__menu li {
+  margin: 0 15px;
+  list-style: none;
+}
+
+.section__div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  font-size: 200px;
+  font-weight: 400;
+  pointer-events: none;
+}
+
+.title__div {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 1080px;
+}
+
+.title__div:first-of-type {
+  animation: showup 12s infinite;
+}
+
+.title__div:last-of-type {
+  width: 0px;
+  animation: reveal 12s infinite;
+}
+
+.title__div:last-of-type span {
+  margin-left: -355px;
+  animation: slidein 12s infinite;
+}
+
+@keyframes showup {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes slidein {
+  0% {
+    margin-left: -800px;
+  }
+  20% {
+    margin-left: -800px;
+  }
+  35% {
+    margin-left: 0px;
+  }
+  100% {
+    margin-left: 0px;
+  }
+}
+
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    width: 0px;
+  }
+  20% {
+    opacity: 1;
+    width: 0px;
+  }
+  30% {
+    width: 528px;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    width: 528px;
+  }
+}
+
+.section__container {
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+}
+
+section p {
+  margin: 20px;
+  font-size: 65px;
+  pointer-events: none;
+}
+
+section span {
+  font-size: 20px;
+  pointer-events: none;
+}
