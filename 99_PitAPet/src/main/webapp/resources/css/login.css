@@ -164,32 +164,8 @@ body {
   flex-direction: column;
 }
 
-
 .pointer {
   cursor: pointer;
-}
-
-.dogcat {
-  position: absolute;
-  z-index: 1  ;
-  transform: scale(0.5);
-  right: 40px;
-  bottom: 326px;
-  animation-name: showup;
-  animation-duration:1.5s;
-  animation-delay: 0.9s;
-  animation-fill-mode: both;
-}
-
-@keyframes showup {
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0.5);
-    opacity: 1;
-  }
 }
 
 .container.sign-in .form.sign-in,
@@ -278,8 +254,8 @@ body {
   transition: 1s ease-in-out;
   z-index: 6;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  border-bottom-right-radius: max(50vw, 50vh);
-  border-top-left-radius: max(50vw, 50vh);
+  border-bottom-right-radius: max(33vw, 60vh);
+  border-top-left-radius: max(33vw, 60vh);
 }
 
 .container.sign-in::before {
