@@ -29,15 +29,15 @@
         <!-- SIGN UP -->
         <div class="col align-items-center flex-col sign-up">
           <div class="form-wrapper align-items-center">
-            <form class="form sign-up" name="memberEnrollFrm" action="${ pageContext.request.contextPath }/QT/enroll" method="post">
+            <form class="form sign-up" name="memberEnrollFrm" action="${ pageContext.request.contextPath }/member/enroll" method="post">
               <div class="input-group up">
                 <i class="fas fa-user"></i>
-                <input type="text" name="userId" id="newId" placeholder="아이디" required />
+                <input type="text" name="id" id="newId" placeholder="아이디" required />
               </div>
               <input class="enroll__idcheck" type="button" id="checkDuplicate" value="중복검사" >
               <div class="input-group up">
                 <i class="fas fa-lock"></i>
-                <input type="password" name="userPwd" id="pass1" placeholder="비밀번호" required />
+                <input type="password" name="password" id="pass1" placeholder="비밀번호" required />
               </div>
               <div class="input-group up">
                 <i class="fas fa-lock"></i>
@@ -45,11 +45,11 @@
               </div>
               <div class="input-group up">
                 <i class="fas fa-user"></i>
-                <input type="text" name="userName" id="userName" placeholder="이름"  required />
+                <input type="text" name="name" id="name" placeholder="이름"  required />
               </div>
               <div class="input-group up">
                 <i class="fas fa-user"></i>
-                <input type="text" name="userNickName" id="userNickName" placeholder="닉네임"  required />
+                <input type="text" name="nickname" id="nickname" placeholder="닉네임"  required />
               </div>
               <!-- <div class="input-group up">
                 <i class="fas fa-images"></i>
@@ -82,14 +82,14 @@
         <!-- SIGN IN -->
         <div class="col align-items-center flex-col sign-in">
           <div class="form-wrapper align-items-center">
-            <form action="${ path }/QT/login" method="post" class="form sign-in">
+            <form action="${ path }/login" method="post" class="form sign-in">
               <div class="input-group in">
                 <i class="fas fa-user"></i>
-                <input type="text" name="userId" id="userId" value="" placeholder="아이디를 입력해주세요." />
+                <input type="text" name="id" id="id" value="" placeholder="아이디를 입력해주세요." />
               </div>
               <div class="input-group in">
                 <i class="fas fa-lock"></i>
-                <input type="password" name="userPwd" id="userPwd" placeholder="패스워드를 입력해주세요." />
+                <input type="password" name="password" id="password" placeholder="패스워드를 입력해주세요." />
               </div>
               <div class="login__save">
                 <input type="checkbox" name="saveId"/>

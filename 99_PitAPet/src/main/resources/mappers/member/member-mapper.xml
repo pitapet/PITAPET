@@ -3,19 +3,107 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.kh.pitapet.member.model.dao.MemberMapper">
+	<sql id="selectMemberSql">
+		SELECT NO, 
+		       ID, 
+		       PASSWORD, 
+		       ROLE,
+		       NAME,
+		       NICKNAME, 
+		       PHONE, 
+		       EMAIL, 
+		       ADDRESS, 
+		       PET, 
+		       STATUS, 
+		       ENROLL_DATE,
+		       MODIFY_DATE
+		FROM MEMBER
+	</sql>
 
-<mapper namespace="MemberMapper">
+	<resultMap type="Member" id="memberResultMap">
+		<id property="no" column="NO"/>
+		<result property="id" column="ID"/>
+		<result property="password" column="PASSWORD"/>
+		<result property="role" column="ROLE"/>
+		<result property="name" column="NAME"/>
+		<result property="nickname" column="NICKNAME"/>
+		<result property="phone" column="PHONE"/>
+		<result property="email" column="EMAIL"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="pet" column="PET"/>
+		<result property="status" column="STATUS"/>
+		<result property="enrollDate" column="ENROLL_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+	</resultMap>
+
 	<select id="selectCount" resultType="_int">
 		SELECT COUNT(*) FROM MEMBER
 	</select>
+	
+	<select id="selectAll" resultMap="memberResultMap">
+		<include refid="selectMemberSql" />
+		WHERE STATUS = 'Y'
+	</select>
+
+	<select id="findMemberById" parameterType="string" resultMap="memberResultMap">
+		<include refid="selectMemberSql" />
+		WHERE ID = #{id} AND STATUS = 'Y'
+	</select>
+	
+	<insert id="insertMember" parameterType="Member"
+			useGeneratedKeys="true" keyColumn="NO" keyProperty="no">
+		INSERT INTO MEMBER (
+			NO, 
+	       	ID,
+	       	PASSWORD,
+	       	ROLE,
+	       	NAME,
+	       	NICKNAME,
+	       	PHONE,
+       		EMAIL,
+	       	ADDRESS,
+	       	PET,
+	       	STATUS,
+	       	ENROLL_DATE,
+	       	MODIFY_DATE
+		) VALUES (
+			SEQ_UNO.NEXTVAL,
+			#{id},
+			#{password},
+			DEFAULT,
+			#{name},
+			#{nickname},
+			#{phone},
+			#{email},
+			#{address},
+			#{pet},
+			DEFAULT,
+			DEFAULT,
+			DEFAULT
+		)
+	</insert>
+	
+	<!--
+	<update id="updateMember" parameterType="Member">
+		UPDATE MEMBER 
+		SET 
+			NAME = #{name},
+			PHONE = #{phone},
+			EMAIL = #{email},
+			ADDRESS = #{address},
+			PET = #{pet},
+			MODIFY_DATE = SYSDATE 
+		WHERE NO = #{no}
+	</update>
+	  -->
+	
+	<delete id="deleteMember" parameterType="_int">
+		UPDATE MEMBER
+		SET
+			STATUS = 'N'
+		WHERE 
+			NO = #{no}
+	</delete>
 </mapper>
-
-
-
-
-
-
-
-
-
-
