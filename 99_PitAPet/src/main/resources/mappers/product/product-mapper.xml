@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.pitapet.product.model.dao.ProductMapper">
+
+	<resultMap type="Product" id="productListResultMap">
+		<id property="no" column="NO"/>
+		<result property="title" column="TITLE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="price" column="PRICE"/>
+		<result property="createdDate" column="CREATED_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+	</resultMap>
+	
+	<resultMap type="ProductInfo" id="productInfoResultMap">
+		<id property="no" column="NO"/>
+		<result property="productNo" column="PRODUCT_NO"/>
+		<result property="colorName" column="COLOR_NAME"/>
+		<result property="colorCode" column="COLOR_CODE"/>
+		<result property="imageName" column="IMAGE_NAME"/>
+		<result property="stock" column="STOCK"/>
+		<result property="status" column="STATUS"/>
+		<result property="createdDate" column="CREATED_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+	</resultMap>
+	
+	<resultMap type="Product" extends="productListResultMap" id="productDetailResultMap">
+		<collection property="productInfoes" javaType="arraylist" columnPrefix="I_" resultMap="productInfoResultMap"/>
+	</resultMap>
+	
+	<select id="selectProductByNo" parameterType="_int" resultMap="productDetailResultMap">
+		SELECT P.NO, 
+		       P.TITLE, 
+		       P.CONTENT, 
+		       P.PRICE,
+		       P.CREATED_DATE, 
+		       P.MODIFY_DATE,
+		       I.NO AS I_NO,
+		       I.PRODUCT_NO AS I_PRODUCT_NO,
+		       I.COLOR_NAME AS I_COLOR_NAME,
+		       I.COLOR_CODE AS I_COLOR_CODE,
+		       I.IMAGE_NAME AS I_IMAGE_NAME,
+		       I.STATUS AS I_STATUS,
+		       I.STOCK AS I_STOCK,
+		       I.CREATED_DATE AS I_CREATED_DATE,
+		       I.MODIFY_DATE AS I_MODIFY_DATE
+		 FROM PRODUCT P
+		 JOIN PRODUCT_INFO I ON (P.NO = I.PRODUCT_NO)
+		 WHERE I.STATUS = 'Y'
+		 AND P.NO = #{no}
+	</select>
+
+</mapper>  

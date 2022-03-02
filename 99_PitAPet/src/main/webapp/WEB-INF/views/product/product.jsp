@@ -22,6 +22,9 @@
     <script src="${ path }/js/plugin/jquery-3.6.0.min.js"></script>
     <script src="${ path }/js/plugin/jquery.fullPage.js"></script>
     <script src="${ path }/js/product.js"></script>
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+    
 </head>
 <body>
 	<header id="header">
@@ -47,23 +50,25 @@
       <section class="section">
         <div class="products__wrapper">
           <div class="product__img__wrapper">
-            <img class="product__img" src="${ path }/images/product/1.png" alt="product__prototype" />
+            <c:forEach var="productInfo" items="${ product.productInfoes }">
+              <img class="product__img" name="imageName" src="${ path }/images/product/${ productInfo.imageName }.png" alt="product__prototype" />
+            </c:forEach>
           </div>
           <div class="product__useable">
             <div class="product__description">
-              <h2>Hand Gripper</h2>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis iusto ipsum odio quas blanditiis doloremque, quae ipsa nesciunt neque, reiciendis consequatur, similique impedit illum
-                temporibus ab? Vitae quo laborum animi. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam, enim! Dolores tempora quibusdam, similique nam natus ut ipsum sed doloremque
-                officiis accusamus necessitatibus quis voluptas nulla, nostrum expedita vel id? Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cumque illum sunt aut, animi beatae corporis
-                veritatis ab quos tempora adipisci voluptatibus exercitationem nostrum necessitatibus consectetur vero eius! Veritatis, iure ab. Lorem ipsum dolor sit amet consectetur adipisicing
-                elit. Accusantium tenetur vel minima id, veritatis ipsa obcaecati voluptas eius nesciunt quas quaerat non voluptatum inventore! Temporibus illo ipsam commodi est architecto. Lorem
-                ipsum dolor sit amet consectetur adipisicing elit. Sit sint error accusantium? Dignissimos voluptate consequuntur quis quibusdam provident, nobis nostrum reprehenderit doloribus ad
-                asperiores illo obcaecati culpa numquam eaque minima.
-              </p>
+              <input type="hidden" name="no" value = "${ product.no }">
+              <h2>${ product.title }</h2>
+              <p>${ product.content }</p>
+              <p id="price">${ product.price }원</p>
+            </div>
+            <div class="product__color">
+            <p>색상</p>
+            <c:forEach var="productInfo" items="${ product.productInfoes }">
+	            <button style="background-color: ${ productInfo.colorCode };"></button>
+            </c:forEach>
             </div>
             <div class="product__form">
-              <button>Buy</button>
+              <button id="purchase">Buy</button>
               <button>Cart</button>
             </div>
           </div>

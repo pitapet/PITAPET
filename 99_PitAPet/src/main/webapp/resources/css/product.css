@@ -146,18 +146,18 @@ i {
     transform: translatey(-20px);
   }
 }
-
+/* 수정 */
 .products__wrapper {
-  width: 90%;
+  width: 80%;
   margin: auto;
   display: flex;
   justify-content: space-between;
 }
 
 .product__img {
-  width: 100%;
+  width: 60%;
 }
-
+/* 여기까지 */
 .product__useable {
   display: flex;
   flex-direction: column;
@@ -171,6 +171,31 @@ i {
   border-bottom: 1px solid black;
   margin-bottom: 30px;
 }
+/* 수정 */
+.product__description p {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.product__color {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: left;
+}
+
+.product__color p {
+	margin: 5px;
+}
+
+.product__color button {
+  height: 20px;
+  width: 40px;
+  border-radius: 2px;
+  margin: 5px;
+  border: 1px solid gray;
+  outline: 0;
+}
+/* 여기까지 */
 
 @media screen and (max-width: 2559px) {
   /* Global */
