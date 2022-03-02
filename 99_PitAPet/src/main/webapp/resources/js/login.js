@@ -1,5 +1,33 @@
 // "use strict";
 
+// 아이디 중복 확인
+	$(document).ready(() => {
+		$("#checkDuplicate").on("click", () => {
+			let userId = $("#newId").val().trim();
+			
+			$.ajax({
+				type: "post",
+				url: "${ pageContext.request.contextPath }/member/idCheck",
+				dataType: "json",
+				data: {
+					userId
+				},
+				success: (data) => {
+					console.log(data);
+					
+					if(data.duplicate === true) {
+						alert("이미 사용중인 아이디 입니다.");
+					} else {
+						alert("사용 가능한 아이디 입니다.");						
+					}
+				},
+				error: (error) => {
+					console.log(error);
+				}
+			});
+		});		
+	});
+
 let container = document.getElementById("container");
 const dogcat = document.querySelector(".dogcat");
 

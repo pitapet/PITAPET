@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="${ path }/css/login.css" />
     <script src="https://kit.fontawesome.com/91b5983e4b.js" crossorigin="anonymous"></script>
     <script src="${ path }/js/login.js" defer></script>
+    <script src="${ path }/js/plugin/jquery-3.6.0.js"></script>
   </head>
   <body>
   <div id="container" class="container">
@@ -37,11 +38,11 @@
               <input class="enroll__idcheck" type="button" id="checkDuplicate" value="중복검사" >
               <div class="input-group up">
                 <i class="fas fa-lock"></i>
-                <input type="password" name="password" id="pass1" placeholder="비밀번호" required />
+                <input type="password" name="password" id="pass1" onchange="check_pw()" placeholder="비밀번호 (특수문자를 포함한 8자 이상)" required />
               </div>
               <div class="input-group up">
                 <i class="fas fa-lock"></i>
-                <input type="password" id="pass2" placeholder="비밀번호 확인" required />
+                <input type="password" id="pass2" onchange="check_pw()" placeholder="비밀번호 확인" required />&nbsp;<span id="check"></span> 
               </div>
               <div class="input-group up">
                 <i class="fas fa-user"></i>
@@ -57,7 +58,7 @@
               </div> -->
               <div class="input-group up">
                 <i class="fas fa-mobile-alt"></i>
-                <input type="tel" name="phone" id="phone" maxlength="11" placeholder="전화번호" required />
+                <input type="tel" name="phone" id="phone" maxlength="11" placeholder="전화번호 (- 없이)" required />
               </div>
               <div class="input-group up">
                 <i class="fas fa-envelope"></i>
@@ -93,7 +94,7 @@
               </div>
               <div class="login__save">
                 <input type="checkbox" name="saveId"/>
-                <span>아이디 자동 저장</span>
+                <span>아이디 저장</span>
               </div>
               <input class="btn sign-ins" type="submit" value="로그인"></input>
               <p>
@@ -134,5 +135,71 @@
       </div>
       <!-- END CONTENT SECTION -->
     </div>
+    <script>
+	// 아이디 중복 확인
+	$(document).ready(() => {
+		$("#checkDuplicate").on("click", () => {
+			let userId = $("#newId").val().trim();
+			
+			$.ajax({
+				type: "post",
+				url: "${ pageContext.request.contextPath }/member/idCheck",
+				dataType: "json",
+				data: {
+					userId
+				},
+				success: (data) => {
+					console.log(data);
+						if(data.duplicate === true) {
+							alert("이미 사용중인 아이디 입니다.");
+						} else {
+							alert("사용 가능한 아이디 입니다.");						
+						}
+					
+				},
+				error: (error) => {
+					console.log(error);
+				}
+			});
+		});		
+	});
+	
+	function check_id() {
+		
+	}
+
+	function check_pw(){
+	       var pw = document.getElementById('pass1').value;
+	       var SC = ["!","@","#","$","%", "^", "&", "*", "(", ")", "_", "+", "-", "`", "~", "="];
+	       var check_SC = 0;
+	       
+	 // 비밀번호 길이 체크 
+	       if(pw.length < 8){
+	           alert('비밀번호는 8글자 이상만 이용 가능합니다.');
+	           document.getElementById('pass1').value='';
+	       }
+	 // 특수문자 체크
+	       for(var i=0;i<SC.length;i++){
+	           if(pw.indexOf(SC[i]) != -1){
+	               check_SC = 1;
+	           }
+	       }
+	       if(check_SC == 0){
+	           window.alert('특수문자가 들어가 있지 않습니다.')
+	           document.getElementById('pass1').value='';
+	       }
+	 // 패스워드 일치여부 체크
+	       if(document.getElementById('pass1').value !='' && document.getElementById('pass2').value!=''){
+	           if(document.getElementById('pass1').value==document.getElementById('pass2').value){
+	               document.getElementById('check').innerHTML='비밀번호가 일치합니다.'
+	               document.getElementById('check').style.color='green';
+	           }
+	           else{
+	               document.getElementById('check').innerHTML='비밀번호가 일치하지 않습니다.';
+	               document.getElementById('check').style.color='red';
+	           }
+	       }
+	   }
+</script>
   </body>
 </html>

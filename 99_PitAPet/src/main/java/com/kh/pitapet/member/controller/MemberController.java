@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,6 +23,7 @@ import com.kh.pitapet.member.model.service.MemberService;
 import com.kh.pitapet.member.model.vo.Member;
 
 @Controller
+@SessionAttributes("loginMember")
 public class MemberController {
 	
 	@Autowired
@@ -45,7 +47,7 @@ public class MemberController {
 			model.setViewName("redirect:/");
 		} else {
 			model.addObject("msg", "아이디나 비밀번호가 일치하지 않습니다.");
-			model.addObject("location", "/");
+			model.addObject("location", "/member/login");
 			model.setViewName("common/msg");
 		}		
 		
@@ -89,7 +91,6 @@ public class MemberController {
 		@PostMapping("/member/idCheck")
 		public ResponseEntity<Map<String, Boolean>> idCheck(@RequestParam("userId") String userId) {
 			Map<String, Boolean> map = new HashMap<>();
-			
 			
 			map.put("duplicate", service.isDuplicateID(userId));
 			

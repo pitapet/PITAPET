@@ -85,7 +85,7 @@
 		)
 	</insert>
 	
-	<!--
+	
 	<update id="updateMember" parameterType="Member">
 		UPDATE MEMBER 
 		SET 
@@ -97,7 +97,7 @@
 			MODIFY_DATE = SYSDATE 
 		WHERE NO = #{no}
 	</update>
-	  -->
+	 
 	
 	<delete id="deleteMember" parameterType="_int">
 		UPDATE MEMBER

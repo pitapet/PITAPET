@@ -11,7 +11,7 @@ public interface MemberService {
 	int save(Member member);
 
 	Boolean isDuplicateID(String userId);
-
+	
 	int delete(int no);
 
 }

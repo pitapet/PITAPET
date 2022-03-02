@@ -27,6 +27,8 @@
       <logo class="header__logo">
         <img src="${ path }/images/logo.png" alt="logo" class="logo__img" />
       </logo>
+      <!-- 로그인 전 버튼들 -->
+      <c:if test="${ empty loginMember }">
       <ul class="header__menu">
         <li data-menuanchor="section1"><a href="${ path }/">Home</a></li>
         <li data-menuanchor="section2"><a href="${ path }/product/product">Product</a></li>
@@ -34,6 +36,17 @@
         <li data-menuanchor="section4"><a href="${ path }/organization/organization">Organization</a></li>
         <li data-menuanchor="section5"><a href="${ path }/member/login">Login</a></li>
       </ul>
+      </c:if>
+      <!-- 로그인 후 버튼들 -->
+      <c:if test="${ !empty loginMember }">
+      <ul class="header__menu">
+        <li data-menuanchor="section1"><a href="${ path }/">Home</a></li>
+        <li data-menuanchor="section2"><a href="${ path }/product/product">Product</a></li>
+        <li data-menuanchor="section3"><a href="${ path }/community/community">Community</a></li>
+        <li data-menuanchor="section4"><a href="${ path }/organization/organization">Organization</a></li>
+        <li data-menuanchor="section5"><a href="${ path }/logout">Logout</a></li>
+      </ul>
+      </c:if>
     </header>
     <main id="fullpage">
       <!-- Section 1 Title -->
