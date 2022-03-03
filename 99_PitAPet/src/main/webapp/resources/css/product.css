@@ -195,6 +195,11 @@ i {
   border: 1px solid gray;
   outline: 0;
 }
+
+.product__add {
+	text-align: right;
+	width: 90%
+}
 /* 여기까지 */
 
 @media screen and (max-width: 2559px) {

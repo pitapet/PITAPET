@@ -52,5 +52,13 @@
 		 WHERE I.STATUS = 'Y'
 		 AND P.NO = #{no}
 	</select>
+	
+	<select id="selectProductNo" resultType="_int">
+		SELECT P.NO
+		FROM PRODUCT P
+		JOIN PRODUCT_INFO I ON (P.NO = I.PRODUCT_NO)
+		WHERE I.STOCK > 0
+		AND I.STATUS = 'Y'
+	</select>
 
 </mapper>  
