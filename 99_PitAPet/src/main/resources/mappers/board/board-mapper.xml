@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.kh.pitapet.community.model.dao.BoardMapper">
+	<sql id="boardListSql">
+		SELECT  B.BOARD_NO, 
+		        B.TITLE, 
+		        M.ID, 
+		        B.READCOUNT, 
+		        B.ORIGINAL_FILENAME, 
+		        B.RENAME_FILENAME, 
+		        B.CONTENT,
+		        B.CREATE_DATE, 
+		        B.MODIFY_DATE
+		FROM BOARD B
+		JOIN MEMBER M ON(B.WRITER_NO = M.NO)
+		WHERE B.STATUS = 'Y'
+	</sql>
+
+	<resultMap type="Board" id="boardListResultMap">
+		<id property="no" column="BOARD_NO"/>
+		<result property="title" column="TITLE"/>
+		<result property="writerNo" column="WRITER_NO"/>
+		<result property="writerId" column="ID"/>
+		<result property="readCount" column="READCOUNT"/>
+		<result property="originalFileName" column="ORIGINAL_FILENAME"/>
+		<result property="renameFileName" column="RENAME_FILENAME"/>
+		<result property="content" column="CONTENT"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+	</resultMap>
+	
+	<resultMap type="Reply" id="replyResultMap">
+		<id property="no" column="NO"/>
+		<result property="boardNo" column="BOARD_NO"/>
+		<result property="writerId" column="ID"/>
+		<result property="content" column="CONTENT"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+	</resultMap>
+
+	<resultMap type="Board" extends="boardListResultMap" id="boardDetailResultMap">
+		<collection property="replies" javaType="arraylist" columnPrefix="R_" resultMap="replyResultMap"/>
+	</resultMap>
+	
+	<select id="findAll" parameterType="map" resultMap="boardListResultMap">
+		<include refid="boardListSql"/>
+		<choose>
+			<when test="writer != null">
+				AND M.ID LIKE '%' || #{writer} || '%'
+			</when>
+			<when test="title != null">
+				AND B.TITLE LIKE '%' || #{title} || '%'
+			</when>
+			<when test="content != null">
+				AND B.CONTENT LIKE '%' || #{content} || '%'
+			</when>
+		</choose>
+		ORDER BY B.BOARD_NO DESC
+	</select>
+	
+	<select id="getBoardCount" parameterType="map" resultType="_int">
+		SELECT COUNT(*) 
+		FROM BOARD
+		WHERE STATUS = 'Y'
+		<choose>
+			<when test="writer != null">
+				AND M.ID LIKE '%' || #{writer} || '%'
+			</when>
+			<when test="title != null">
+				AND B.TITLE LIKE '%' || #{title} || '%'
+			</when>
+			<when test="content != null">
+				AND B.CONTENT LIKE '%' || #{content} || '%'
+			</when>
+		</choose>
+	</select>
+	
+	<!--  
+	<select id="selectBoardListByFilters" parameterType="map" resultMap="boardListResultMap">
+		<include refid="boardListSql"/>
+		<if test="filters != null">
+		  AND B.TYPE IN 
+		  <foreach collection="filters" item="filter" open="(" separator="," close=")">
+	  		#{filter}
+		  </foreach>
+		</if>
+	</select>
+	
+	<select id="getBoardCountByFilters" parameterType="map" resultType="_int">
+		SELECT COUNT(*) 
+		FROM BOARD
+		WHERE STATUS = 'Y'
+		<if test="list != null">
+		  AND TYPE IN 
+		  <foreach collection="list" item="filter" open="(" separator="," close=")">
+	  		#{filter}
+		  </foreach>
+		</if>
+	</select>
+	<select id="selectBoardByNo" parameterType="_int" resultMap="boardDetailResultMap">
+		SELECT B.BOARD_NO,
+		       B.TITLE,
+		       B.WRITER_NO,
+		       M.ID,
+		       B.READCOUNT,
+		       B.ORIGINAL_FILENAME,
+		       B.RENAME_FILENAME,
+		       B.CONTENT,
+		       B.CREATE_DATE, 
+		       B.MODIFY_DATE,
+		       R.REPLY_NO AS R_NO, 
+		       R.BOARD_BOARD AS R_BOARD_NO, 
+		       R.CONTENT AS R_CONTENT, 
+		       M2.ID AS R_ID, 
+		       R.CREATE_DATE AS R_CREATE_DATE, 
+		       R.MODIFY_DATE AS R_MODIFY_DATE
+		FROM BOARD B
+		JOIN MEMBER M ON(B.WRITER_NO = M.NO)
+		LEFT OUTER JOIN REPLY R ON(B.BOARD_NO = R.REPLY_BOARD)
+		LEFT OUTER JOIN MEMBER M2 ON(R.WRITER_NO = M2.NO)
+		WHERE B.STATUS = 'Y' AND B.NO = #{no}
+	</select>
+	
+	<insert id="insertBoard" parameterType="Board"
+			useGeneratedKeys="true" keyProperty="no" keyColumn="NO">
+		INSERT INTO BOARD (
+			NO,
+			WRITER_NO,
+			TITLE,
+			CONTENT,
+			ORIGINAL_FILENAME,
+			RENAMED_FILENAME,
+			READCOUNT,
+			STATUS,
+			TYPE,
+			CREATE_DATE,
+			MODIFY_DATE
+		) VALUES (
+			SEQ_BOARD_NO.NEXTVAL,
+			#{writerNo},
+			#{title},
+			#{content},
+			#{originalFileName},
+			#{renamedFileName},
+			DEFAULT,
+			DEFAULT,
+			DEFAULT,
+			DEFAULT,
+			DEFAULT
+		)
+	</insert>
+	
+	<update id="updateBoard" parameterType="Board">
+       	UPDATE BOARD
+       	<trim prefix="SET" suffixOverrides=",">
+    	    <if test="title != null">
+		 		TITLE = #{title},
+	 		</if>
+	 		<if test="content != null">
+		 		CONTENT = #{content},
+	 		</if>
+	 		<if test="originalFileName != null">
+		 		ORIGINAL_FILENAME = #{originalFileName},
+	 		</if>
+	 		<if test="renamedFileName != null">
+		 		RENAMED_FILENAME = #{renamedFileName},
+	 		</if>
+		 	MODIFY_DATE = SYSDATE 
+       	</trim>
+	 	WHERE 
+	 		NO = #{no}
+	</update>
+	
+	<update id="updateStatus" parameterType="map">
+		UPDATE BOARD SET STATUS = #{status} WHERE NO = #{no}
+	</update>
+	 -->
+</mapper>
