@@ -60,5 +60,40 @@
 		WHERE I.STOCK > 0
 		AND I.STATUS = 'Y'
 	</select>
+	
+	<select id="selectCountByTitle" resultType="_int">
+		SELECT COUNT(*)
+		FROM PRODUCT
+		WHERE REPLACE(TITLE, ' ', '') = #{title}
+	</select>
+	
+	<insert id="insertProduct" parameterType="Product"
+			useGeneratedKeys="true" keyColumn="NO" keyProperty="no">
+		INSERT INTO PRODUCT (
+		    NO,
+		    TITLE,
+		    CONTENT,
+		    PRICE,
+		    CREATED_DATE,
+		    MODIFY_DATE
+		)VALUES(
+		    SEQ_PRODUCT_NO.NEXTVAL, 
+		    #{title}, 
+		    #{content}, 
+		    #{price}, 
+		    DEFAULT, 
+		    DEFAULT
+		)
+	</insert>
+	
+	<update id="updateProduct" parameterType="Product">
+		UPDATE PRODUCT
+		SET
+			TITLE = #{title},
+			CONTENT = #{content},
+			PRICE = #{price},
+			MODIFY_DATE = SYSDATE
+		WHERE NO = #{no};
+	</update>
 
 </mapper>  

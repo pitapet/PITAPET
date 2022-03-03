@@ -22,7 +22,8 @@
     <script src="${ path }/js/plugin/jquery-3.6.0.min.js"></script>
     <script src="${ path }/js/plugin/jquery.fullPage.js"></script>
     <script src="${ path }/js/product.js"></script>
-    <!-- iamport.payment.js -->
+    <!-- iamport.payment.js 
+    -->
     <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
     
 </head>
@@ -87,6 +88,7 @@
             </div>
           </div>
         </div>
+        
         <div class="product__add">
           <button onclick="location.href='${ path }/product/add'">등록하기</button>
         </div>

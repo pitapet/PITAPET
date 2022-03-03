@@ -15,5 +15,15 @@ public interface ProductMapper {
 
 	List<Integer> selectProductNo();
 
+	int selectCountByTitle(String title);
+
+	int insertProduct(Product product);
+
+	int updateProduct(Product product);
+
+	int selectNoByTitle(String title);
+
+	Product selectProductByTitle(String title);
+
 
 }

@@ -11,6 +11,16 @@ public interface ProductService {
 
 	List<Integer> getProductNo();
 
+	int checkTitle(String title);
+
+	int save(Product product);
+
+	int update(Product product);
+
+	int findNoByTitle(String title);
+
+	Product findProductByTitle(String title);
+
 
 
 }

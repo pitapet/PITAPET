@@ -10,7 +10,7 @@ $(() => {
     normalScrollElements: ".main__home__board",
     afterRender: function () {
       $("html").animate({ opacity: 1 }, 500);
-    },
+    }, 
   });
   /*
   $(function(){
@@ -28,8 +28,9 @@ $(() => {
         $('#price').val(price);
     });
 	*/
-
 });
+
+
 /*
 $(document).ready(() => {
 	$('#price').change(() => {
@@ -41,6 +42,7 @@ $(document).ready(() => {
 });
 */
 
+/*
 $(document).ready(function() {
     var IMP = window.IMP;
 	var code = "imp49883029"; // 가맹점 식별코드
@@ -88,21 +90,21 @@ $("#purchase").on('click', () => {
             data : JSON.stringify(result,
                     ['imp_uid', 'merchant_uid', 'pay_date',
                     'amount', 'card_no', 'refund']), 
-            /*
-            data : { // 요청 시 전달할 파라미터 설정
-                input: input // 속성명: 변수값(let input = $("#input1").val();)
-            },
-            */
+            
+            //data : { // 요청 시 전달할 파라미터 설정
+            //    input: input // 속성명: 변수값(let input = $("#input1").val();)
+            //},
+            
             contentType: 'application/json;charset=utf-8',
             success: function(result){
                 // AJAX 통신 성공 시 처리할 콜백 함수 지정
                 // 매개 변수는 서버에서 응답이 왔을 때 그 값이 저장되는 변수 (임의로 짖ㅇ 가능)
                 if(result == 1){
                     console.log("구매성공");
-                    /*
-                    stock -= 1;
-                    $('#stock').html(stock);
-                    */
+                    
+                    //stock -= 1;
+                    //$('#stock').html(stock);
+                    //
                 } else {
                     console.log("구매실패");
                 }
@@ -124,6 +126,7 @@ $("#purchase").on('click', () => {
 
 }); // purchase click
 
+
 $("#productCheck").on("click", () => {
 			const url = "${ path }/product/productCheck";
 			const status = "left=500px,top=200px,width=600px,height=200px";
@@ -132,4 +135,5 @@ $("#productCheck").on("click", () => {
 		}); // productCheck click
 
 }); // document ready
+*/
 
