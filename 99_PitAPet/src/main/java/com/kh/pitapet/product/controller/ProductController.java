@@ -62,18 +62,5 @@ public class ProductController {
 		return "product/addProduct";
 	}
 	
-	@GetMapping("/productCheck")
-	public ModelAndView productCheck(
-			ModelAndView model,
-			@ModelAttribute Product product,
-			@SessionAttribute Member loginMember,
-			@SessionAttribute Product selectProduct) {
-		
-		
-		
-		
-		return model;
-	}
-	
 	
 }
