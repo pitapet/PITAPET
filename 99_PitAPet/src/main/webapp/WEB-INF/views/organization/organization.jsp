@@ -22,6 +22,16 @@
     <script src="${ path }/js/plugin/jquery-3.6.0.min.js"></script>
     <script src="${ path }/js/plugin/jquery.fullPage.js"></script>
     <script src="${ path }/js/organization.js"></script>
+  <style>
+  /* CSS 주석 */
+  #id1 {
+  width: 500px;
+  height: 50px;
+  border-radius: 20px;
+  }
+  
+  </style>
+  
   </head>
   <body>
     <header id="header">
@@ -39,6 +49,16 @@
     <main id="fullpage">
       <!-- Section 1 Title -->
       <section class="section">
+      <h1>Pit A Pet</h1>
+      <p><br/><br/></p>
+   
+      <form>
+      	<div>
+      		<input id="id1" type="text" name="search_here" placeholder ="  검색해주세요." required >
+      		
+      	</div>
+      </form>
+      
         <img src="${ path }/images/organization/organizationlogo.png" alt="logoimnidang" />
         <p class="title">"Pets are humanizing. They remind us we have an obligation and responsibility to preserve and nurture and care for all life"<br />- James Cromwell</p>
         <i class="fa-solid fa-angles-down"></i>
