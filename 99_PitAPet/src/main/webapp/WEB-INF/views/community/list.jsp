@@ -77,12 +77,11 @@
               </div>
             </div>
             
-             <!-- 글쓰기
-            <c:if test="${ !empty loginMember }">
-				<button type="button" id="btn-add"
+            <!--  
+	            <c:if test="${ !empty loginMember }">
+			<button type="button" id="btn-add"
 				onclick="location.href='${ path }/board/write'">글쓰기</button>	
-			</c:if>
-             -->
+		</c:if>  -->
             
             <div class="main__header__best box">
               <p>실시간 베스트</p>    <!-- 쿼리문으로 정렬?????????????????????? -->
@@ -99,7 +98,9 @@
                 <span>32 댓글</span>
               </div>
             </div>
-            <div class="main__header__read box"></div>
+            <div class="main__header__read box">
+					<button type="button" id="btn-add" onclick="location.href='${ path }/community/write'">글쓰기</button>	
+			</div>
           </header>
           
           

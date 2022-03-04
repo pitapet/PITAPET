@@ -33,7 +33,7 @@
 	</resultMap>
 	
 	<resultMap type="Reply" id="replyResultMap">
-		<id property="no" column="NO"/>
+		<id property="replyNo" column="REPLY_NO"/>
 		<result property="boardNo" column="BOARD_NO"/>
 		<result property="writerId" column="ID"/>
 		<result property="content" column="CONTENT"/>
@@ -78,7 +78,7 @@
 		</choose>
 	</select>
 	
-	<!--  
+	
 	<select id="selectBoardListByFilters" parameterType="map" resultMap="boardListResultMap">
 		<include refid="boardListSql"/>
 		<if test="filters != null">
@@ -127,15 +127,14 @@
 	<insert id="insertBoard" parameterType="Board"
 			useGeneratedKeys="true" keyProperty="no" keyColumn="NO">
 		INSERT INTO BOARD (
-			NO,
+			BOARD_NO,
 			WRITER_NO,
 			TITLE,
 			CONTENT,
 			ORIGINAL_FILENAME,
-			RENAMED_FILENAME,
+			RENAME_FILENAME,
 			READCOUNT,
 			STATUS,
-			TYPE,
 			CREATE_DATE,
 			MODIFY_DATE
 		) VALUES (
@@ -144,8 +143,7 @@
 			#{title},
 			#{content},
 			#{originalFileName},
-			#{renamedFileName},
-			DEFAULT,
+			#{renameFileName},
 			DEFAULT,
 			DEFAULT,
 			DEFAULT,
@@ -165,17 +163,17 @@
 	 		<if test="originalFileName != null">
 		 		ORIGINAL_FILENAME = #{originalFileName},
 	 		</if>
-	 		<if test="renamedFileName != null">
-		 		RENAMED_FILENAME = #{renamedFileName},
+	 		<if test="renameFileName != null">
+		 		RENAME_FILENAME = #{renameFileName},
 	 		</if>
 		 	MODIFY_DATE = SYSDATE 
        	</trim>
 	 	WHERE 
-	 		NO = #{no}
+	 		BOARD_NO = #{no}
 	</update>
 	
 	<update id="updateStatus" parameterType="map">
-		UPDATE BOARD SET STATUS = #{status} WHERE NO = #{no}
+		UPDATE BOARD SET STATUS = #{status} WHERE BOARD_NO = #{no}
 	</update>
-	 -->
+	
 </mapper>
