@@ -81,10 +81,14 @@
             </c:forEach>
             </div>
             <div class="product__form">
+              <!-- <button id="productCheck">Buy</button> -->
               <button id="purchase">Buy</button>
               <button>Cart</button>
             </div>
           </div>
+        </div>
+        <div class="product__add">
+          <button onclick="location.href='${ path }/product/add'">등록하기</button>
         </div>
       </section>
     </main>
