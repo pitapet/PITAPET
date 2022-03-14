@@ -39,7 +39,7 @@ public class BoardController {
 	
 	@Autowired
 	private ResourceLoader resourceLoader;
-	
+	// 전체게시판
 	@GetMapping("/list")
 	public ModelAndView list(ModelAndView model, 
 			@RequestParam(defaultValue = "1") int page,
@@ -58,9 +58,86 @@ public class BoardController {
 		
 		return model;
 	}
+	// 자유게시판
+	@GetMapping("/free")
+	public ModelAndView free(ModelAndView model, 
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10")int count) {
+		PageInfo pageInfo = null;
+		List<Board> list = null;
+		
+		log.info("page number : {}", page);
+		
+		pageInfo = new PageInfo(page, 10, service.getBoardCount(), count);
+		list = service.getBoardList(pageInfo);
+		
+		model.addObject("pageInfo", pageInfo);
+		model.addObject("list", list);
+		model.setViewName("community/free");
+		
+		return model;
+	}
+	// 질문게시판
+	@GetMapping("/question")
+	public ModelAndView question(ModelAndView model, 
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10")int count) {
+		PageInfo pageInfo = null;
+		List<Board> list = null;
+		
+		log.info("page number : {}", page);
+		
+		pageInfo = new PageInfo(page, 10, service.getBoardCount(), count);
+		list = service.getBoardList(pageInfo);
+		
+		model.addObject("pageInfo", pageInfo);
+		model.addObject("list", list);
+		model.setViewName("community/question");
+		
+		return model;
+	}
+	// 중고거래
+	@GetMapping("/used")
+	public ModelAndView used(ModelAndView model, 
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10")int count) {
+		PageInfo pageInfo = null;
+		List<Board> list = null;
+		
+		log.info("page number : {}", page);
+		
+		pageInfo = new PageInfo(page, 10, service.getBoardCount(), count);
+		list = service.getBoardList(pageInfo);
+		
+		model.addObject("pageInfo", pageInfo);
+		model.addObject("list", list);
+		model.setViewName("community/used");
+		
+		return model;
+	}
+	
+	// 게시글 검색
+	public class Criteria {
+		public int pageNum;
+		public int amount;
+		
+		// 검색에 필요한 키워드 선언
+		public String serachName;
+		
+		public Criteria() {
+			this(1, 10);
+		}
+		
+		public Criteria(int pageNum, int amount) {
+			this.pageNum = pageNum;
+			this.amount = amount;
+		}
+	}
+	
 	
 	@GetMapping("/write")
 	public String write() {
+		
 		
 		return "community/write";
 	}

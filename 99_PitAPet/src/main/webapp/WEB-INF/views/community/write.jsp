@@ -22,7 +22,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="${ path }/css/plugin/jquery.fullPage.css" />
     <link rel="stylesheet" href="${ path }/css/community.css" />
+    
+    <!-- SmartEditor2 라이브러리 
+    <script type="text/javascript" src="${ path }/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${ path }//code.jquery-1.11.0.min.js"></script> -->
+    
   </head>
+  
   <body>
     <header id="header">
       <logo class="header__logo">
@@ -50,17 +56,7 @@
       </c:if>
     </header>
     <main id="fullpage">
-      <!-- Section 1 Title -->
-      <section class="section">
-        <div class="title__box">
-          <img src="${ path }/images/Community/logo/logo.png" alt="" />
-          <p class="title">
-            “To effectively communicate, we must realize that we are all different in the way we perceive the world and use this understanding as a guide to our communication with others.”<br />– Tony
-            Robbins
-          </p>
-          <i class="fa-solid fa-angles-down"></i>
-        </div>
-      </section>
+     
       <!-- Section 2 Announcement about Pit A Pet -->
       <section class="section">
         <div class="main">
@@ -70,7 +66,7 @@
               <div>
                 <ul>
                   <li><a href="${ path }/community/list">전체게시판</a></li>
-                  <li><a href="${ path }/community/free">자유게시판</a></li>  <!--  -->
+                  <li><a href="${ path }/community/free">자유게시판</a></li>  
                   <li><a href="${ path }/community/question">질문게시판</a></li>
                   <li><a href="${ path }/community/used">중고거래</a></li>
                 </ul>
@@ -93,59 +89,66 @@
                 <span>32 댓글</span>
               </div>
             </div>
-            <div class="main__header__read box"></div> -->
-          </header> 
-          
-          
-          
-          
-          
            
-	          <home class="main__home">
+            <div class="main__header__read box"></div>
+          </header> 
+         
+	      <home class="main__home">
             <div class="main__home__categories box">
               <p>게시글 작성하기</p>
             </div>
             
-		<form action="${ pageContext.request.contextPath }/community/write" method="post"
+            <div class="main__home__board box">
+				<form action="${ pageContext.request.contextPath }/community/write" method="post"
 				enctype="multipart/form-data">
-			<table id='tbl-board'>
-				<tr>
-					<th>제목</th>
-					<td><input type="text" name="title" id="title"></td>
-				</tr>
-				<tr>
-					<th>작성자</th>
-					<td><input type="text" name="writerId" value="${ loginMember.id }" readonly></td>
-				</tr>
-				<tr>
-					<th>첨부파일1</th>
-					<td><input type="file" name="upfile"></td>
-				</tr>
-				<!-- 
-				<tr>
-					<th>첨부파일2</th>
-					<td><input type="file" name="upfile"></td>
-				</tr>
-				-->
-				<tr>
-					<th>내용</th>
-					<td><textarea name="content" cols="50" rows="15" ></textarea></td>
-				</tr>
-				<tr>
-					<th colspan="2">
-						<input type="submit" value="등록">
-						<input type="reset" value="취소">
-					</th>
-				</tr>
-			</table>
-		</form>
-           
-           
-           
-           
-           
+					<table id='tbl-board'>
+						<tr>
+							<th>제목</th>
+							<td><input type="text" name="title" id="title"></td>
+						</tr>
+						<tr>
+							<th>작성자</th>
+							<td><input type="text" name="writerId" value="${ loginMember.id }" readonly></td>
+						</tr>
+						<tr>
+							<th>카테고리</th>
+							<td><select name="job">
+								    <option value="free">자유게시판</option>
+								    <option value="question">질문게시판</option>
+								    <option value="user">중고거래</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>첨부파일1</th>
+							<td><input type="file" name="upfile"></td>
+						</tr>
+						<!-- 
+						<tr>
+							<th>첨부파일2</th>
+							<td><input type="file" name="upfile"></td>
+						</tr>
+						-->
+						<tr>
+							<th>내용</th>
+							<td><textarea name="content" cols="80" rows="35" ></textarea></td>
+						</tr>
+						<tr>
+							<th colspan="2">
+								<input type="submit" value="등록">
+								<input type="reset" value="취소">
+							</th>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</home>
+		
         </div>
       </section>
     </main>
   </body>
 </html>
+
+<!-- SmartEditor2 -->
+<script type="text/javascript" src = "${ path }/js/community.js"></script>

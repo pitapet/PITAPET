@@ -7,6 +7,7 @@
 	<sql id="boardListSql">
 		SELECT  B.BOARD_NO, 
 		        B.TITLE, 
+		        B.WRITER_NO,
 		        M.ID, 
 		        B.READCOUNT, 
 		        B.ORIGINAL_FILENAME, 

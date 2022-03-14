@@ -25,7 +25,7 @@ public class Board {
 	
 	private String originalFileName;
 	
-	private String renamedFileName;
+	private String renameFileName;
 	
 	private int readCount;
 	

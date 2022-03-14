@@ -77,14 +77,8 @@
               </div>
             </div>
             
-            <!--  
-	            <c:if test="${ !empty loginMember }">
-			<button type="button" id="btn-add"
-				onclick="location.href='${ path }/board/write'">글쓰기</button>	
-		</c:if>  -->
-            
             <div class="main__header__best box">
-              <p>실시간 베스트</p>    <!-- 쿼리문으로 정렬?????????????????????? -->
+              <p>실시간 베스트</p>   
               <div>
                 <p>갑자기 너무 추워요</p>
                 <span>32 댓글</span>
@@ -99,7 +93,37 @@
               </div>
             </div>
             <div class="main__header__read box">
-					<button type="button" id="btn-add" onclick="location.href='${ path }/community/write'">글쓰기</button>	
+            	<c:if test="${ !empty loginMember }">
+					<button type="button" id="btn-add" onclick="location.href='${ path }/community/write'">글쓰기</button>
+				</c:if>	
+            	<c:if test="${ empty loginMember }">
+					<button type="button" id="btn-add" onclick="javascript:alert('로그인 후 작성 가능합니다.')">글쓰기</button>
+				</c:if>	
+					
+					<form action="list.do" method="get"> <%-- <c:if test="${condition eq 'titlename' }">selected</c:if>	 --%>
+						<label for="condition">검색조건</label>
+						<select name="condition" id="condition">
+							<option value="titlename" <c:if test="${condition eq 'titlename' }">selected</c:if>>제목+파일명</option>
+							<option value="title" <c:if test="${condition eq 'title' }">selected</c:if>>제목</option>
+							<option value="writer" <c:if test="${condition eq 'writer' }">selected</c:if>>작성자</option>
+						</select>
+						<input id="id1" type="text" name="search_here" placeholder =" 검색어를 입력해 주세요." required >
+						<button type="submit">검색</button>
+					</form><!-- condition이라는 파라미터 명으로 넘어간다. -->
+					
+					<c:choose>
+						<c:when test="${not empty keyword }">
+							<p>
+								<strong>${keyword} </strong>키워드로 검색된
+								<strong>${totalRow }</strong>개의 파일이 있습니다.
+							</p>
+						</c:when>
+						<c:otherwise>
+							<p><strong>${totalRow }</strong>개의 파일이 있습니다.</p>
+						</c:otherwise>
+				</c:choose>
+			
+					
 			</div>
           </header>
           
@@ -114,8 +138,10 @@
             <c:if test="${ empty list }">			
 					조회된 게시글이 없습니다.
 		  	</c:if>
+		  	
 		 	<c:if test="${ !empty list }">	
             	<c:forEach var="board" items="${ list }">
+	              <div class="infinite">
 	              <article>
 	                <div class="article__one">
 	                  <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />
@@ -124,17 +150,16 @@
 	                  <div class="two__div">
 	                    <div class="two__div__one">
 	                      <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />
-	                      <span>Aloofelicidad</span>
+	                      <span>${ board.writerId }</span>
 	                    </div>
 	                    <div class="two__div__two">
 	                      <span>1일전</span>
 	                    </div>
 	                  </div>
 	                  <div class="two__div__description">
-	                    <p>${ board.title }제목이 어쩌고 저쩌고...</p>
+	                  	  <a href="${ path }/community/view?no=${ board.no }">${ board.title }</a>
 	                    <span
-	                      >${board.content }내용이 어쩌고.. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam doloribus autem quo quia nam suscipit libero, culpa at non nihil animi quis aut sapiente optio
-	                      soluta odio neque ipsa sint!</span
+	                      >${board.content }</span
 	                    >
 	                  </div>
 	                  <div class="two__div__footer">
@@ -143,117 +168,11 @@
 	                  </div>
 	                </div>
 	              </article>
+	                </div>
+	                <div class="pagination"></div>
 	          	</c:forEach>    
 	         </c:if>	
-	          	<!-- 
-              <article>
-                <div class="article__one">
-                  <img class="imgbox" src="${ path }/images/Community/boardImgs/ex4.jpg" alt="" />
-                </div>
-                <div class="article__two">
-                  <div class="two__div">
-                    <div class="two__div__one">
-                      <img class="imgbox" src="${ path }/images/Community/boardImgs/ex4.jpg" alt="" />
-                      <span>Aloofelicidad</span>
-                    </div>
-                    <div class="two__div__two">
-                      <span>1일전</span>
-                    </div>
-                  </div>
-                  <div class="two__div__description">
-                    <p>제목이 어쩌고 저쩌고...</p>
-                    <span
-                      >내용이 어쩌고.. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam doloribus autem quo quia nam suscipit libero, culpa at non nihil animi quis aut sapiente optio
-                      soluta odio neque ipsa sint!</span
-                    >
-                  </div>
-                  <div class="two__div__footer">
-                    <span>5 댓글</span>
-                    <span>60 조회</span>
-                  </div>
-                </div>
-              </article>
-              <article>
-                <div class="article__one">
-                  <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />
-                </div>
-                <div class="article__two">
-                  <div class="two__div">
-                    <div class="two__div__one">
-                      <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />
-                      <span>Aloofelicidad</span>
-                    </div>
-                    <div class="two__div__two">
-                      <span>1일전</span>
-                    </div>
-                  </div>
-                  <div class="two__div__description">
-                    <p>제목이 어쩌고 저쩌고...</p>
-                    <span
-                      >내용이 어쩌고.. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam doloribus autem quo quia nam suscipit libero, culpa at non nihil animi quis aut sapiente optio
-                      soluta odio neque ipsa sint!</span
-                    >
-                  </div>
-                  <div class="two__div__footer">
-                    <span>5 댓글</span>
-                    <span>60 조회</span>
-                  </div>
-                </div>
-              </article>
-              <article>
-                <div class="article__one">
-                  <img class="imgbox" src="${ path }/images/Community/boardImgs/ex4.jpg" alt="" />
-                </div>
-                <div class="article__two">
-                  <div class="two__div">
-                    <div class="two__div__one">
-                      <img class="imgbox" src="${ path }/images/Community/boardImgs/ex4.jpg" alt="" />
-                      <span>Aloofelicidad</span>
-                    </div>
-                    <div class="two__div__two">
-                      <span>1일전</span>
-                    </div>
-                  </div>
-                  <div class="two__div__description">
-                    <p>제목이 어쩌고 저쩌고...</p>
-                    <span
-                      >내용이 어쩌고.. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam doloribus autem quo quia nam suscipit libero, culpa at non nihil animi quis aut sapiente optio
-                      soluta odio neque ipsa sint!</span
-                    >
-                  </div>
-                  <div class="two__div__footer">
-                    <span>5 댓글</span>
-                    <span>60 조회</span>
-                  </div>
-                </div>
-              </article>
-              <article>
-                <div class="article__one">
-                  <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />
-                </div>
-                <div class="article__two">
-                  <div class="two__div">
-                    <div class="two__div__one">
-                      <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />
-                      <span>Aloofelicidad</span>
-                    </div>
-                    <div class="two__div__two">
-                      <span>1일전</span>
-                    </div>
-                  </div>
-                  <div class="two__div__description">
-                    <p>제목이 어쩌고 저쩌고...</p>
-                    <span
-                      >내용이 어쩌고.. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam doloribus autem quo quia nam suscipit libero, culpa at non nihil animi quis aut sapiente optio
-                      soluta odio neque ipsa sint!</span
-                    >
-                  </div>
-                  <div class="two__div__footer">
-                    <span>5 댓글</span>
-                    <span>60 조회</span>
-                  </div>
-                </div>
-              </article>  -->
+	          	
             </div>
           </home>
         </div>
