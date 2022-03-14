@@ -24,4 +24,6 @@ public class Product {
 	private Date createdDate;
 	
 	private Date modifyDate;
+	
+//	private List<Product> products;
 }

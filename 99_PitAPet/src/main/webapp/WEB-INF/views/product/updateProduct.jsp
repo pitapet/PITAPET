@@ -17,11 +17,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="${ path }/css/plugin/jquery.fullPage.css" />
-    <link rel="stylesheet" href="${ path }/css/addProduct.css" />
+    <link rel="stylesheet" href="${ path }/css/updateProduct.css" />
     <script src="https://kit.fontawesome.com/91b5983e4b.js" crossorigin="anonymous"></script>
     <script src="${ path }/js/plugin/jquery-3.6.0.min.js"></script>
     <script src="${ path }/js/plugin/jquery.fullPage.js"></script>
-    <script src="${ path }/js/addProduct.js"></script>
+    <script src="${ path }/js/updateProduct.js"></script>
 </head>
 <body>
 <main id="fullpage">
@@ -32,26 +32,29 @@
 	
 	      <div class="main__user__body">
 	        <div class="main__user__body__product">
-	          <p>상품 카테고리 등록</p>
+	          <p>상품 카테고리 수정</p>
 	          
-	          <form id="addProductFrm" action="${ path }/product/add/product" method="post">
+	          <form id="updateProductFrm" action="${ path }/product/update/product" method="post">
 	              <table class="main__user__body__table">
 	                <tbody class="table__tbody">
 	                  <tr>
 	                      <th>상품명</th>
-	                      <td><input type="text" name="title" id="title"></td>
+	                      <td>
+	                      	<input type="hidden" name="no" id="no" value="${ product.no }">
+	                      	<input type="text" name="title" id="title" value="${ product.title }">
+	                      </td>
 	                  </tr>
 	                  <tr>
 	                      <th>상품 설명</th>
-	                      <td><input type="text" name="content" id="content"></td>
+	                      <td><input type="text" name="content" id="content" value="${ product.content }"></td>
 	                  </tr>
 	                  <tr>
 	                      <th>가격</th>
-	                      <td><input type="number" name="price" id="price"> 원</td>
+	                      <td><input type="number" name="price" id="price" value="${ product.price }"> 원</td>
 	                  </tr>
 	                </tbody>
 	              </table>
-	              <input type="submit" id="addProduct" value="등록"></input>
+	              <input type="submit" id="updateProduct" value="등록"></input>
 	              <button id="btnClose">취소</button>
 	            </form>
 	            

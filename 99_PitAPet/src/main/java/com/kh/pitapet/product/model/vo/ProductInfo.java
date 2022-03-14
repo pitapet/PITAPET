@@ -19,6 +19,10 @@ public class ProductInfo {
 	private String colorCode;
 	
 	private String imageName;
+
+//	private String originalFileName;
+
+//	private String renamedFileName;
 	
 	private int stock;
 	

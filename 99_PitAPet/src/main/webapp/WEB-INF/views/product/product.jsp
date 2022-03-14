@@ -18,10 +18,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="${ path }/css/plugin/jquery.fullPage.css" />
     <link rel="stylesheet" href="${ path }/css/product.css" />
+    <link rel="stylesheet" href="${ path }/css/plugin/jquery.bxslider.css" />
     <script src="https://kit.fontawesome.com/91b5983e4b.js" crossorigin="anonymous"></script>
     <script src="${ path }/js/plugin/jquery-3.6.0.min.js"></script>
     <script src="${ path }/js/plugin/jquery.fullPage.js"></script>
     <script src="${ path }/js/product.js"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
     <!-- iamport.payment.js 
     -->
     <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
@@ -62,36 +64,51 @@
       </section>
       <!-- Section 2 Products -->
       <section class="section">
+      <c:forEach var="product" items="${ products }">
+      <div class="slide">
         <div class="products__wrapper">
           <div class="product__img__wrapper">
-            <c:forEach var="productInfo" items="${ product.productInfoes }">
-              <img class="product__img" name="imageName" src="${ path }/images/product/${ productInfo.imageName }.png" alt="product__prototype" />
-            </c:forEach>
+            <div class="bxslider">
+              <c:forEach var="productInfo" items="${ product.productInfoes }">
+                <div>
+                  <img class="product__img" name="imageName" src="${ path }/images/product/${ productInfo.imageName }.png" alt="product__prototype" />
+                </div>
+              </c:forEach>
+            </div>
           </div>
           <div class="product__useable">
             <div class="product__description">
-              <input type="hidden" name="no" value = "${ product.no }">
+              <input type="hidden" name="no" value="${ product.no }">
               <h2>${ product.title }</h2>
               <p>${ product.content }</p>
               <p id="price">${ product.price }원</p>
             </div>
             <div class="product__color">
-            <p>색상</p>
-            <c:forEach var="productInfo" items="${ product.productInfoes }">
-	            <button style="background-color: ${ productInfo.colorCode };"></button>
-            </c:forEach>
+	          <p>색상</p>
+		        <div id="bx-pager">
+		          <c:forEach var="productInfo" items="${ product.productInfoes }" varStatus="status">
+			        <button id="colorBtn${ status.index }" style="background-color: ${ productInfo.colorCode };"></button>
+		          </c:forEach>
+		        </div>
             </div>
             <div class="product__form">
-              <!-- <button id="productCheck">Buy</button> -->
-              <button id="purchase">Buy</button>
-              <button>Cart</button>
+              <div class="selectColorCount">
+	            <select name="colorName" id="colorName">
+	              <c:forEach var="productInfo" items="${ product.productInfoes }">
+	                <option value="${ productInfo.no }">${ productInfo.colorName }</option>
+	              </c:forEach>
+	            </select>
+                <input type="number" name="count" id="count" value="1">
+              </div>
+              <div class="product__btn">
+                <button>Buy</button>
+                <button>Cart</button>
+              </div>
             </div>
           </div>
         </div>
-        
-        <div class="product__add">
-          <button onclick="location.href='${ path }/product/add'">등록하기</button>
-        </div>
+      </div>
+      </c:forEach>
       </section>
     </main>
 </body>

@@ -28,6 +28,33 @@ $(() => {
         $('#price').val(price);
     });
 	*/
+
+  $('.bxslider').bxSlider({
+    auto: true,
+    speed: 500,
+    pause: 5000,
+    mode: 'horizontal',
+    controls: false,
+    pager: false,
+    slideWidth: '800px',
+  });
+	
+	/*
+	$('.color_pager').click(function(){
+	  var index = $(this).val();
+	  console.log(index);
+	  var slider = $('.bxslider').bxSlider();
+	  slider.goToSlide(index);
+	  slider.goToSlide(index);
+	  return false;
+	  function goToSlide(number){
+		  $('.bxslider').goToSlide(number);
+	  }
+	  
+	  $('.bxslider').goToSlide(index);
+	});
+	  */
+    
 });
 
 
