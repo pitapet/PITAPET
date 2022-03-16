@@ -1,0 +1,379 @@
+/* Global */
+:root {
+  /* Color */
+  --color-white: #ffffff;
+  --color-light-white: #e1e2e1;
+  --color-dark-white: #bdbdbd;
+  --color-pink: #fe918d;
+  --color-purple: #8c52ff;
+  --color-dark-pink: #ff6863;
+  --color-dark-grey: #4d4d4d;
+  --color-grey: #616161;
+  --color-light-grey: #7c7979;
+  --color-blue: #0288d1;
+  --color-dark-blue: #005b9f;
+  --color-light-blue: #5eb8ff;
+  --color-yellow: #fff7d1;
+  --color-orange: #feb546;
+  --color-black: #000000;
+  --color-green: #00695c;
+  --color-dark-green: #002232;
+  --color-light-green: #4e7589;
+  --color-bg-green: #20495c;
+
+  /* Font size */
+  --font-large: 48px;
+  --font-medium: 28px;
+  --font-regular: 18px;
+  --font-small: 16px;
+  --font-micro: 14px;
+
+  /* Font weight */
+  --weight-bold: 700;
+  --weight-semi-bold: 600;
+  --weight-regular: 400;
+
+  /* Size */
+  --size-border-radius: 4px;
+
+  /* Annimation */
+  --animation-duration: 300ms;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+html {
+  opacity: 0;
+}
+
+ul {
+  padding-left: 0;
+}
+
+li {
+  list-style: none;
+}
+
+button {
+  font-family: "Gowun Dodum", sans-serif;
+}
+
+a:link,
+a:visited,
+a:active {
+  text-decoration: none;
+  color: var(--color-black);
+}
+
+.fp-prev {
+  margin-left: 40px;
+}
+
+.fp-next {
+  margin-right: 40px;
+}
+
+body {
+  font-family: "Gowun Dodum", sans-serif;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+#fullpage {
+  text-align: center;
+}
+
+html,
+body,
+#fullpage,
+.section,
+.slide,
+.fp-tableCell {
+  height: 100vh;
+  width: 100vw;
+  background-color: #f2f2f2;
+}
+
+#header {
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
+  width: 100%;
+  top: 0;
+  padding: 40px;
+  z-index: 100;
+  background: transparent;
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo__img {
+  width: 30px;
+}
+
+.header__menu {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-medium);
+}
+
+.header__menu li {
+  margin: 0 15px;
+  list-style: none;
+}
+
+#main {
+  width: 90%;
+  margin: auto;
+}
+
+.main__user {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.main__user__header {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 50px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid black;
+}
+
+.main__user__header__profile {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 1px solid var(--color-white);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  margin-right: 30px;
+}
+
+.main__user__header__description {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 35px;
+  padding-left: 60px;
+  border-left: 1px solid black;
+}
+
+.main__user__header__description > p:nth-child(2) {
+  font-size: 20px;
+  padding-left: 20px;
+  padding-top: 10px;
+}
+
+.main__user__body {
+  display: flex;
+  flex-direction: column;
+}
+
+.main__user__body__category {
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 30px;
+}
+
+.category {
+  width: 80px;
+  height: 30px;
+  border: none;
+  outline: none;
+  border: 0.1px solid var(--color-light-white);
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.category:hover {
+  background: var(--color-light-white);
+}
+
+.main__user__body__product {
+  border-top: 1px solid black;
+}
+
+.main__user__body__product p {
+  padding-left: 20px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  font-size: 25px;
+}
+
+.main__user__body__table {
+  width: 100%;
+  table-layout: fixed;
+  background: rgba(255, 255, 255, 0.205);
+  border-collapse: collapse;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  padding: 14px;
+  margin-bottom: 30px;
+}
+
+.main__user__body__table button {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  transition: all var(--animation-duration) ease-in;
+}
+
+.main__user__body__table button:hover {
+  color: var(--color-dark-pink);
+}
+
+th {
+  letter-spacing: 2px;
+}
+
+td {
+  letter-spacing: 1px;
+}
+
+th,
+td {
+  padding: 10px;
+  border-top: 1px solid var(--color-black);
+  border-bottom: 1px solid var(--color-black);
+  border-collapse: collapse;
+}
+
+.table__sel {
+  width: 5%;
+}
+
+.table__no {
+  width: 5%;
+}
+
+.table__category {
+  width: 10%;
+}
+
+.table__title {
+  width: 45%;
+}
+
+.table__enroll {
+  width: 15%;
+}
+
+.table__hits {
+  width: 5%;
+}
+
+.table__change {
+  width: 5%;
+}
+
+.table__tbody {
+  text-align: center;
+}
+
+.product__btn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.product__btn > button {
+  margin-left: 20px;
+  width: 80px;
+  height: 30px;
+  border: none;
+  outline: none;
+  border: 0.1px solid var(--color-light-white);
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.product__btn button:hover {
+  background: var(--color-light-white);
+}
+
+#pageBar {
+  text-align: center;
+}
+
+.pagebutton {
+  width: 30px;
+  height: 25px;
+  border: none;
+  outline: none;
+  border: 0.1px solid var(--color-light-white);
+  border-radius: 5px;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.pagebutton:hover {
+  background: var(--color-light-white);
+}
+
+.movebutton {
+  width: 40px;
+  height: 25px;
+  border: none;
+  outline: none;
+  border: 0.1px solid var(--color-light-white);
+  border-radius: 5px;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.movebutton:hover {
+  background: var(--color-light-white);
+}
+
+.setbutton {
+  width: 50px;
+  height: 25px;
+  border: none;
+  outline: none;
+  border: 0.1px solid var(--color-light-white);
+  border-radius: 5px;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.setbutton:hover {
+  background: var(--color-light-white);
+}
+
+.active {
+  background: var(--color-light-white);
+}
+
+@media screen and (max-width: 2559px) {
+  /* Global */
+  :root {
+    /* Font size */
+    --font-large: 40px;
+    --font-medium: 20px;
+    --font-regular: 15px;
+    --font-small: 13px;
+    --font-micro: 10px;
+  }
+}

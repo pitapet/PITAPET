@@ -65,7 +65,7 @@
               <div class="main__user__body__category">
                 <button class="category board active" onclick="location.href='./mypage.html';">게시글 관리</button>
                 <button class="category cart" onclick="location.href='./cart.html';">장바구니</button>
-                <button class="category prefernce" onclick="location.href='./profileEdit.html';">정보 수정</button>
+                <button class="category prefernce" onclick="location.href='${ path }/member/profileEdit';">정보 수정</button>
                 <button class="category resign" onclick="location.href='${ path }/member/delete';">회원 탈퇴</button>
               </div>
 
@@ -125,7 +125,7 @@
                     </c:if>
 
                     <c:if test="${ status.current != pageInfo.currentPage }">
-                      <button class="pagebutton" onclick="location.href='${ pageContext.request.contextPath }/QT/mypage?page=${ status.current }'">2</button>
+                      <button class="pagebutton" onclick="location.href='${ pageContext.request.contextPath }/QT/mypage?page=${ status.current }'">1</button>
                     </c:if>
                   </c:forEach>
 

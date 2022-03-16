@@ -42,6 +42,7 @@
 			<exclude-mapping path="/member/enroll"/>
 			<exclude-mapping path="/member/login"/>
 			<exclude-mapping path="/member/idCheck"/>
+			<exclude-mapping path="/member/emailCheck"/>
 			<exclude-mapping path="/member/findId"/>
 			<exclude-mapping path="/member/dofindId"/>
 			<exclude-mapping path="/member/findPw"/>	

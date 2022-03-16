@@ -22,5 +22,7 @@ public interface MemberService {
 
 	String findEmail(String id, String email);
 
+	Boolean isDuplicateEmail(String userEmail);
+
 
 }

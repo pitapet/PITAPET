@@ -128,6 +128,19 @@ body {
   outline: none;
 }
 
+.enroll__emailcheck {
+  position: absolute;
+  top: 6%;
+  right: 6%;
+  width: 20%;
+  padding: 2px;
+  font-size: 1rem;
+  background-color: var(--gray);
+  border-radius: 0.5rem;
+  border: 0.125rem solid var(--secondary-color);
+  outline: none;
+}
+
 .login__save {
   display: flex;
   margin-left: 5px;

@@ -22,5 +22,7 @@ public interface MemberMapper {
 
 	String findEmail(@Param("id") String id, @Param("email") String email);
 
+	Member findMemberByEmail(@Param("email") String email);
+
 
 }

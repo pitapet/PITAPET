@@ -67,6 +67,11 @@ public class MemberServiceImpl implements MemberService {
 		return mapper.findMemberById(id) != null;	
 	}
 	
+	@Override
+	public Boolean isDuplicateEmail(String email) {
+		
+		return mapper.findMemberByEmail(email) != null;
+	}
 
 	@Override
 	public int delete(int no) {
@@ -156,6 +161,8 @@ public class MemberServiceImpl implements MemberService {
 		
 		return returnEmail;
 	}
+
+	
 
 
 }

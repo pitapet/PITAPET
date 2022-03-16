@@ -108,8 +108,17 @@ public class MemberController {
 			return new ResponseEntity<Map<String,Boolean>>(map, HttpStatus.OK);
 		}
 		
-		
-		
+		// 이메일 중복검사
+		@PostMapping("/member/emailCheck")
+		public ResponseEntity<Map<String, Boolean>> emailCheck(@RequestParam("userEmail") String userEmail) {
+			System.out.println("이메일체크합니다: " + userEmail);
+			Map<String, Boolean> map = new HashMap<>();
+			
+			map.put("duplicate", service.isDuplicateEmail(userEmail));
+			
+			return new ResponseEntity<Map<String,Boolean>>(map, HttpStatus.OK);
+		}
+	
 		// 정보 수정(업데이트)
 		@PostMapping("/member/update")
 		public ModelAndView update(
@@ -185,6 +194,7 @@ public class MemberController {
 			return model;
 		}
 		
+
 		
 		// 비밀번호 찾기 페이지 접속
 		@GetMapping("/member/findPw")
@@ -210,6 +220,12 @@ public class MemberController {
 			  }
 
 			return model;
+		}
+		
+		// 정보수정 접속
+		@GetMapping("/member/profileEdit")
+		public String profileEdit() {
+			return "member/profileEdit";
 		}
 		
 		

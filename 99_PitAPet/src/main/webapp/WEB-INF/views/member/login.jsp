@@ -36,7 +36,7 @@
                 <i class="fas fa-user"></i>
                 <input type="text" name="id" id="newId" placeholder="아이디" required />
               </div>
-              <input class="enroll__idcheck" type="button" id="checkDuplicate" value="중복검사" />
+              <input class="enroll__idcheck" type="button" id="idcheckDuplicate" value="중복검사" />
               <input type="hidden" name="checked_id" value="" required />
               <div class="input-group up">
                 <i class="fas fa-lock"></i>
@@ -66,6 +66,8 @@
                 <i class="fas fa-envelope"></i>
                 <input type="email" name="email" id="email" placeholder="이메일" required />
               </div>
+              <input class="enroll__emailcheck" type="button" id="emailcheckDuplicate" style="top: 500px;" value="중복검사" />
+              <input type="hidden" name="checked_email" value="" required />
               <div class="input-group up">
                 <i class="fa-solid fa-paw"></i>
                 <input type="text" name="pet" id="pet" placeholder="애완동물"  required />
@@ -164,10 +166,10 @@
 			//let btnStatus = false;
 		  $("#btn").on("click", () => {
 			if(btnStatus == false){
-				alert("아이디 중복체크를 해주세요.");
+				alert("아이디와 이메일 중복체크를 해주세요.");
 			}
 		});	
-		$("#checkDuplicate").on("click", () => {
+		$("#idcheckDuplicate").on("click", () => {
 			let userId = $("#newId").val().trim();
 			
 			$.ajax({
@@ -179,7 +181,7 @@
 				},
 				success: (data) => {
 					console.log(data);
-					if(document.getElementById('newId').value !='' ){
+					if(userId !='' ){
 						if(data.duplicate === true) {
 							alert("이미 사용중인 아이디 입니다.");
 							idCheck = false;
@@ -190,7 +192,7 @@
 						} else {
 							alert("사용 가능한 아이디 입니다.");	
 							idCheck = true;
-							if(idCheck === true){
+							if(idCheck === true && emailCheck === true){
 								$("#btn").removeAttr("disabled");
 								//btnStatus = true;
 							} 
@@ -204,7 +206,48 @@
 					console.log(error);
 				}
 			});
-		});		
+		});
+		
+		
+		$("#emailcheckDuplicate").on("click", () => {
+			let userEmail = $("#email").val().trim();
+			
+			$.ajax({
+				type: "post",
+				url: "${ path }/member/emailCheck",
+				dataType: "json",
+				data: {
+					userEmail
+				},
+				success: (data) => {
+					console.log(data);
+					if(userEmail !='' ){
+						if(data.duplicate === true) {
+							alert("이미 사용중인 이메일 입니다.");
+							emailCheck = false;
+							if(emailCheck === false){
+								$("#btn").attr("disabled", "disabled");
+								//btnStatus = false;
+							}
+						} else {
+							alert("사용 가능한 이메일 입니다.");	
+							emailCheck = true;
+							if(idCheck === true && emailCheck === true){
+								$("#btn").removeAttr("disabled");
+								//btnStatus = true;
+							} 
+						}
+					}
+					else{
+						alert("이메일을 입력한 후 다시 검사해주세요.")
+					}
+				},
+				error: (error) => {
+					console.log(error);
+				}
+			});
+		});
+		
 	});
 	
 	

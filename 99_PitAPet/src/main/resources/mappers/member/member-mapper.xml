@@ -52,6 +52,11 @@
 		WHERE ID = #{id} AND STATUS = 'Y'
 	</select>
 	
+	<select id="findMemberByEmail" parameterType="string" resultMap="memberResultMap">
+		<include refid="selectMemberSql" />
+		WHERE EMAIL = #{email} AND STATUS = 'Y'
+	</select>
+	
 	<insert id="insertMember" parameterType="Member"
 			useGeneratedKeys="true" keyColumn="NO" keyProperty="no">
 		INSERT INTO MEMBER (
