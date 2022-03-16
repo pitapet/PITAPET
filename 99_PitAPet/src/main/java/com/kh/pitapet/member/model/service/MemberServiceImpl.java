@@ -1,5 +1,17 @@
 package com.kh.pitapet.member.model.service;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
+
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -61,5 +73,89 @@ public class MemberServiceImpl implements MemberService {
 		
 		return mapper.deleteMember(no);
 	}
+
+	@Override
+	public Member findId(String name, String email) {
+		Member member = null;
+		
+		member = mapper.findId(name, email);
+		
+		return member;
+	}
+	
+	@Override
+	public void findPw(String id, String email) {
+		String temppassword = maketemppassword();
+		// 이메일을 확인하고 새로운 비밀번호 생성
+		sendEmail(email, temppassword);
+		
+		String encodedtemppassword = passwordEncoder.encode(temppassword);
+		
+		// 새로나온 비밀번호로 업데이트
+		mapper.updatePw(id, encodedtemppassword);
+		
+	}
+	
+	// 새로운 8자리 난수로 비밀번호 생성
+	private String maketemppassword() {
+		
+		Random rand = new Random();
+
+		String temppassword = Integer.toString( rand.nextInt(8) + 1);
+
+		for (int i = 0; i < 7; i++) {
+		    temppassword += Integer.toString(rand.nextInt(9));
+		}
+		
+		return temppassword;
+	}
+	
+	// 메일을 보내기
+	private void sendEmail(String userEmail, String temppassword) {
+		String adminId = "pitapettest@gmail.com";
+		String adminPw = "yss2623!@";
+		String subject = "비밀번호 변경메일";
+		String body = "회원님의 새로운 비밀번호는 " + temppassword + " 입니다.";
+		int PORT = 465;
+		
+		try {
+			Properties props = new Properties();
+			props.put("mail.smtp.host", "smtp.gmail.com");
+	        props.put("mail.smtp.port", PORT); 
+	        props.put("mail.smtp.auth", "true");
+	        props.put("mail.smtp.ssl.enable", "true");
+	        props.put("mail.smtp.starttls.enable", "true");
+	        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+	        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+	        props.put("mail.smtp.socketFactory.fallback", "true");
+	        
+	        Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+	            protected PasswordAuthentication getPasswordAuthentication() {
+	                return new PasswordAuthentication(adminId, adminPw);
+	            }
+	        });
+	        
+	        MimeMessage msg = new MimeMessage(session);
+	        msg.setFrom(new InternetAddress(adminId));
+	        
+	        msg.setRecipient(Message.RecipientType.TO, new InternetAddress(userEmail));
+	        msg.setSubject(subject);
+	        msg.setContent(body, "text/html;charset=UTF-8");
+	        
+	        Transport.send(msg);
+            System.out.println("Email sent!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// 비밀번호를 찾기위한 이메일과 이이디 확인
+	@Override
+	public String findEmail(String id, String email) {
+		String returnEmail = mapper.findEmail(id, email);
+		
+		return returnEmail;
+	}
+
 
 }

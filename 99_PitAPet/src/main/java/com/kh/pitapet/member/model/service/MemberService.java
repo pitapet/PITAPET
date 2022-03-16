@@ -1,5 +1,7 @@
 package com.kh.pitapet.member.model.service;
 
+import java.util.Map;
+
 import com.kh.pitapet.member.model.vo.Member;
 
 public interface MemberService {
@@ -13,5 +15,12 @@ public interface MemberService {
 	Boolean isDuplicateID(String userId);
 	
 	int delete(int no);
+
+	Member findId(String name, String email);
+
+	void findPw(String id, String email);
+
+	String findEmail(String id, String email);
+
 
 }

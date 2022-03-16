@@ -16,8 +16,9 @@
     <meta name="description" content="Pit A Pet" />
     <meta name="author" content="fiveth" />
     <link rel="icon" type="image/png" sizes="152x152" href="${ path }/images/logo.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${ path }/css/login.css" />
     <script src="https://kit.fontawesome.com/91b5983e4b.js" crossorigin="anonymous"></script>
     <script src="${ path }/js/login.js" defer></script>
@@ -30,12 +31,13 @@
         <!-- SIGN UP -->
         <div class="col align-items-center flex-col sign-up">
           <div class="form-wrapper align-items-center">
-            <form class="form sign-up" name="memberEnrollFrm" action="${ pageContext.request.contextPath }/member/enroll" method="post">
+            <form class="form sign-up" name="memberEnrollFrm" id="enrollFrm" action="${ path }/member/enroll" method="post">
               <div class="input-group up">
                 <i class="fas fa-user"></i>
                 <input type="text" name="id" id="newId" placeholder="아이디" required />
               </div>
-              <input class="enroll__idcheck" type="button" id="checkDuplicate" value="중복검사" >
+              <input class="enroll__idcheck" type="button" id="checkDuplicate" value="중복검사" />
+              <input type="hidden" name="checked_id" value="" required />
               <div class="input-group up">
                 <i class="fas fa-lock"></i>
                 <input type="password" name="password" id="pass1" onchange="check_pw()" placeholder="비밀번호 (특수문자를 포함한 8자 이상)" required />
@@ -68,7 +70,24 @@
                 <i class="fa-solid fa-paw"></i>
                 <input type="text" name="pet" id="pet" placeholder="애완동물"  required />
               </div>
-              <button class="btn sign-ups">회원가입</button>
+    
+              <div class="checkbox_group">
+                <p>
+					<label>
+						<input type="checkbox" name="c1" id="c1" > PITAPET 이용약관 동의(필수)
+					</label>
+				</p>
+				</div>
+				 <div class="checkbox_group">
+				<p>
+					<label>
+						<input type="checkbox" name="c2" id="c2" > 개인정보 수집 및 이용에 대한 안내(필수)
+					</label>
+				</p>
+              </div>
+              
+               <button class="btn sign-ups" disabled="disabled" id="btn">회원가입</button>   
+              <!--<input type="submit" class="btn sign-ups" id="btn" value="회원가입" disabled="disabled">-->
               <p>
                 <span> 이미 계정이 있으신가요? </span>
                 <b onclick="toggle()" class="pointer"> 로그인 </b>
@@ -92,14 +111,15 @@
                 <i class="fas fa-lock"></i>
                 <input type="password" name="password" id="password" placeholder="패스워드를 입력해주세요." />
               </div>
-              <div class="login__save">
-                <input type="checkbox" class="save_id" name="saveId" id="saveId"/>
-                <label for="saveId"><span>아이디 저장</span></label>
-              </div>
               <input class="btn sign-ins" type="submit" value="로그인"></input>
-              <p>
-                <b> 비밀번호를 잊으셨나요? </b>
+              <div style="display: flex;" >
+              <p style="margin: 0 auto;">
+                <b onclick="location.href='${ path }/member/findId';" style="cursor: pointer">아이디를 잊으셨나요? </b>
               </p>
+              <p style="margin: 0 auto;">
+                <b onclick="location.href='${ path }/member/findPw';" style="cursor: pointer">비밀번호를 잊으셨나요? </b>
+              </p>
+              </div>
               <p>
                 <span> 어랏, 계정이 없으신가요? </span>
                 <b onclick="toggle()" class="pointer"> 회원가입 </b>
@@ -135,27 +155,50 @@
       </div>
       <!-- END CONTENT SECTION -->
     </div>
-    <script>
+    <script>    
+    
 	// 아이디 중복 확인
 	$(document).ready(() => {
+			let idCheck = false;
+			let emailCheck = false;
+			//let btnStatus = false;
+		  $("#btn").on("click", () => {
+			if(btnStatus == false){
+				alert("아이디 중복체크를 해주세요.");
+			}
+		});	
 		$("#checkDuplicate").on("click", () => {
 			let userId = $("#newId").val().trim();
 			
 			$.ajax({
 				type: "post",
-				url: "${ pageContext.request.contextPath }/member/idCheck",
+				url: "${ path }/member/idCheck",
 				dataType: "json",
 				data: {
 					userId
 				},
 				success: (data) => {
 					console.log(data);
+					if(document.getElementById('newId').value !='' ){
 						if(data.duplicate === true) {
 							alert("이미 사용중인 아이디 입니다.");
+							idCheck = false;
+							if(idCheck === false){
+								$("#btn").attr("disabled", "disabled");
+								//btnStatus = false;
+							}
 						} else {
-							alert("사용 가능한 아이디 입니다.");						
+							alert("사용 가능한 아이디 입니다.");	
+							idCheck = true;
+							if(idCheck === true){
+								$("#btn").removeAttr("disabled");
+								//btnStatus = true;
+							} 
 						}
-					
+					}
+					else{
+						alert("아이디를 입력한 후 다시 검사해주세요.")
+					}
 				},
 				error: (error) => {
 					console.log(error);
@@ -164,15 +207,15 @@
 		});		
 	});
 	
-	function check_id() {
-		
-	}
+	
+	       
+	// 비밀번호 체크	
 	function check_pw(){
 	       var pw = document.getElementById('pass1').value;
 	       var SC = ["!","@","#","$","%", "^", "&", "*", "(", ")", "_", "+", "-", "`", "~", "="];
 	       var check_SC = 0;
 	       
-	 // 비밀번호 길이 체크 
+	 // 비밀번호 길이 체크
 	       if(pw.length < 8){
 	           alert('비밀번호는 8글자 이상만 이용 가능합니다.');
 	           document.getElementById('pass1').value='';
@@ -199,75 +242,61 @@
 	           }
 	       }
 	   }
-	
-	$(function() {
-        
-        fnInit();
-      
-	  });
-	  
-	  function frm_check(){
-	      saveid();
-	  }
-	
-	 function fnInit(){
-	     var cookieid = getCookie("saveid");
-	     console.log(cookieid);
-	     if(cookieid !=""){
-	         $("input:checkbox[id='saveId']").prop("checked", true);
-	         $('#id').val(cookieid);
-	     }
-	     
-	 }    
-	
-	 function setCookie(name, value, expiredays) {
-	     var todayDate = new Date();
-	     todayDate.setTime(todayDate.getTime() + 0);
-	     if(todayDate > expiredays){
-	         document.cookie = name + "=" + escape(value) + "; path=/; expires=" + expiredays + ";";
-	     }else if(todayDate < expiredays){
-	         todayDate.setDate(todayDate.getDate() + expiredays);
-	         document.cookie = name + "=" + escape(value) + "; path=/; expires=" + todayDate.toGMTString() + ";";
-	     }
-	     
-	     
-	     console.log(document.cookie);
-	 }
-	
-	 function getCookie(Name) {
-	     var search = Name + "=";
-	     console.log("search : " + search);
-	     
-	     if (document.cookie.length > 0) { // 쿠키가 설정되어 있다면 
-	         offset = document.cookie.indexOf(search);
-	         console.log("offset : " + offset);
-	         if (offset != -1) { // 쿠키가 존재하면 
-	             offset += search.length;
-	             // set index of beginning of value
-	             end = document.cookie.indexOf(";", offset);
-	             console.log("end : " + end);
-	             // 쿠키 값의 마지막 위치 인덱스 번호 설정 
-	             if (end == -1)
-	                 end = document.cookie.length;
-	             console.log("end위치  : " + end);
-	             
-	             return unescape(document.cookie.substring(offset, end));
-	         }
-	     }
-	     return "";
-	 }
-	
-	 function saveid() {
-	     var expdate = new Date();
-	     if ($("#saveId").is(":checked")){
-	         expdate.setTime(expdate.getTime() + 1000 * 3600 * 24 * 30);
-	         setCookie("saveid", $("#id").val(), expdate);
-	         }else{
-	        expdate.setTime(expdate.getTime() - 1000 * 3600 * 24 * 30);
-	         setCookie("saveid", $("#id").val(), expdate);
-	          
-	     }
-	 }
+		 
+	// 약관동의 검사
+	var doc = document; 
+	var form1 = doc.getElementById('enrollFrm'); 
+	var inputs = form1.getElementsByTagName('INPUT');
+	var form1_data = {
+		"c1": false, 
+		"c2": false
+	}; 
+
+	var c1 = doc.getElementById('c1');
+	var c2 = doc.getElementById('c2');
+
+
+	function checkboxListener() {
+		form1_data[this.name] = this.checked; 
+
+		if(this.checked) {
+			// submit 할때 체크하지 않아 색이 변한 font 를 다시 원래 색으로 바꾸는 부분. 
+			this.parentNode.style.color = "#000";
+		}
+	}
+
+		c1.onclick = c2.onclick = checkboxListener;
+
+		function setCheckbox(obj, state) {
+			for (var x in obj) {
+				obj[x] = state; 
+
+				for(var i = 0; i < inputs.length; i++) {
+					if(inputs[i].type == "checkbox") {
+						inputs[i].checked = state; 
+					}
+				}
+
+			}
+		}
+
+	enrollFrm.onsubmit = function(e) {
+		e.preventDefault(); // 서브밋 될때 화면이 깜빡이지 않게 방지
+		
+		if ( !form1_data['c1'] ) {
+			c1.parentNode.style.color = 'red'; 
+			alert('이용약관 동의를 하지 않았습니다'); 
+			return false; 
+		}
+
+		if ( !form1_data['c2'] ) {
+			c2.parentNode.style.color = 'red';
+			alert('개인정보 수집 및 이용에 대한 안내를 선택하지 않았습니다.'); 
+			return false; 
+		}
+		
+		this.submit();
+	}; 
 </script>
   </body>
 </html>

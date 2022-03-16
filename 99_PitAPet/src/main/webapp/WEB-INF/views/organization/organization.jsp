@@ -43,7 +43,7 @@
       <ul class="header__menu">
         <li data-menuanchor="section1"><a href="${ path }/">Home</a></li>
         <li data-menuanchor="section2"><a href="${ path }/product/product">Product</a></li>
-        <li data-menuanchor="section3"><a href="${ path }/community/community">Community</a></li>
+        <li data-menuanchor="section3"><a href="${ path }/community/list">Community</a></li>
         <li data-menuanchor="section4"><a href="${ path }/organization/organization">Organization</a></li>
         <li data-menuanchor="section5"><a href="${ path }/member/login">Login</a></li>
       </ul>
@@ -53,8 +53,9 @@
       <ul class="header__menu">
         <li data-menuanchor="section1"><a href="${ path }/">Home</a></li>
         <li data-menuanchor="section2"><a href="${ path }/product/product">Product</a></li>
-        <li data-menuanchor="section3"><a href="${ path }/community/community">Community</a></li>
+        <li data-menuanchor="section3"><a href="${ path }/community/list">Community</a></li>
         <li data-menuanchor="section4"><a href="${ path }/organization/organization">Organization</a></li>
+        <li data-menuanchor="section4"><a href="${ path }/member/mypage">Mypage</a></li>
         <li data-menuanchor="section5"><a href="${ path }/logout">Logout</a></li>
       </ul>
       </c:if>

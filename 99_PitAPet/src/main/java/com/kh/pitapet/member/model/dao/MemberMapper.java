@@ -16,4 +16,11 @@ public interface MemberMapper {
 
 	int deleteMember(int no);
 
+	Member findId(@Param("name") String name, @Param("email") String email);
+
+	void updatePw(@Param("id") String id, @Param("password") String password);
+
+	String findEmail(@Param("id") String id, @Param("email") String email);
+
+
 }

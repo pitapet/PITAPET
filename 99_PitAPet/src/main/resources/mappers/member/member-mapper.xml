@@ -85,6 +85,17 @@
 		)
 	</insert>
 	
+	<select id="findId" parameterType="string" resultMap="memberResultMap">
+		<include refid="selectMemberSql" />
+		WHERE NAME = #{name} AND EMAIL = #{email}
+	</select>
+	
+	<select id="findEmail" parameterType="string" resultType="string" >
+		SELECT EMAIL 
+		FROM MEMBER
+		WHERE ID = #{id} AND EMAIL = #{email}
+	</select>
+	
 	
 	<update id="updateMember" parameterType="Member">
 		UPDATE MEMBER 
@@ -97,6 +108,16 @@
 			MODIFY_DATE = SYSDATE 
 		WHERE NO = #{no}
 	</update>
+	
+	<!-- 
+	 비밀번호 업데이트 쿼리
+	 -->
+	 <update id="updatePw" parameterType="string">
+	 	UPDATE MEMBER
+	 	SET
+	 	PASSWORD = #{password}
+	 	WHERE ID = #{id}
+	 </update>
 	 
 	
 	<delete id="deleteMember" parameterType="_int">
