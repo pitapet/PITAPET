@@ -171,10 +171,6 @@ td {
   width: 20%;
 }
 
-#count {
-  width: auto;
-}
-
 .table__tbody {
   text-align: center;
 }
@@ -212,7 +208,7 @@ td {
   }
 }
 
-#btnAdd {
+#addProduct, #btnClose {
   width: 40px;
   height: 30px;
   border: none;
@@ -224,19 +220,21 @@ td {
   cursor: pointer;
   background: transparent;
   border: none;
+  font-family: "Gowun Dodum", sans-serif;
 }
 
-#btnAdd:hover {
-  color: var(--color-dark-pink);
+#addProduct:hover, #btnClose:hover {
+  background: var(--color-light-white);
 }
 
-.product__img {
-  max-width: 100%;
-}
-
-.table__tbody input, #content {
+.table__tbody input, textarea {
   font-family: "Gowun Dodum", sans-serif;
   text-align: center;
   border: none;
-  background-color: #f2f2f2;
+  background: transparent;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  padding: 0 60px 0 20px;
+  font-size: var(--font-regular);
 }

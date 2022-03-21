@@ -1,6 +1,10 @@
 package com.kh.pitapet.product.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,7 +13,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -105,20 +115,15 @@ public class ProductController {
 		PageInfo pageInfo = null;
 		List<ProductInfo> productInfoList = null;
 		List<Product> productList = null;
-//		int count = 0;
 		
 		pageInfo = new PageInfo(page, 5, service.getProductInfoCount(no), count);
-//		count = service.getProductInfoCount(no);
 		productList = service.findAllProduct();
 		
 		productInfoList = service.getProductInfoList(pageInfo, no);
-//		productInfoList = service.getProductInfoList(no);
 		
 		model.addObject("pageInfo", pageInfo);
-//		model.addObject("count", count);
 		model.addObject("productList", productList);
 		model.addObject("productInfoList", productInfoList);
-//		model.setViewName("product/adminProductInfoList");
 		model.setViewName("product/productInfoList");
 		
 		return model;
@@ -150,29 +155,6 @@ public class ProductController {
 		
 		return model;
 	}
-	/*
-	@GetMapping("/buy/check")
-	@ResponseBody
-	public ModelAndView buyCheck(ModelAndView model,
-			@SessionAttribute(name = "loginMember") Member loginMember,
-			@RequestParam(value="cartNo[]") List<Integer> cartNoList) {
-		
-		log.info("cartNo: {}", cartNoList);
-		
-		List<Cart> cartList = new ArrayList<Cart>();
-		
-		for(int no : cartNoList) {
-			cartList.add(service.findCartByNo(no));
-		}
-		
-		log.info("cartList : {}", cartList);
-		
-		model.addObject("cartList", cartList);
-		model.setViewName("product/buyCheck");
-		
-		return model;
-	}
-	*/
 	
 	@PostMapping("/buy/add")
 	@ResponseBody
@@ -180,6 +162,7 @@ public class ProductController {
 			@RequestParam(value="productInfoNo") int productInfoNo,
 			@RequestParam(value="memberNo") int memberNo,
 			@RequestParam(value="count") int count,
+			@RequestParam(value="amount") int amount,
 			@RequestParam(value="cartNo", defaultValue = "0") int cartNo,
 			@SessionAttribute(name = "loginMember") Member loginMember,
 			@ModelAttribute Buy buy) {
@@ -190,9 +173,15 @@ public class ProductController {
 		
 		productInfo = service.findProductInfoByINo(productInfoNo);
 		
+		log.info("productInfoNo : {}" + productInfoNo);
+		log.info("memberNo : {}" + memberNo);
+		log.info("count : {}" + count);
+		log.info("amount : {}" + amount);
+		
+		buy.setProductInfoNo(productInfoNo);
 		buy.setMemberNo(memberNo);
 		buy.setCount(count);
-		buy.setProductInfoNo(productInfoNo);
+		buy.setAmount(amount);
 		
 		result = service.saveBuyList(buy);
 		
@@ -438,20 +427,6 @@ public class ProductController {
 		}
 		model.setViewName("common/msg");
 		
-		// 관리자 로그인 확인 인터셉터 추가
-		/*
-		String role = loginMember.getRole();
-		
-		if(role.equals("ROLE_ADMIN")) {
-
-		} else {
-			model.addObject("msg", "관리자 계정이 아닙니다.");
-			model.addObject("location", "/product/product");
-		}
-		
-		model.setViewName("common/msg");
-		*/
-		
 		return model;
 	}
 	
@@ -543,6 +518,5 @@ public class ProductController {
 		
 		return model;
 	}
-	
 	
 }
