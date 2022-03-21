@@ -13,12 +13,18 @@ public class ProductInfo {
 	private int no;
 	
 	private int productNo;
+	
+	private int price;
 
 	private String colorName;
 	
 	private String colorCode;
 	
-	private String imageName;
+//	private String imageName;
+
+	private String originalFileName;
+
+	private String renamedFileName;
 	
 	private int stock;
 	

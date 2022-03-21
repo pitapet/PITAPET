@@ -17,11 +17,11 @@ public class Product {
 	
 	private String content;
 	
-	private int price;
-	
 	private List<ProductInfo> productInfoes;
 	
 	private Date createdDate;
 	
 	private Date modifyDate;
+	
+//	private List<Product> products;
 }

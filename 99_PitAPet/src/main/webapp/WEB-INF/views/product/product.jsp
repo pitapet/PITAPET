@@ -18,11 +18,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="${ path }/css/plugin/jquery.fullPage.css" />
     <link rel="stylesheet" href="${ path }/css/product.css" />
+    <link rel="stylesheet" href="${ path }/css/plugin/jquery.bxslider.css" />
     <script src="https://kit.fontawesome.com/91b5983e4b.js" crossorigin="anonymous"></script>
     <script src="${ path }/js/plugin/jquery-3.6.0.min.js"></script>
     <script src="${ path }/js/plugin/jquery.fullPage.js"></script>
     <script src="${ path }/js/product.js"></script>
-    <!-- iamport.payment.js -->
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <!-- iamport.payment.js 
+    -->
     <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
     
 </head>
@@ -56,42 +59,220 @@
     <main id="fullpage">
       <!-- Section 1 Title -->
       <section class="section">
-        <img src="${ path }/images/product/logo/logo.png" alt="production" />
-        <p>“We do not need magic to change the world, we carry all the power we need inside ourselves already: we have the power to imagine better.”<br />- J.K. Rowling</p>
+        <div class="husky">
+          <div class="mane">
+            <div class="coat"></div>
+          </div>
+          <div class="body">
+            <div class="head">
+              <div class="ear"></div>
+              <div class="ear"></div>
+              <div class="face">
+                <div class="eye"></div>
+                <div class="eye"></div>
+                <div class="nose"></div>
+                <div class="mouth">
+                  <div class="lips"></div>
+                  <div class="tongue"></div>
+                </div>
+              </div>
+            </div>
+            <div class="torso"></div>
+          </div>
+          <div class="legs">
+            <div class="front-legs">
+              <div class="leg"></div>
+              <div class="leg"></div>
+            </div>
+            <div class="hind-leg"></div>
+          </div>
+          <div class="tail">
+            <div class="tail">
+              <div class="tail">
+                <div class="tail">
+                  <div class="tail">
+                    <div class="tail">
+                      <div class="tail"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="position: absolute">
+          <defs>
+            <filter id="squiggly-0">
+              <feTurbulence id="turbulence" baseFrequency="0.02" numOctaves="3" result="noise" seed="0" />
+              <feDisplacementMap id="displacement" in="SourceGraphic" in2="noise" scale="2" />
+            </filter>
+            <filter id="squiggly-1">
+              <feTurbulence id="turbulence" baseFrequency="0.02" numOctaves="3" result="noise" seed="1" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" />
+            </filter>
+
+            <filter id="squiggly-2">
+              <feTurbulence id="turbulence" baseFrequency="0.02" numOctaves="3" result="noise" seed="2" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" />
+            </filter>
+            <filter id="squiggly-3">
+              <feTurbulence id="turbulence" baseFrequency="0.02" numOctaves="3" result="noise" seed="3" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" />
+            </filter>
+
+            <filter id="squiggly-4">
+              <feTurbulence id="turbulence" baseFrequency="0.02" numOctaves="3" result="noise" seed="4" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="1" />
+            </filter>
+          </defs>
+        </svg>
         <i class="fa-solid fa-angles-down"></i>
       </section>
       <!-- Section 2 Products -->
       <section class="section">
+      <c:forEach var="product" items="${ products }">
+      <div class="slide">
         <div class="products__wrapper">
           <div class="product__img__wrapper">
-            <c:forEach var="productInfo" items="${ product.productInfoes }">
-              <img class="product__img" name="imageName" src="${ path }/images/product/${ productInfo.imageName }.png" alt="product__prototype" />
-            </c:forEach>
+            <div class="bxslider">
+              <c:forEach var="productInfo" items="${ product.productInfoes }">
+                <div>
+                  <img class="product__img" name="renamedFileName" src="${ path }/images/product/${ productInfo.renamedFileName }.png" alt="product__prototype" />
+                </div>
+              </c:forEach>
+            </div>
           </div>
           <div class="product__useable">
             <div class="product__description">
-              <input type="hidden" name="no" value = "${ product.no }">
+              <input type="hidden" name="no" value="${ product.no }">
               <h2>${ product.title }</h2>
               <p>${ product.content }</p>
-              <p id="price">${ product.price }원</p>
             </div>
             <div class="product__color">
-            <p>색상</p>
-            <c:forEach var="productInfo" items="${ product.productInfoes }">
-	            <button style="background-color: ${ productInfo.colorCode };"></button>
-            </c:forEach>
+	          <p>색상</p>
+		        <div id="bx-pager">
+		          <c:forEach var="productInfo" items="${ product.productInfoes }" varStatus="status">
+			        <button id="colorBtn${ status.index }" style="background-color: ${ productInfo.colorCode };"></button>
+		          </c:forEach>
+		        </div>
             </div>
             <div class="product__form">
-              <!-- <button id="productCheck">Buy</button> -->
-              <button id="purchase">Buy</button>
-              <button>Cart</button>
+              <div class="selectColorCount">
+                <form id="addCartFrm" action="${ path }/product/cart/add" method="post">
+	              <select name="productInfoNo" id="selectProductInfo">
+	                <c:forEach var="productInfo" items="${ product.productInfoes }">
+	                  <option value="${ productInfo.no }">${ productInfo.colorName }</option>
+	                </c:forEach>
+	              </select>
+                  <input type="number" name="count" id="count" value="1"/>
+                  <div class="product__btn">
+                    <input type="submit" id="btnCart" value="Cart"/>
+                  </div>
+                </form>
+                <c:forEach var="productInfo" items="${ product.productInfoes }">
+	             <input type="hidden" name="price" id="${ productInfo.no }" value="${ productInfo.price }"/>
+                </c:forEach>
+	             <input type="hidden" name="memberNo" id="memberNo" value="${ loginMember.no }"/>
+	             <input type="hidden" name="name" id="name" value="${ loginMember.name }"/>
+	             <input type="hidden" name="email" id="email" value="${ loginMember.email }"/>
+	             <input type="hidden" name="phone" id="phone" value="${ loginMember.phone }"/>
+                 <button class="btnBuy">Buy</button>
+              </div>
             </div>
           </div>
         </div>
-        <div class="product__add">
-          <button onclick="location.href='${ path }/product/add'">등록하기</button>
-        </div>
+      </div>
+      </c:forEach>
       </section>
     </main>
+    <script>
+    $(document).ready(function(){
+        var IMP = window.IMP;
+        var code = "imp49883029"; // 가맹점 식별코드
+        IMP.init(code);
+
+        $(".btnBuy").on('click', () => {
+        	// 셀렉트한 상품번호, 가격 가져오기
+        	var productInfoNo = $("#selectProductInfo option:selected").val();
+        	console.log("productInfoNo: " + productInfoNo);
+        	
+        	//var priceNo = $('input[name=price]').attr('id');
+        	//var price = $('input[name=price]').val();
+        	//cosole.log("price: " + price);
+        	
+        	// count 가져오기
+        	var count = $('input[name=count]').val();
+    	    console.log("count: " + count);
+        	// 로그인멤버 정보 가져오기
+        	var memberNo = $('input[name=memberNo]').val();
+        	console.log("memberNo: " + memberNo);
+        	var name = $('input[name=name]').val();
+        	console.log("name: " + name);
+        	var email = $('input[name=email]').val();
+        	console.log("email: " + email);
+        	var phone = $('input[name=phone]').val();
+        	console.log("phone: " + phone);
+        	
+            // 결제 요청
+            IMP.request_pay({
+                pg : 'kakao',
+                pay_method : 'card', 
+                merchant_uid : 'merchant_' + new Date().getTime(),
+                name : productInfoNo,
+                amount : 1,
+                buyer_email : email,
+                buyer_name : name,
+                buyer_tel : phone
+            }, function(rsp) {
+                if (rsp.success) {
+                    alert("결제가 완료되었습니다.");
+                    console.log(rsp);
+
+                    //var result = {
+                    //    "imp_uid" : rsp.imp_uid,
+                    //    "merchant_uid" : rsp.merchant_uid,
+                    //    "biz_email" : rsp.buyer_email,
+                    //    "pay_date" : new Date().getTime(),
+                    //    "amount" : rsp.amount,
+                    //    "card_no" : rsp.card_no
+                    //}
+                    
+                    var data = {
+                    	"productInfoNo" : productInfoNo,
+    					"memberNo" : memberNo,
+    					"count" : count
+                    }
+
+                    console.log("결제 성공" + data.productInfoNo);
+
+                    $.ajax({
+                        url : 'http://localhost:8088/pitapet/product/buy/add',
+                        type : 'POST',
+                        data : data,
+                        success : function(result){
+    	                    var rs = confirm("상품을 구매하였습니다. 구매 목록을 확인하시겠습니까?");
+    	                    if(rs){
+    	                    	location.replace("http://localhost:8088/pitapet/product/buy/list");
+    	                    } else {
+    	                    	location.replace("http://localhost:8088/pitapet/product/product");
+    	                    }
+                        },
+                        error : function(){
+                            console.log("상품 구매에 실패하였습니다. 다시 시도해주세요.");
+                        }
+                    }) // ajax
+                
+                } else {
+                    alert("결제에 실패하였습니다.");
+                    var msg = '결제에 실패하였습니다.';
+                    msg += '에러내용 : ' + rsp.error_msg;
+	                console.log(msg);
+                }
+            
+            }); // pay
+        }); // btn click
+    });// document ready
+
+    </script>
 </body>
 </html>
