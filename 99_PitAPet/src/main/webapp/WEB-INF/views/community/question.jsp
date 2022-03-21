@@ -50,7 +50,17 @@
       </c:if>
     </header>
     <main id="fullpage">
-      
+      <!-- Section 1 Title -->
+      <section class="section">
+        <div class="title__box">
+          <img src="${ path }/images/Community/logo/logo.png" alt="" />
+          <p class="title">
+            “To effectively communicate, we must realize that we are all different in the way we perceive the world and use this understanding as a guide to our communication with others.”<br />– Tony
+            Robbins
+          </p>
+          <i class="fa-solid fa-angles-down"></i>
+        </div>
+      </section>
       <!-- Section 2 Announcement about Pit A Pet -->
       <section class="section">
         <div class="main">
@@ -60,21 +70,15 @@
               <div>
                 <ul>
                   <li><a href="${ path }/community/list">전체게시판</a></li>
-                  <li><a href="${ path }/community/free">자유게시판</a></li>  <!--  -->
+                  <li><a href="${ path }/community/free">자유게시판</a></li> 
                   <li><a href="${ path }/community/question">질문게시판</a></li>
-                  <li><a href="${ path }/community/used">중고거래</a></li>
+                   <!--<li><a href="${ path }/community/used">중고거래</a></li>   -->
                 </ul>
               </div>
             </div>
             
-            <!--  
-	            <c:if test="${ !empty loginMember }">
-			<button type="button" id="btn-add"
-				onclick="location.href='${ path }/board/write'">글쓰기</button>	
-		</c:if>  -->
-            
             <div class="main__header__best box">
-              <p>실시간 베스트</p>    <!-- 쿼리문으로 정렬?????????????????????? -->
+              <p>실시간 베스트</p>   
               <div>
                 <p>갑자기 너무 추워요</p>
                 <span>32 댓글</span>
@@ -89,8 +93,43 @@
               </div>
             </div>
             <div class="main__header__read box">
-					<button type="button" id="btn-add" onclick="location.href='${ path }/community/write'">글쓰기</button>	
-					<input id="id1" type="text" name="search_here" placeholder =" 게시글 검색" required >
+            	<c:if test="${ !empty loginMember }">
+					<button type="button" id="btn-add" onclick="location.href='${ path }/community/write'">글쓰기</button>
+				</c:if>	
+            	<c:if test="${ empty loginMember }">
+					<button type="button" id="btn-add" onclick="javascript:alert('로그인 후 작성 가능합니다.')">글쓰기</button>
+				</c:if>	
+					<br>
+					 
+				   <!-- 검색 -->
+				  <form name=""form1 action="list.do" method="post">
+	                  <label for="condition">검색조건</label>   
+	                  <select name="search_option" id="board_condition">
+	                  	 <option value="all" <c:if test="${map.search_option == 'all'}">selected</c:if>>전체</option>
+	                     <option value="title" <c:if test="${map.search_option == 'title'}">selected</c:if>>제목</option>
+	                     <option value="content" <c:if test="${map.search_option == 'content'}">selected</c:if>>내용</option>
+	                     <option value="writerId" <c:if test="${map.search_option == 'writerId'}">selected</c:if>>작성자</option>
+	                  </select>
+	                  
+	                  <input id="id1" name="keyword" value="${map.keyword}" placeholder =" 검색어를 입력해 주세요." required >
+	                  <input type="submit" value="검색" id="btn_search"></input>
+               	  </form> <!-- condition이라는 파라미터 명으로 넘어간다. -->
+				   
+				   
+					
+					<c:choose>
+						<c:when test="${ !empty keyword }">
+							<p>
+								<strong>${ keyword } </strong>키워드로 검색된
+								<strong>${ totalRow }</strong>개의 게시글이 있습니다.
+							</p>
+						</c:when>
+						<c:otherwise>
+							<p><strong>${ totalRow }</strong>개의 파일이 있습니다.</p>
+						</c:otherwise>
+				</c:choose>
+			
+					
 			</div>
           </header>
           
@@ -98,152 +137,95 @@
           <home class="main__home">
             <div class="main__home__categories box">
               <p>질문게시판</p>
-              <span>총 84 게시글</span>
+              <span>총 ${ fn:length(list) }개 게시글</span>
             </div>
 		 	
             <div class="main__home__board box">
             <c:if test="${ empty list }">			
 					조회된 게시글이 없습니다.
 		  	</c:if>
+		  	
 		 	<c:if test="${ !empty list }">	
             	<c:forEach var="board" items="${ list }">
+	              <div class="infinite">
 	              <article>
 	                <div class="article__one">
-	                  <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />
+	                   <a href="${ path }/community/view?no=${ board.no }">	
+	                   	 <c:if test="${ !empty board.originalFileName }">
+	                  		<img class="imgbox" src="${ path }/images/Community/boardImgs/${ board.originalFileName }" alt="board___file" />
+	                  	 </c:if>	
+	                   	 <c:if test="${ empty board.originalFileName }">
+	                     	<img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="board___file" />
+		                 </c:if>  	
+	                   </a>
 	                </div>
 	                <div class="article__two">
 	                  <div class="two__div">
 	                    <div class="two__div__one">
-	                      <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />
-	                      <span>Aloofelicidad</span>
+		                    <!-- <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />  -->
+		                    <span><a href="${ path }/community/view?no=${ board.no }"><b>${ board.title }</b></a></span>
+		                       
 	                    </div>
 	                    <div class="two__div__two">
-	                      <span>1일전</span>
+	                      <span>${ board.writerId }</span>
 	                    </div>
 	                  </div>
 	                  <div class="two__div__description">
-	                    <p>${ board.title }</p>
+	                  &emsp;&emsp;&emsp;
+	                  	  <!-- ${ board.writerId }  -->
 	                    <span
-	                      >${board.content }</span
-	                    >
+	                      >${board.content }</span>
 	                  </div>
 	                  <div class="two__div__footer">
-	                    <span>5 댓글</span>
+	                  	<span><fmt:formatDate pattern="yyyy-MM-dd" value="${ board.createDate }"/> 작성</span>
+	                    <span>${ count } 댓글</span>
 	                    <span>${ board.readCount } 조회</span>
 	                  </div>
 	                </div>
 	              </article>
+	                </div>
+	                <div class="pagination"></div>
 	          	</c:forEach>    
+	          	
+	          	<div id="board_pageBar">
+					<!-- 맨 처음으로 -->
+					<button onclick="location.href='${ path }/community/list?page=1'">&lt;&lt;</button>
+			
+					<!-- 이전 페이지로 -->
+					<button onclick="location.href='${ path }/community/list?page=${ pageInfo.prevPage }'">&lt;</button>
+			
+					<!--  10개 페이지 목록 -->
+					<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" varStatus="status">
+						<c:if test="${ status.current == pageInfo.currentPage }">				
+							<button disabled>${ status.current }</button>
+						</c:if>
+						
+						<c:if test="${ status.current != pageInfo.currentPage }">				
+							<button onclick="location.href='${ path }/community/list?page=${ status.current }&count=${ pageInfo.listLimit }'">${ status.current }</button>
+						</c:if>
+					</c:forEach>
+			
+					<!-- 다음 페이지로 -->
+					<button onclick="location.href='${ path }/community/list?page=${ pageInfo.nextPage }'">&gt;</button>
+			
+					<!-- 맨 끝으로 -->
+					<button onclick="location.href='${ path }/community/list?page=${ pageInfo.maxPage }'">&gt;&gt;</button>
+				</div>	
+
+	</div>
+	          	
+	          	
+	          	
+	          	<!--   더보기 구현
+	          	<div id="more_btn_div" align="center">
+	          		<a id="more_btn_a" href="javascript:moreList();">
+	          			더보기
+	          		</a>
+	          	</div>
+	          	 -->
 	         </c:if>	
-	          	<!-- 
-              <article>
-                <div class="article__one">
-                  <img class="imgbox" src="${ path }/images/Community/boardImgs/ex4.jpg" alt="" />
-                </div>
-                <div class="article__two">
-                  <div class="two__div">
-                    <div class="two__div__one">
-                      <img class="imgbox" src="${ path }/images/Community/boardImgs/ex4.jpg" alt="" />
-                      <span>Aloofelicidad</span>
-                    </div>
-                    <div class="two__div__two">
-                      <span>1일전</span>
-                    </div>
-                  </div>
-                  <div class="two__div__description">
-                    <p>제목이 어쩌고 저쩌고...</p>
-                    <span
-                      >내용이 어쩌고.. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam doloribus autem quo quia nam suscipit libero, culpa at non nihil animi quis aut sapiente optio
-                      soluta odio neque ipsa sint!</span
-                    >
-                  </div>
-                  <div class="two__div__footer">
-                    <span>5 댓글</span>
-                    <span>60 조회</span>
-                  </div>
-                </div>
-              </article>
-              <article>
-                <div class="article__one">
-                  <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />
-                </div>
-                <div class="article__two">
-                  <div class="two__div">
-                    <div class="two__div__one">
-                      <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />
-                      <span>Aloofelicidad</span>
-                    </div>
-                    <div class="two__div__two">
-                      <span>1일전</span>
-                    </div>
-                  </div>
-                  <div class="two__div__description">
-                    <p>제목이 어쩌고 저쩌고...</p>
-                    <span
-                      >내용이 어쩌고.. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam doloribus autem quo quia nam suscipit libero, culpa at non nihil animi quis aut sapiente optio
-                      soluta odio neque ipsa sint!</span
-                    >
-                  </div>
-                  <div class="two__div__footer">
-                    <span>5 댓글</span>
-                    <span>60 조회</span>
-                  </div>
-                </div>
-              </article>
-              <article>
-                <div class="article__one">
-                  <img class="imgbox" src="${ path }/images/Community/boardImgs/ex4.jpg" alt="" />
-                </div>
-                <div class="article__two">
-                  <div class="two__div">
-                    <div class="two__div__one">
-                      <img class="imgbox" src="${ path }/images/Community/boardImgs/ex4.jpg" alt="" />
-                      <span>Aloofelicidad</span>
-                    </div>
-                    <div class="two__div__two">
-                      <span>1일전</span>
-                    </div>
-                  </div>
-                  <div class="two__div__description">
-                    <p>제목이 어쩌고 저쩌고...</p>
-                    <span
-                      >내용이 어쩌고.. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam doloribus autem quo quia nam suscipit libero, culpa at non nihil animi quis aut sapiente optio
-                      soluta odio neque ipsa sint!</span
-                    >
-                  </div>
-                  <div class="two__div__footer">
-                    <span>5 댓글</span>
-                    <span>60 조회</span>
-                  </div>
-                </div>
-              </article>
-              <article>
-                <div class="article__one">
-                  <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />
-                </div>
-                <div class="article__two">
-                  <div class="two__div">
-                    <div class="two__div__one">
-                      <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />
-                      <span>Aloofelicidad</span>
-                    </div>
-                    <div class="two__div__two">
-                      <span>1일전</span>
-                    </div>
-                  </div>
-                  <div class="two__div__description">
-                    <p>제목이 어쩌고 저쩌고...</p>
-                    <span
-                      >내용이 어쩌고.. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam doloribus autem quo quia nam suscipit libero, culpa at non nihil animi quis aut sapiente optio
-                      soluta odio neque ipsa sint!</span
-                    >
-                  </div>
-                  <div class="two__div__footer">
-                    <span>5 댓글</span>
-                    <span>60 조회</span>
-                  </div>
-                </div>
-              </article>  -->
+
+	          	
             </div>
           </home>
         </div>
