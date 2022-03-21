@@ -235,7 +235,7 @@ body,
 .main__user__body__table button {
   background: transparent;
   border: none;
-  font-size: small;
+/*  font-size: 18px;*/
   transition: all var(--animation-duration) ease-in;
 }
 
@@ -259,33 +259,28 @@ td {
   border-collapse: collapse;
 }
 
-/* 수정 및 추가 */
-.table__img {
+.table__sel {
   width: 10%;
 }
 
 .table__title {
-  width: 15%;
-}
-
-.table__content {
   width: 30%;
 }
 
 .table__color {
-  width: 15%;
+  width: 20%;
 }
 
 .table__price {
+  width: 20%;
+}
+
+.table__count {
   width: 10%;
 }
 
-.table__stock {
-  width: 10%;
-}
-
-.table__btn {
-  width: 10%;
+.table__delete {
+  width: 10%
 }
 
 #count {
@@ -296,28 +291,14 @@ td {
   text-align: center;
 }
 
-/* 수정 */
 .product__btn {
   display: flex;
-}
-
-#btn__search {
-  justify-content: flex-start;
-}
-
-#btn__add {
   justify-content: flex-end;
-  padding-bottom: 10px;
-}
-
-/* 추가 */
-#selectTitle {
-  width: 150px;
 }
 
 .product__btn > button {
   margin-left: 20px;
-  width: auto; /* 수정 */
+  width: 80px;
   height: 30px;
   border: none;
   outline: none;
@@ -326,7 +307,6 @@ td {
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.5s ease-in-out;
   cursor: pointer;
-  padding: 5px; /* 추가 */
 }
 
 .product__btn button:hover {
@@ -399,20 +379,9 @@ td {
 }
 
 /* 추가 */
-.product_icon img {
-  width: 20px;
-}
-
-.product__color {
-  width: 15%;
-}
-
-.product__img {
-  width: 60%;
-}
-
-.btnUpdate, .btnDelete {
-  width: 40px;
+.btnDelete, .btnBuy {
+  margin-left: 20px;
+  width: 80px;
   height: 30px;
   border: none;
   outline: none;
@@ -421,31 +390,9 @@ td {
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.5s ease-in-out;
   cursor: pointer;
-  padding: auto;
+  font-size: var(--font-regular);
 }
 
-.main__user__header {
-  padding: 20px;
-}
-
-.main__user__header p {
-  font-size: var(--font-medium);
-}
-
-/* 추가 */
-.product__page {
-  margin-top: 5px;
-}
-
-.product__page a {
-  font-size: var(--font-medium);
-  margin: 15px;
-}
-
-#btn__productInfo {
-  color: var(--color-light-grey);
-}
-
-#btn__product:hover {
-  color: var(--color-dark-pink);
+.btnDelete:hover, .btnBuy:hover {
+  background: var(--color-light-white);
 }

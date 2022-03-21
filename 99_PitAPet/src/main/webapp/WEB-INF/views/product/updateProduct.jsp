@@ -38,19 +38,15 @@
 	              <table class="main__user__body__table">
 	                <tbody class="table__tbody">
 	                  <tr>
-	                      <th>상품명</th>
+	                      <th>카테고리명</th>
 	                      <td>
 	                      	<input type="hidden" name="no" id="no" value="${ product.no }">
 	                      	<input type="text" name="title" id="title" value="${ product.title }">
 	                      </td>
 	                  </tr>
 	                  <tr>
-	                      <th>상품 설명</th>
+	                      <th>카테고리 설명</th>
 	                      <td><input type="text" name="content" id="content" value="${ product.content }"></td>
-	                  </tr>
-	                  <tr>
-	                      <th>가격</th>
-	                      <td><input type="number" name="price" id="price" value="${ product.price }"> 원</td>
 	                  </tr>
 	                </tbody>
 	              </table>

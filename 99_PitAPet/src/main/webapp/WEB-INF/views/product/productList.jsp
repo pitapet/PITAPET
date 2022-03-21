@@ -87,10 +87,9 @@
             <table class="main__user__body__table">
               <thead>
                 <tr>
-                  <th class="table__no">상품번호</th>
-                  <th class="table__title">상품명</th>
-                  <th class="table__content">상품설명</th>
-                  <th class="table__price">가격</th>
+                  <th class="table__no">카테고리 번호</th>
+                  <th class="table__title">카테고리명</th>
+                  <th class="table__content">카테고리 설명</th>
                   <th class="table__btn" colspan="2"></th>
                 </tr>
               </thead>
@@ -110,7 +109,6 @@
 	                  <td><!-- <input type="hidden" class="product__no" name="no" value="${ product.no }"> -->${ product.no }</td>
 	                  <td>${ product.title }</td>
 	                  <td>${ product.content }</td>
-	                  <td>${ product.price } 원</td>
 	                  <td><button type="button" class="btnUpdate" value="${ product.no }">수정</button></td>
                       <td><button type="button" class="btnDelete" value="${ product.no }">삭제</button></td>
 	                  <!-- 

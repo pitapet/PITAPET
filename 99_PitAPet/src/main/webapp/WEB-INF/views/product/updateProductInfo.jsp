@@ -17,11 +17,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="${ path }/css/plugin/jquery.fullPage.css" />
-    <link rel="stylesheet" href="${ path }/css/addProduct.css" />
+    <link rel="stylesheet" href="${ path }/css/updateProductInfo.css" />
     <script src="https://kit.fontawesome.com/91b5983e4b.js" crossorigin="anonymous"></script>
     <script src="${ path }/js/plugin/jquery-3.6.0.min.js"></script>
     <script src="${ path }/js/plugin/jquery.fullPage.js"></script>
-    <script src="${ path }/js/addProduct.js"></script>
+    <script src="${ path }/js/updateProductInfo.js"></script>
 </head>
 <body>
 <main id="fullpage">
@@ -33,21 +33,27 @@
         <div class="main__user__body">
           <div class="main__user__body__product">
             <p>상품 수정</p>
-            <form id="updateProductInfoFrm" action="${ path }/product/update/productInfo" method="post">
+            <form id="updateProductInfoFrm" action="${ path }/product/update/productInfo" method="post"
+            		enctype="multipart/form-data">
+              <input type="hidden" name="no" value="${ productInfo.no }">
+              <input type="hidden" name="originalFileName" value="${ productInfo.originalFileName }">
+              <input type="hidden" name="renamedFileName" value="${ productInfo.renamedFileName }">
+              
               <table class="main__user__body__table">
                 <tbody class="table__tbody">
                   <tr>
                     <th rowspan="6" class="table__img">상품사진</th>
                     <td rowspan="6">
-                      <!-- 
-                      <img class="product__img" src="${ path }/images/product/${ productInfoes.imageName }.png" alt="">
-                      <input type="file" name="upFile" id="btnUpload">
-                       -->
+                      <img class="product__img" src="" alt="">
+                      <input type="file" name="upfile" id="btnUpload">
+                      <c:if test="${ !empty productInfo.originalFileName }">
+                      	<c:out value="${ productInfo.originalFileName }"></c:out>
+                      </c:if>
                     </td>
                   </tr>
                   <tr>
                     <th class="table__title">상품명</th>
-                    <td colspan="3"><input type="text" name="title" id="title" value="${ product.no }" readonly></td>
+                    <td colspan="3"><input type="text" name="title" id="title" value="${ product.title }" readonly></td>
                   </tr>
                   <tr>
                     <th class="table__content">상품설명</th>
@@ -57,21 +63,22 @@
                   </tr>
                   <tr>
                     <th class="table__price">가격</th>
-                    <td colspan="3"><input type="text" name="price" id="price" value="${ product.price }" readonly>원</td>
+                    <td colspan="3"><input type="text" name="price" id="price" value="${ productInfo.price }">원</td>
                   </tr>
                   <tr>
                     <th class="table__color">색상</th>
-                    <td><input type="text" name="colorName" id="colorName" value="${ productInfoes.colorName }"></td>
+                    <td><input type="text" name="colorName" id="colorName" value="${ productInfo.colorName }"></td>
                     <th>색상코드</th>
-                    <td><input type="color" name="colorCode" id="colorCode" value="${ productInfoes.colorCode }"></td>
+                    <td><input type="color" name="colorCode" id="colorCode" value="${ productInfo.colorCode }"></td>
                   </tr>
                   <tr>
                     <th class="table__stock">재고수량</th>
-                    <td colspan="3"><input type="number" name="stock" id="stock" min="0" max="1000" value="${ productInfoes.stock }"> 개</td>
+                    <td colspan="3"><input type="number" name="stock" id="stock" min="0" max="1000" value="${ productInfo.stock }"> 개</td>
                   </tr>
                 </tbody>
               </table>
-              <input type="submit" id="addProduct" value="등록"></input>
+              <input type="submit" id="updateProduct" value="등록"/>
+              <button id="btnClose">취소</button>
             </form>
           </div>
         </div>

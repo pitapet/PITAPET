@@ -35,5 +35,16 @@ $(document).ready(() => {
 			window.open(url + no, "", status);	
 	    
 	    });
+	    
+	    $("#searchProduct").click(function(){
+	    	var no = $("#selectTitle option:selected").val();
+	    	console.log(no);
+	    	
+	    	if(no == 0){
+	    		location.replace("http://localhost:8088/pitapet/product/list/productInfo");
+	    	} else {
+		    	location.replace("http://localhost:8088/pitapet/product/list/productInfo?no=" + no);
+	    	}
+	    });
 
 });

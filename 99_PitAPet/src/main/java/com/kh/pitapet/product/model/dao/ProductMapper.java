@@ -6,8 +6,11 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
+import com.kh.pitapet.product.model.vo.Buy;
+import com.kh.pitapet.product.model.vo.Cart;
 import com.kh.pitapet.product.model.vo.Product;
 import com.kh.pitapet.product.model.vo.ProductInfo;
+
 
 @Mapper
 public interface ProductMapper {
@@ -16,10 +19,12 @@ public interface ProductMapper {
 
 	Product selectProductByNo(int no);
 
-	int getProductInfoCount();
-	
-	List<Product> findAll(RowBounds rowBounds);
-	
+	int getProductInfoCount(String no);
+
+	List<ProductInfo> selectProductInfoList(RowBounds rowBounds, @Param("no") String no);
+
+//	List<ProductInfo> selectProductInfoList(String no);
+
 	ProductInfo selectProductInfoByNo(int no);
 
 	int updateStatusProductInfo(@Param("no") int no, @Param("status") String status);
@@ -30,7 +35,7 @@ public interface ProductMapper {
 	
 	int updateProductInfo(ProductInfo productInfo);
 	
-	Product selectProductInfoByINo(int no);
+	ProductInfo selectProductInfoByINo(int no);
 	
 	int insertProduct(Product product);
 	
@@ -45,18 +50,29 @@ public interface ProductMapper {
 	int deleteProduct(int no);
 
 	Product selectProductByPNo(int no);
-	
-	
-	
-	
-	int selectCountByTitle(String title);
 
-	int selectNoByTitle(String title);
+	int selectCartCount(int no);
 
-	Product selectProductByTitle(String title);
+	List<Cart> selectAllCart(RowBounds rowBounds, int no);
 
-	Product selectProductByNo(List<Integer> resultList);
+	List<ProductInfo> selectAllProductInfo();
 
-	Product selectOnlyProductByNo(int no);
+	int insertCart(Cart cart);
+
+	int updateCart(Cart cart);
+
+	int deleteCart(int no);
+
+	int selectCartCountByINo(int no);
+
+	Cart selectCartByNo(int no);
+
+	int insertBuy(Buy buy);
+
+	List<Buy> selectAllBuy(RowBounds rowBounds, int no);
+
+	int selectBuyCount(int no);
+
+	int updateProductInfoStock(@Param("no") int no, @Param("stock") int stock);
 
 }

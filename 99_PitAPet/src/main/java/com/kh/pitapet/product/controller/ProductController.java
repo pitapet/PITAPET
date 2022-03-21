@@ -1,11 +1,18 @@
 package com.kh.pitapet.product.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,11 +20,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.pitapet.common.util.FileProcess;
 import com.kh.pitapet.common.util.PageInfo;
+import com.kh.pitapet.member.model.vo.Member;
 import com.kh.pitapet.product.model.service.ProductService;
+import com.kh.pitapet.product.model.vo.Buy;
+import com.kh.pitapet.product.model.vo.Cart;
 import com.kh.pitapet.product.model.vo.Product;
 import com.kh.pitapet.product.model.vo.ProductInfo;
 
@@ -32,9 +45,11 @@ public class ProductController {
 	@Autowired
 	private ProductService service;
 	
+	@Autowired
+	private ResourceLoader resourceLoader;
+	
 	@GetMapping("/product")
-	public ModelAndView list(
-			ModelAndView model) {
+	public ModelAndView list(ModelAndView model) {
 		
 		List<Product> products = new ArrayList<Product>();
 		Product product = null;
@@ -44,26 +59,17 @@ public class ProductController {
 		
 		pNo = service.getProductNo();
 		
-		System.out.println(pNo);
-		
 		for(int i : pNo) {
 			if(!resultList.contains(i)) {
 				resultList.add(i);
 			}
 		}
 		
-		System.out.println(resultList);
-		
 		Collections.shuffle(resultList);
-		
-		System.out.println(resultList);
 
 		for(int no : resultList) {
 			products.add((Product) service.findProductByNo(no));
 		}
-		
-		System.out.println(product);
-		System.out.println(products);
 		
 		model.addObject("product", product);
 		model.addObject("products", products);
@@ -73,8 +79,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/list/product")
-	public ModelAndView productList(
-			ModelAndView model,
+	public ModelAndView productList(ModelAndView model,
 			@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "5") int count) {
 		
@@ -92,29 +97,152 @@ public class ProductController {
 	}
 	
 	@GetMapping("/list/productInfo")
-	public ModelAndView productInfoList(
-			ModelAndView model,
+	public ModelAndView productInfoList(ModelAndView model,
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "5") int count,
+			@RequestParam(required = false) String no) {
+		
+		PageInfo pageInfo = null;
+		List<ProductInfo> productInfoList = null;
+		List<Product> productList = null;
+//		int count = 0;
+		
+		pageInfo = new PageInfo(page, 5, service.getProductInfoCount(no), count);
+//		count = service.getProductInfoCount(no);
+		productList = service.findAllProduct();
+		
+		productInfoList = service.getProductInfoList(pageInfo, no);
+//		productInfoList = service.getProductInfoList(no);
+		
+		model.addObject("pageInfo", pageInfo);
+//		model.addObject("count", count);
+		model.addObject("productList", productList);
+		model.addObject("productInfoList", productInfoList);
+//		model.setViewName("product/adminProductInfoList");
+		model.setViewName("product/productInfoList");
+		
+		return model;
+	}
+
+	@GetMapping("/cart/list")
+	public ModelAndView cartList(ModelAndView model,
+			@SessionAttribute(name = "loginMember") Member loginMember,
+			@ModelAttribute Cart cart,
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "5") int count) {
+		
+		PageInfo pageInfo = null;
+		List<Cart> cartList = null;
+		List<Product> productList = null;
+		List<ProductInfo> productInfoList = null;
+		
+		productList = service.findAllProduct();
+		productInfoList = service.findAllProductInfo();
+		int no = loginMember.getNo();
+		pageInfo = new PageInfo(page, 5, service.getCartCount(no), count);
+		cartList = service.findAllCart(pageInfo, no);
+		
+		model.addObject("pageInfo", pageInfo);
+		model.addObject("cartList", cartList);
+		model.addObject("productList", productList);
+		model.addObject("productInfoList", productInfoList);
+		model.setViewName("product/cart");
+		
+		return model;
+	}
+	/*
+	@GetMapping("/buy/check")
+	@ResponseBody
+	public ModelAndView buyCheck(ModelAndView model,
+			@SessionAttribute(name = "loginMember") Member loginMember,
+			@RequestParam(value="cartNo[]") List<Integer> cartNoList) {
+		
+		log.info("cartNo: {}", cartNoList);
+		
+		List<Cart> cartList = new ArrayList<Cart>();
+		
+		for(int no : cartNoList) {
+			cartList.add(service.findCartByNo(no));
+		}
+		
+		log.info("cartList : {}", cartList);
+		
+		model.addObject("cartList", cartList);
+		model.setViewName("product/buyCheck");
+		
+		return model;
+	}
+	*/
+	
+	@PostMapping("/buy/add")
+	@ResponseBody
+	public Map<String, Integer> addBuy(
+			@RequestParam(value="productInfoNo") int productInfoNo,
+			@RequestParam(value="memberNo") int memberNo,
+			@RequestParam(value="count") int count,
+			@RequestParam(value="cartNo", defaultValue = "0") int cartNo,
+			@SessionAttribute(name = "loginMember") Member loginMember,
+			@ModelAttribute Buy buy) {
+		
+		Map<String, Integer> map = new HashMap<>();
+		ProductInfo productInfo = null;
+		int result = 0;
+		
+		productInfo = service.findProductInfoByINo(productInfoNo);
+		
+		buy.setMemberNo(memberNo);
+		buy.setCount(count);
+		buy.setProductInfoNo(productInfoNo);
+		
+		result = service.saveBuyList(buy);
+		
+		if(result > 0) {
+			if(cartNo != 0) {
+				service.deleteCart(cartNo);
+			}
+			
+			int no = productInfoNo;
+			int stock = productInfo.getStock() - count;
+			service.updateStock(no, stock);
+		}
+		
+		map.put("result", result);
+		
+		return map;
+	}
+	
+	@GetMapping("/buy/list")
+	public ModelAndView buyList(ModelAndView model,
+			@SessionAttribute(name = "loginMember") Member loginMember,
+			@ModelAttribute Buy buy,
 			@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "5") int count) {
 		
 		PageInfo pageInfo = null;
 		List<Product> productList = null;
+		List<ProductInfo> productInfoList = null;
+		List<Buy> buyList = null;
 		
-		log.info("page number : {} {}", page, count);
+		productList = service.findAllProduct();
+		productInfoList = service.findAllProductInfo();
 		
-		pageInfo = new PageInfo(page, 5, service.getProductInfoCount(), count);
-		productList = service.getProductInfoList(pageInfo);
+		int no = loginMember.getNo();
+		
+		pageInfo = new PageInfo(page, 5, service.getBuyCount(no), count);
+
+		buyList = service.findAllBuy(pageInfo, no);
 		
 		model.addObject("pageInfo", pageInfo);
 		model.addObject("productList", productList);
-		model.setViewName("product/productInfoList");
+		model.addObject("productInfoList", productInfoList);
+		model.addObject("buyList", buyList);
+		model.setViewName("/product/buy");
 		
 		return model;
 	}
 	
 	@GetMapping("/delete/productInfo")
-	public ModelAndView deleteProductInfo(
-			ModelAndView model,
+	public ModelAndView deleteProductInfo(ModelAndView model,
 			@RequestParam("no") int no) {
 		
 		int result = 0;
@@ -140,7 +268,6 @@ public class ProductController {
 		int count = 0;
 		
 		count = service.getProductInfoCountByPNo(no);
-		
 		
 		if(count == 0) {
 			
@@ -171,8 +298,7 @@ public class ProductController {
 	}
 	
 	@PostMapping("/add/product")
-	public ModelAndView addProduct(
-			ModelAndView model,
+	public ModelAndView addProduct(ModelAndView model,
 			@ModelAttribute Product product) {
 		
 		int result = 0;
@@ -181,10 +307,85 @@ public class ProductController {
 		
 		if(result > 0) {
 			model.addObject("msg", "상품 카테고리가 추가되었습니다.");
-			model.addObject("location", "/product/list/product");
+			model.addObject("script", "window.close();");
 		} else {
 			model.addObject("msg", "상품 카테고리 추가에 실패하였습니다.");
-			model.addObject("location", "/product/list/product");
+			model.addObject("script", "window.close();");
+		}
+		model.setViewName("common/msg");
+		
+		return model;
+	}
+	
+	@PostMapping("/cart/add")
+	public ModelAndView addCart(ModelAndView model,
+			@SessionAttribute(name = "loginMember") Member loginMember,
+			@ModelAttribute Cart cart, 
+			@RequestParam("productInfoNo") int no) {
+		int result = 0;
+		int count = 0;
+		
+		cart.setMemberNo(loginMember.getNo());
+		
+		count = service.getCartCountByINo(no);
+		
+		if(count == 0) {
+			result = service.saveCart(cart);
+		
+			if(result > 0) {
+				model.addObject("msg", "장바구니에 상품이 추가되었습니다.");
+				model.addObject("location", "/product/cart/list");
+			} else {
+				model.addObject("msg", "상품을 장바구니에 담지 못하였습니다.");
+				model.addObject("location", "/product/product");
+			}
+			
+		} else {
+			model.addObject("msg", "이미 장바구니에 담은 상품입니다.");
+			model.addObject("location", "/product/product");
+		}
+		
+		model.setViewName("common/msg");
+		
+		return model;
+	}
+	
+	@PostMapping("/cart/update")
+	public ModelAndView updateCart(ModelAndView model,
+			@SessionAttribute(name = "loginMember") Member loginMember,
+			@ModelAttribute Cart cart) {
+		
+		int result = 0;
+		
+		result = service.saveCart(cart);
+		
+		if(result > 0) {
+			model.addObject("msg", "상품 수량이 수정되었습니다.");
+			model.addObject("location", "/product/cart/list");
+		} else {
+			model.addObject("msg", "상품 수량 수정에 실패하였습니다.");
+			model.addObject("location", "/product/cart/list");
+		}
+		model.setViewName("common/msg");
+		
+		return model;
+	}
+	
+	@GetMapping("/cart/delete")
+	public ModelAndView deleteProductInfo(ModelAndView model,
+			@SessionAttribute(name = "loginMember") Member loginMember,
+			@RequestParam("no") int no) {
+		
+		int result = 0;
+
+		result = service.deleteCart(no);
+		
+		if(result > 0) {
+			model.addObject("msg", "상품이 삭제되었습니다.");
+			model.addObject("location", "/product/cart/list");
+		} else {
+			model.addObject("msg", "상품 삭제에 실패하였습니다.");
+			model.addObject("location", "/product/cart/list");
 		}
 		model.setViewName("common/msg");
 		
@@ -192,8 +393,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/add/productInfo")
-	public ModelAndView addProductInfo(
-			ModelAndView model) {
+	public ModelAndView addProductInfo(ModelAndView model) {
 
 		List<Product> products = service.findAllProduct();
 		
@@ -204,13 +404,28 @@ public class ProductController {
 	}
 	
 	@PostMapping("/add/productInfo")
-	public ModelAndView addProductInfo(
-			ModelAndView model,
-			@ModelAttribute ProductInfo productInfo
-//			@RequestParam("upfile") MultipartFile upfile
-			) {
+	public ModelAndView addProductInfo(ModelAndView model,
+			@ModelAttribute ProductInfo productInfo,
+			@RequestParam("upfile") MultipartFile upfile) {
 		
 		int result = 0;
+		
+		if(upfile != null && !upfile.isEmpty()) {
+			String location = null;
+			String renamedFileName = null;
+
+			try {
+				location = resourceLoader.getResource("resources/upload/product").getFile().getPath();
+				renamedFileName = FileProcess.save(upfile, location);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			if(renamedFileName != null) {
+				productInfo.setOriginalFileName(upfile.getOriginalFilename());
+				productInfo.setRenamedFileName(renamedFileName);
+			}
+		}
 		
 		result = service.saveProductInfo(productInfo);
 		
@@ -241,8 +456,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/update/product")
-	public ModelAndView updateProduct(
-			ModelAndView model,
+	public ModelAndView updateProduct(ModelAndView model,
 			@RequestParam("no") int no) {
 		
 		Product product = service.findProductByPNo(no);
@@ -254,8 +468,7 @@ public class ProductController {
 	}
 	
 	@PostMapping("/update/product")
-	public ModelAndView updateProduct(
-			ModelAndView model,
+	public ModelAndView updateProduct(ModelAndView model,
 			@ModelAttribute Product product) {
 		
 		int result = 0;
@@ -275,58 +488,61 @@ public class ProductController {
 	}
 	
 	@GetMapping("/update/productInfo")
-	public ModelAndView updateProductInfo(
-			ModelAndView model,
+	public ModelAndView updateProductInfo(ModelAndView model,
 			@RequestParam("no") int no) {
 		
-		Product product = service.findProductInfoByINo(no);
-		List<ProductInfo> productInfoes = product.getProductInfoes();
+		ProductInfo productInfo = service.findProductInfoByINo(no);
+		Product product = service.findProductByPNo(productInfo.getProductNo());
 		
-		System.out.println(product);
-		System.out.println(productInfoes);
-		
-		model.addObject("productInfoes", productInfoes);
+		model.addObject("productInfo", productInfo);
 		model.addObject("product", product);
 		model.setViewName("product/updateProductInfo");
 		
 		return model;
 	}
 	
-	
-	
-	@PostMapping("/checkTitle")
-	@ResponseBody
-	public int checkTitle(
-			ModelAndView model,
-			@RequestBody String title,
-			@ModelAttribute Product product) {
+	@PostMapping("/update/productInfo")
+	public ModelAndView updateProductInfo(ModelAndView model,
+			@ModelAttribute ProductInfo productInfo,
+			@RequestParam("upfile") MultipartFile upfile) {
+		int result = 0;
 		
-		int checkTitle = 0;
-////		Product selectedProduct = service.findProductByNo(service.findNoByTitle(title));
+		if(upfile != null && !upfile.isEmpty()) {
+			String renamedFileName = null;
+			String location = null;
+			
+			try {
+				location = resourceLoader.getResource("resources/upload/product").getFile().getPath();
+				
+				if(productInfo.getRenamedFileName() != null) {
+					FileProcess.delete(location + "/" + productInfo.getRenamedFileName());
+				}
+				
+				renamedFileName = FileProcess.save(upfile, location);
+				
+				if(renamedFileName != null) {
+					productInfo.setOriginalFileName(upfile.getOriginalFilename());
+					productInfo.setRenamedFileName(renamedFileName);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
 		
-//		//Product selectedProduct = service.findProductByTitle(title);
+		result = service.saveProductInfo(productInfo);
 		
-		log.info("title 데이터 : {}", title);
-		checkTitle = service.checkTitle(title);
-		System.out.println(checkTitle);
-////		model.addObject("selectedProduct", selectedProduct);
-		
-		return checkTitle;
-	}
-	
-	/*
-	@GetMapping("/productCheck")
-	public ModelAndView productCheck(
-			ModelAndView model,
-			@ModelAttribute Product product,
-			@SessionAttribute Member loginMember,
-			@SessionAttribute Product selectProduct) {
-		
-		
-		
+		if(result > 0) {
+			model.addObject("msg", "상품 정보가 수정되었습니다.");
+			model.addObject("script", "window.close();");
+		} else {
+			model.addObject("msg", "상품 정보 수정에 실패하였습니다.");
+			model.addObject("script", "window.close();");
+		}
+		model.setViewName("common/msg");
 		
 		return model;
 	}
-	*/
+	
 	
 }

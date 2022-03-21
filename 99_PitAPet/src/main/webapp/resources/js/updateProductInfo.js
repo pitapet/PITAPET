@@ -10,5 +10,5 @@ $(() => {
 $(document).ready(() => {
 	  $("#btnClose").on("click", function(){ 
         window.close(); 
-    }); 
+      }); 
 });

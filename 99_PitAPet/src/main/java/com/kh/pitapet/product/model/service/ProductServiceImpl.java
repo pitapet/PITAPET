@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.pitapet.common.util.PageInfo;
 import com.kh.pitapet.product.model.dao.ProductMapper;
+import com.kh.pitapet.product.model.vo.Buy;
+import com.kh.pitapet.product.model.vo.Cart;
 import com.kh.pitapet.product.model.vo.Product;
 import com.kh.pitapet.product.model.vo.ProductInfo;
 
@@ -29,20 +31,23 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public int getProductInfoCount() {
-		return mapper.getProductInfoCount();
+	public int getProductInfoCount(String no) {
+		return mapper.getProductInfoCount(no);
 	}
-	
+
 	@Override
-	public List<Product> getProductInfoList(PageInfo pageInfo) {
+	public List<ProductInfo> getProductInfoList(PageInfo pageInfo, String no) {
 		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
 		int limit = pageInfo.getListLimit();
-		System.out.println("offset" + offset);
-		System.out.println("limit" + limit);
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-		return mapper.findAll(rowBounds);
+		return mapper.selectProductInfoList(rowBounds, no);
 	}
+
+//	@Override
+//	public List<ProductInfo> getProductInfoList(String no) {
+//		return mapper.selectProductInfoList(no);
+//	}
 	
 	@Override
 	public ProductInfo findProductInfoByNo(int no) {
@@ -74,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product findProductInfoByINo(int no) {
+	public ProductInfo findProductInfoByINo(int no) {
 		return mapper.selectProductInfoByINo(no);
 	}
 
@@ -101,8 +106,6 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> getProductList(PageInfo pageInfo) {
 		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
 		int limit = pageInfo.getListLimit();
-		System.out.println("offset" + offset);
-		System.out.println("limit" + limit);
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
 		return mapper.findProduct(rowBounds);
@@ -114,6 +117,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	@Transactional
 	public int deleteProduct(int no) {
 		return mapper.deleteProduct(no);
 	}
@@ -123,27 +127,78 @@ public class ProductServiceImpl implements ProductService {
 		return mapper.selectProductByPNo(no);
 	}
 
-
-	
-	
 	@Override
-	public int checkTitle(String title) {
-		return mapper.selectCountByTitle(title);
+	public int getCartCount(int no) {
+		return mapper.selectCartCount(no);
 	}
 
 	@Override
-	public int findNoByTitle(String title) {
-		return mapper.selectNoByTitle(title);
+	public List<Cart> findAllCart(PageInfo pageInfo, int no) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		int limit = pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return mapper.selectAllCart(rowBounds, no);
 	}
 
 	@Override
-	public Product findProductByTitle(String title) {
-		return mapper.selectProductByTitle(title);
+	public List<ProductInfo> findAllProductInfo() {
+		return mapper.selectAllProductInfo();
 	}
 
 	@Override
-	public Product findOnlyProductByNo(int no) {
-		return mapper.selectOnlyProductByNo(no);
+	@Transactional
+	public int saveCart(Cart cart) {
+		int result = 0;
+		
+		if(cart.getNo() != 0) {
+			result = mapper.updateCart(cart);
+		} else {
+			result = mapper.insertCart(cart);
+		}
+		
+		return result;
+	}
+
+	@Override
+	@Transactional
+	public int deleteCart(int no) {
+		return mapper.deleteCart(no);
+	}
+
+	@Override
+	public int getCartCountByINo(int no) {
+		return mapper.selectCartCountByINo(no);
+	}
+
+	@Override
+	public Cart findCartByNo(int no) {
+		return mapper.selectCartByNo(no);
+	}
+
+	@Override
+	@Transactional
+	public int saveBuyList(Buy buy) {
+		return mapper.insertBuy(buy);
+	}
+
+	@Override
+	public List<Buy> findAllBuy(PageInfo pageInfo,int no) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		int limit = pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return mapper.selectAllBuy(rowBounds, no);
+	}
+
+	@Override
+	public int getBuyCount(int no) {
+		return mapper.selectBuyCount(no);
+	}
+
+	@Override
+	@Transactional
+	public int updateStock(int no, int stock) {
+		return mapper.updateProductInfoStock(no, stock);
 	}
 
 }

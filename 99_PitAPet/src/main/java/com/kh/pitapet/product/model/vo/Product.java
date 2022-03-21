@@ -17,8 +17,6 @@ public class Product {
 	
 	private String content;
 	
-	private int price;
-	
 	private List<ProductInfo> productInfoes;
 	
 	private Date createdDate;

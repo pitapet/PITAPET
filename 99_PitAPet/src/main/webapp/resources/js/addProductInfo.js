@@ -27,4 +27,10 @@ $(document).ready(() => {
 	    var no2 = $('input[name=productNo]').val();
 	    console.log(no2);
 	  });
+	  
+	  $("#btnClose").on("click", function(){ 
+        window.close(); 
+      }); 
+      
+      
 });

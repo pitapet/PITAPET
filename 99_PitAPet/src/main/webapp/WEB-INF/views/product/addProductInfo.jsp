@@ -33,18 +33,19 @@
         <div class="main__user__body">
           <div class="main__user__body__product">
             <p>상품 등록</p>
-            <form id="addProductInfoFrm" action="${ path }/product/add/productInfo" method="post">
+            <form id="addProductInfoFrm" action="${ path }/product/add/productInfo" method="post"
+            		enctype="multipart/form-data">
               <table class="main__user__body__table">
                 <tbody class="table__tbody">
                   <tr>
-                    <th rowspan="4" class="table__img">상품사진</th>
-                    <td rowspan="4">
+                    <th rowspan="6" class="table__img">상품사진</th>
+                    <td rowspan="6">
                       <img class="product__img" src="" alt="">
-                      <input type="file" name="upFile" id="btnUpload">
+                      <input type="file" name="upfile" id="btnUpload">
                     </td>
                   </tr>
                   <tr>
-                    <th class="table__title">상품명</th>
+                    <th class="table__title">상품 카테고리</th>
                     <td colspan="3">
                       <select name="title" id="title">
                         <option selected>-------</option>
@@ -52,8 +53,11 @@
 	                      <option value="${ products.no }">${ products.title }</option>
 	                    </c:forEach>
                       </select>
-                      <input type="hidden" name="productNo" value="">
                     </td>
+                  </tr>
+                  <tr>
+                    <th class="table__price">가격</th>
+                    <td colspan="3"><input type="number" name="price" id="price" value="">원</td>
                   </tr>
                   <tr>
                     <th class="table__color">색상</th>
@@ -67,7 +71,8 @@
                   </tr>
                 </tbody>
               </table>
-              <input type="submit" id="addProductInfo" value="등록"></input>
+              <input type="submit" id="addProductInfo" value="등록"/>
+              <button id="btnClose">취소</button>
             </form>
           </div>
         </div>

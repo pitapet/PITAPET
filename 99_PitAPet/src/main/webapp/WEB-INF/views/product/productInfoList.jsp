@@ -21,6 +21,7 @@
     <script src="https://kit.fontawesome.com/91b5983e4b.js" crossorigin="anonymous"></script>
     <script src="${ path }/js/plugin/jquery-3.6.0.min.js"></script>
     <script src="${ path }/js/plugin/jquery.fullPage.js"></script>
+    <script src="${ path }/js/plugin/list.js"></script>
     <script src="${ path }/js/productInfoList.js"></script>
 
 </head>
@@ -74,9 +75,11 @@
                 </div>
               <div class="product__btn" id="btn__search">
                 <span>상품명 : &nbsp;</span>
-                <select name="selectTitle" id="selectTitle">
-                  <option selected>------------</option>
-                  <option value="footmat">FOOT MAT</option>
+                <select class="search" name="title" id="selectTitle">
+                  <option value="0" selected>------------</option>
+                  <c:forEach var="product" items="${ productList }">
+                    <option value="${ product.no }">${ product.title }</option>
+                  </c:forEach>
                 </select>
                 <button id="searchProduct">검색</button>
               </div>
@@ -88,7 +91,7 @@
                 <tr>
                   <th class="table__no"></th>
                   <th class="table__img">상품사진</th>
-                  <th class="table__title">상품명</th>
+                  <th class="table__title">카테고리</th>
                   <th class="table__content">상품설명</th>
                   <th class="table__color">색상</th>
                   <th class="table__price">가격</th>
@@ -97,7 +100,7 @@
                 </tr>
               </thead>
 
-              <c:if test="${ empty productList }">
+              <c:if test="${ empty productInfoList }">
                 <tbody class="table__tbody">
                   <tr>
                     <td colspan="9">조회된 상품이 없습니다.</td>
@@ -105,20 +108,23 @@
                 </tbody>
               </c:if>
 
-              <c:if test="${ !empty productList }">
+              <c:if test="${ !empty productInfoList }">
               <tbody class="table__tbody">
-                <c:forEach var="product" items="${ productList }">
-                  <c:forEach var="productInfo" items="${ product.productInfoes }">
+                  <c:forEach var="productInfo" items="${ productInfoList }">
 	                <tr>
 	                  <td><input type="hidden" class="product__no" name="no" value="${ productInfo.no }"></td>
-	                  <td><img class="product__img" src="${ path }/images/product/${ productInfo.imageName }.png" alt=""></td>
-	                  <td>${ product.title }</td>
-	                  <td>${ product.content }</td>
+	                  <td><img class="product__img" src="${ path }/images/product/${ productInfo.renamedFileName }.png" alt=""></td>
+	                  <c:forEach var="product" items="${ productList }">
+	                    <c:if test="${ productInfo.productNo == product.no }">
+	                      <td class="title">${ product.title }</td>
+	                      <td class="content">${ product.content }</td>
+	                    </c:if>
+	                  </c:forEach>
 	                  <td><input type="color" class="product__color" name="colorName" id="colorName" value="${ productInfo.colorCode }">
 	                        &nbsp${ productInfo.colorName } 
 	                        <br>(${ productInfo.colorCode })
 	                  </td>
-	                  <td>${ product.price } 원</td>
+	                  <td>${ productInfo.price } 원</td>
 	                  <td>${ productInfo.stock } 개</td>
 	                  <td><button type="button" class="btnUpdate" value="${ productInfo.no }">수정</button></td>
                       <td><button type="button" class="btnDelete" value="${ productInfo.no }">삭제</button></td>
@@ -128,7 +134,6 @@
 	                   -->
 	                </tr>
                   </c:forEach>
-                </c:forEach>
               </tbody>
               </c:if>
             </table>
