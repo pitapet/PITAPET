@@ -47,6 +47,9 @@
         <li data-menuanchor="section4"><a href="${ path }/organization/organization">Organization</a></li>
         <li data-menuanchor="section5"><a href="${ path }/member/mypage">Mypage</a></li>
         <li data-menuanchor="section6"><a href="${ path }/logout">Logout</a></li>
+        <c:if test="${ loginMember.role == 'ROLE_ADMIN' }">
+          <li data-menuanchor="section7"><a href="${ path }/product/list/product">Admin</a></li>
+        </c:if>
       </ul>
       </c:if>
     </header>
@@ -65,7 +68,8 @@
             <div class="main__user__body">
               <div class="main__user__body__category">
                 <button class="category board active" onclick="location.href='./mypage.html';">게시글 관리</button>
-                <button class="category cart" onclick="location.href='./cart.html';">장바구니</button>
+                <button class="category cart" onclick="location.href='${ path }/product/cart/list';">장바구니</button>
+                <button class="category buy" onclick="location.href='${ path }/product/buy/list';">구매목록</button>
                 <button class="category prefernce" onclick="location.href='${ path }/member/passwordEdit';">비밀번호 변경</button>
                 <button class="category prefernce" onclick="location.href='${ path }/member/petEdit';">애완동물 변경</button>
                 <button class="category resign" onclick="location.href='${ path }/member/delete';">회원 탈퇴</button>
