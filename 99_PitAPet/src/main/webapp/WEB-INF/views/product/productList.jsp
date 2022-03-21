@@ -72,17 +72,9 @@
 
           <div class="main__user__body__product">
             <p>상품 관리</p>
-            	<div class="product__page">
-                  <a id="btn__product" href="${ path }/product/list/product">상품 카테고리</a>
-                  <a id="btn__productInfo" href="${ path }/product/list/productInfo">상품 상세정보</a>
-                </div>
-              <div class="product__btn" id="btn__search">
-                <span>상품명 : &nbsp;</span>
-                <select name="selectTitle" id="selectTitle">
-                  <option selected>------------</option>
-                  <option value="footmat">FOOT MAT</option>
-                </select>
-                <button id="searchProduct">검색</button>
+              <div class="product__page">
+                <a id="btn__product" href="${ path }/product/list/product">상품 카테고리</a>
+                <a id="btn__productInfo" href="${ path }/product/list/productInfo">상품 상세정보</a>
               </div>
               <div class="product__btn" id="btn__add">
               	<button id="btnAddProduct">카테고리 등록</button>

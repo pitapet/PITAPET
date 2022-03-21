@@ -49,8 +49,8 @@
                     <td colspan="3">
                       <select name="title" id="title">
                         <option selected>-------</option>
-	                    <c:forEach var="products" items="${ products }">
-	                      <option value="${ products.no }">${ products.title }</option>
+	                    <c:forEach var="product" items="${ productList }">
+	                      <option value="${ product.no }">${ product.title }</option>
 	                    </c:forEach>
                       </select>
                     </td>

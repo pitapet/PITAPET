@@ -384,9 +384,9 @@ public class ProductController {
 	@GetMapping("/add/productInfo")
 	public ModelAndView addProductInfo(ModelAndView model) {
 
-		List<Product> products = service.findAllProduct();
+		List<Product> productList = service.findAllProduct();
 		
-		model.addObject("products", products);
+		model.addObject("productList", productList);
 		model.setViewName("product/addProductInfo");
 		
 		return model;
