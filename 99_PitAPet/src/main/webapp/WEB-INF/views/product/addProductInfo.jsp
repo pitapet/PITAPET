@@ -47,7 +47,7 @@
                   <tr>
                     <th class="table__title">상품 카테고리</th>
                     <td colspan="3">
-                      <select name="title" id="title">
+                      <select name="productNo" id="productNo">
                         <option selected>-------</option>
 	                    <c:forEach var="product" items="${ productList }">
 	                      <option value="${ product.no }">${ product.title }</option>
