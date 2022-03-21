@@ -114,14 +114,9 @@
                 <input type="password" name="password" id="password" placeholder="패스워드를 입력해주세요." />
               </div>
               <input class="btn sign-ins" type="submit" value="로그인"></input>
-              <div style="display: flex;" >
-              <p style="margin: 0 auto;">
-                <b onclick="location.href='${ path }/member/findId';" style="cursor: pointer">아이디를 잊으셨나요? </b>
+              <p >
+                <b onclick="location.href='${ path }/member/findId';" style="cursor: pointer">아이디나 비밀번호를 잊으셨나요? </b>
               </p>
-              <p style="margin: 0 auto;">
-                <b onclick="location.href='${ path }/member/findPw';" style="cursor: pointer">비밀번호를 잊으셨나요? </b>
-              </p>
-              </div>
               <p>
                 <span> 어랏, 계정이 없으신가요? </span>
                 <b onclick="toggle()" class="pointer"> 회원가입 </b>

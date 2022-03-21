@@ -24,5 +24,16 @@ public interface MemberService {
 
 	Boolean isDuplicateEmail(String userEmail);
 
+	boolean pwCheck(String userId, String userPw);
+
+	void updatePw(String userId, String newPw);
+
+	String getPet(String userId);
+
+	void updatePet(String userId, String newPet);
+
+
+
+
 
 }

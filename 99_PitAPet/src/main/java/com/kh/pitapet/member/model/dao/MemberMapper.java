@@ -24,5 +24,12 @@ public interface MemberMapper {
 
 	Member findMemberByEmail(@Param("email") String email);
 
+	Member checkPw(String password);
+
+	String pwCheck(@Param("id") String userId);
+
+	String findPet(String userId);
+
+	void updatePet(@Param("id") String userId, @Param("pet") String newPet);
 
 }

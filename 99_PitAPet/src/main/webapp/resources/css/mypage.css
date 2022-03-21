@@ -173,7 +173,6 @@ body,
   justify-content: center;
   font-size: 35px;
   padding-left: 60px;
-  border-left: 1px solid black;
 }
 
 .main__user__header__description > p:nth-child(2) {
@@ -194,7 +193,7 @@ body,
 }
 
 .category {
-  width: 80px;
+  width: 100px;
   height: 30px;
   border: none;
   outline: none;

@@ -46,7 +46,8 @@
 			<exclude-mapping path="/member/findId"/>
 			<exclude-mapping path="/member/dofindId"/>
 			<exclude-mapping path="/member/findPw"/>	
-			<exclude-mapping path="/member/dofindPw"/>	
+			<exclude-mapping path="/member/dofindPw"/>
+				
 					
 		
 			<!-- 인터셉터 등록 -->

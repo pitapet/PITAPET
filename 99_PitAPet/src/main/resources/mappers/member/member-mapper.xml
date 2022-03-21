@@ -105,10 +105,7 @@
 	<update id="updateMember" parameterType="Member">
 		UPDATE MEMBER 
 		SET 
-			NAME = #{name},
-			PHONE = #{phone},
-			EMAIL = #{email},
-			ADDRESS = #{address},
+			PASSWORD = #{password},
 			PET = #{pet},
 			MODIFY_DATE = SYSDATE 
 		WHERE NO = #{no}
@@ -124,6 +121,20 @@
 	 	WHERE ID = #{id}
 	 </update>
 	 
+	 <select id="pwCheck" parameterType="string" resultType="string">
+	 	SELECT PASSWORD FROM MEMBER WHERE ID = #{id}
+	 </select>
+	 
+	 <select id="findPet" parameterType="string" resultType="string">
+	 	SELECT PET FROM MEMBER WHERE ID = #{id}
+	 </select>
+	 
+	 <update id="updatePet" parameterType="string">
+	 	UPDATE MEMBER
+	 	SET 
+	 		PET = #{pet}
+	 	WHERE ID = #{id}
+	 </update>
 	
 	<delete id="deleteMember" parameterType="_int">
 		UPDATE MEMBER

@@ -119,31 +119,6 @@ public class MemberController {
 			return new ResponseEntity<Map<String,Boolean>>(map, HttpStatus.OK);
 		}
 	
-		// 정보 수정(업데이트)
-		@PostMapping("/member/update")
-		public ModelAndView update(
-				ModelAndView model,
-				@SessionAttribute(name="loginMember") Member loginMember,
-				@ModelAttribute Member member) {
-			int result = 0;
-			
-			member.setNo(loginMember.getNo());
-			
-			result = service.save(member);
-			
-			if(result > 0) {
-				model.addObject("loginMember", service.findMemberById(loginMember.getId()));
-				model.addObject("msg", "회원정보 수정을 완료했습니다.");
-				model.addObject("location", "/member/myPage");
-			} else {
-				model.addObject("msg", "회원정보 수정에 실패했습니다.");
-				model.addObject("location", "/member/myPage");
-			}
-			
-			model.setViewName("common/msg");
-			
-			return model;
-		}
 		
 		// 회원탈퇴
 		@GetMapping("/member/delete")
@@ -206,8 +181,10 @@ public class MemberController {
 		// 비밀번호 찾기 
 		@RequestMapping(value = "/member/dofindPw", method = {RequestMethod.POST})
 		public ModelAndView findPw(ModelAndView model,
-				@RequestParam("id") String id, @RequestParam("email") String email) {		
+				@RequestParam("id") String id, @RequestParam("email") String email) {
+			
 			  String returnEmail = service.findEmail(id, email);
+			  
 			  if(email.equals(returnEmail)) {
 				  service.findPw(id, email);
 				  model.addObject("msg", "입력하신 이메일로 비밀번호가 발송되었습니다.");
@@ -223,10 +200,80 @@ public class MemberController {
 		}
 		
 		// 정보수정 접속
-		@GetMapping("/member/profileEdit")
-		public String profileEdit() {
-			return "member/profileEdit";
+		@GetMapping("/member/passwordEdit")
+		public String passwordEdit() {
+			return "member/passwordEdit";
 		}
 		
+		// 애완동물수정 접속
+		@GetMapping("/member/petEdit")
+		public ModelAndView petEdit(ModelAndView model,
+									@SessionAttribute(name="loginMember") Member loginMember) {
+			
+			String userId = loginMember.getId();
+			String userPet = service.getPet(userId);
+			
+			model.addObject("userPet",userPet);
+			model.setViewName("/member/petEdit");
+			
+			return model;
+		}
+			
+		// 비밀번호 변경
+		@PostMapping("/member/doPasswordEdit")
+		public ModelAndView doPasswordEdit(
+				ModelAndView model,
+				@SessionAttribute(name="loginMember") Member loginMember,
+				@RequestParam("oldPw") String oldPw, @RequestParam("newPw") String newPw,
+				@RequestParam("newPwCheck") String newPwCheck) {
+			boolean result = false;
+			
+			String userId = loginMember.getId();
+			String userPw = oldPw;
+			
+			System.out.println(userId);
+			result = service.pwCheck(userId, userPw);
+			
+			if(result == true) {
+				if(newPw.equals(newPwCheck)) {					
+					service.updatePw(userId, newPw);
+					model.addObject("msg", "비밀번호가 변경되었습니다.");
+					model.addObject("location", "/member/passwordEdit");
+				} else {
+					model.addObject("msg", "변경할 비밀번호를 다시 확인해주세요.");
+					model.addObject("location", "/member/passwordEdit");
+				}
+			} else {
+				model.addObject("msg", "기존 비밀번호를 다시 확인해주세요.");
+				model.addObject("location", "/member/passwordEdit");
+			}
+			model.setViewName("common/msg");
+			
+			return model;
+		}
+		
+		// 애완동물 변경
+		@PostMapping("/member/doPetEdit")
+		public ModelAndView doPetEdit(
+				ModelAndView model,
+				@SessionAttribute(name="loginMember") Member loginMember, @RequestParam("newPet") String newPet) {
+			
+			String userId = loginMember.getId();
+			
+			service.updatePet(userId, newPet);
+			
+			model.addObject("msg", "애완동물이 변경되었습니다.");
+			model.addObject("location", "/member/petEdit");
+			
+			model.setViewName("common/msg");
+			
+			return model;
+		}
+		 
+		// 멤버관리 페이지 불럭오기
+		@GetMapping("/member/adminMember")
+		public String adminMember() {
+			return "/member/adminMember";
+		}
 		
 	}

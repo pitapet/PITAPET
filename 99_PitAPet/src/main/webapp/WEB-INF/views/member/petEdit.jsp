@@ -5,9 +5,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <c:set var="path" value="${ pageContext.request.contextPath }"/>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -17,39 +16,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="${ path }/css/plugin/jquery.fullPage.css" />
-    <link rel="stylesheet" href="${ path }/css/organization.css" />
+    <link rel="stylesheet" href="${ path }/css/passwordEdit.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/91b5983e4b.js" crossorigin="anonymous"></script>
     <script src="${ path }/js/plugin/jquery-3.6.0.min.js"></script>
     <script src="${ path }/js/plugin/jquery.fullPage.js"></script>
-    <script src="${ path }/js/organization.js"></script>
-  <style>
-  /* CSS 주석 */
-  #id1 {
-  width: 500px;
-  height: 50px;
-  border-radius: 20px;
-  }
-  
-  </style>
-  
+    <script src="${ path }/js/passwordEdit.js"></script>
   </head>
   <body>
     <header id="header">
       <logo class="header__logo">
         <img src="${ path }/images/logo.png" alt="logo" class="logo__img" />
       </logo>
-      <!-- 로그인 전 버튼들 -->
-      <c:if test="${ empty loginMember }">
-      <ul class="header__menu">
-        <li data-menuanchor="section1"><a href="${ path }/">Home</a></li>
-        <li data-menuanchor="section2"><a href="${ path }/product/product">Product</a></li>
-        <li data-menuanchor="section3"><a href="${ path }/community/list">Community</a></li>
-        <li data-menuanchor="section4"><a href="${ path }/organization/organization">Organization</a></li>
-        <li data-menuanchor="section5"><a href="${ path }/member/login">Login</a></li>
-      </ul>
-      </c:if>
-      <!-- 로그인 후 버튼들 -->
-      <c:if test="${ !empty loginMember }">
       <ul class="header__menu">
         <li data-menuanchor="section1"><a href="${ path }/">Home</a></li>
         <li data-menuanchor="section2"><a href="${ path }/product/product">Product</a></li>
@@ -58,31 +36,23 @@
         <li data-menuanchor="section5"><a href="${ path }/member/mypage">Mypage</a></li>
         <li data-menuanchor="section6"><a href="${ path }/logout">Logout</a></li>
       </ul>
-      </c:if>
     </header>
     <main id="fullpage">
-      <!-- Section 1 Title -->
+      <!-- Section 1 MyPage -->
       <section class="section">
-      <h1>Pit A Pet</h1>
-      <p><br/><br/></p>
-   
-      <form>
-      	<div>
-      		<input id="id1" type="text" name="search_here" placeholder ="  검색해주세요." required >
-      		
-      	</div>
-      </form>
-      
-        <img src="${ path }/images/organization/organizationlogo.png" alt="logoimnidang" />
-        <p class="title">"Pets are humanizing. They remind us we have an obligation and responsibility to preserve and nurture and care for all life"<br />- James Cromwell</p>
-        <i class="fa-solid fa-angles-down"></i>
-      </section>
-      <!-- Section 2 Announcement about Pit A Pet -->
-      <section class="section">
-        <div class="section__container">
-          <p>WE ARE PIT A PET</p>
-          <span>- Roger A. Caras -</span>
-        </div>
+        <main id="main">
+          <section class="main_user">
+            <form class="form sign-up" action="${ path }/member/doPetEdit" enctype="multipart/form-data" method="post">
+              <!--  <img class="profileimage" src="./img/profile.jpg" />-->
+              <div class="input-group up">
+                <i class="fa-solid fa-paw"></i>
+                <input type="text" name="newPet" id="newPet" placeholder="애완동물" value="${ userPet }"required />
+              </div>
+              
+              <button class="btn sign-ups">애완동물 변경</button>
+            </form>
+          </section>
+        </main>
       </section>
     </main>
   </body>

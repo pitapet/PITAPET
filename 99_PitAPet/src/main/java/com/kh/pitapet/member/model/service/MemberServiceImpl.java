@@ -162,6 +162,42 @@ public class MemberServiceImpl implements MemberService {
 		return returnEmail;
 	}
 
+	@Override
+	public boolean pwCheck(String userId, String userPw) {
+		
+		String dbPw = mapper.pwCheck(userId);
+
+		if(passwordEncoder.matches(userPw, dbPw)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public void updatePw(String userId, String newPw) {
+		String encodedNewPw = passwordEncoder.encode(newPw);
+		
+		// 새로나온 비밀번호로 업데이트
+		mapper.updatePw(userId, encodedNewPw);
+		
+	}
+
+	@Override
+	public String getPet(String userId) {
+		String pet = mapper.findPet(userId);
+		
+		return pet;
+	}
+
+	@Override
+	public void updatePet(String userId, String newPet) {
+		
+		mapper.updatePet(userId, newPet);
+	}
+
+	
+
 	
 
 
