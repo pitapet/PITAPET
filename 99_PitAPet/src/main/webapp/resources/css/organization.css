@@ -146,17 +146,225 @@ i {
   }
 }
 
+.section__wrapper {
+  display: grid;
+  max-width: 95%;
+  margin: auto;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.organazation {
+  display: flex;
+  gap: 20px;
+}
+
+.organazation__description span {
+  font-size: 20px;
+}
+
 @media screen and (max-width: 2559px) {
   /* Global */
+  :root {
+    /* Font size */
+    --font-large: 40px;
+    --font-medium: 20px;
+    --font-regular: 15px;
+    --font-small: 13px;
+    --font-micro: 10px;
+  }
+}
+
+
+
+
+
+
+
+
+/* Global */
 :root {
+  /* Color */
+  --color-white: #ffffff;
+  --color-light-white: #e1e2e1;
+  --color-dark-white: #bdbdbd;
+  --color-pink: #fe918d;
+  --color-purple: #8c52ff;
+  --color-dark-pink: #ff6863;
+  --color-dark-grey: #4d4d4d;
+  --color-grey: #616161;
+  --color-light-grey: #7c7979;
+  --color-blue: #0288d1;
+  --color-dark-blue: #005b9f;
+  --color-light-blue: #5eb8ff;
+  --color-yellow: #fff7d1;
+  --color-orange: #feb546;
+  --color-black: #000000;
+  --color-green: #00695c;
+  --color-dark-green: #002232;
+  --color-light-green: #4e7589;
+  --color-bg-green: #20495c;
+
   /* Font size */
-  --font-large: 40px;
-  --font-medium: 20px;
-  --font-regular: 15px;
-  --font-small: 13px;
-  --font-micro: 10px;
+  --font-large: 48px;
+  --font-medium: 28px;
+  --font-regular: 18px;
+  --font-small: 16px;
+  --font-micro: 14px;
+
+  /* Font weight */
+  --weight-bold: 700;
+  --weight-semi-bold: 600;
+  --weight-regular: 400;
+
+  /* Size */
+  --size-border-radius: 4px;
+
+  /* Annimation */
+  --animation-duration: 300ms;
+
+  /* dog */
+  --color-fur: #ffb141;
+  --color-fur-dark: #F5832C;
+  --color-spot: #F9584C;
+  --color-snout: #544258;
+  --color-collar: #3EAB6C;
+  --duration: .7s;
+  --semi-duration: calc(var(--duration) / 2);
+  --easing: cubic-bezier(.5, 0, .5, 1);
+  --stagger: calc(-1 * var(--semi-duration) / 2);
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap");
 
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
 }
+
+html {
+  opacity: 0;
+}
+
+ul {
+  padding-left: 0;
+}
+
+li {
+  list-style: none;
+}
+
+a:link,
+a:visited,
+a:active {
+  text-decoration: none;
+  color: var(--color-black);
+}
+
+.fp-prev {
+  margin-left: 40px;
+}
+
+.fp-next {
+  margin-right: 40px;
+}
+
+body {
+  font-family: "Gowun Dodum", sans-serif;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+#fullpage {
+  text-align: center;
+}
+
+html,
+body,
+#fullpage,
+.section,
+.slide,
+.fp-tableCell {
+  height: 100vh;
+  width: 100vw;
+  background-color: #f2f2f2;
+}
+
+#header {
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  height: 50px;
+  width: 100%;
+  top: 0;
+  padding: 40px;
+  z-index: 100;
+  background: transparent;
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo__img {
+  width: 30px;
+}
+
+.header__menu {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-medium);
+}
+
+.header__menu li {
+  margin: 0 15px;
+  list-style: none;
+}
+
+i {
+  position: absolute;
+  top: 85%;
+  font-size: 40px;
+  color: rgba(0, 0, 0, 0.5);
+  animation: upDown 1.4s infinite ease-in-out alternate;
+}
+
+@keyframes upDown {
+  from {
+    transform: translatey(0px);
+  }
+  to {
+    transform: translatey(-20px);
+  }
+}
+
+.section__wrapper {
+  display: grid;
+  max-width: 95%;
+  margin: auto;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.organazation {
+  display: flex;
+  gap: 20px;
+}
+
+.organazation__description span {
+  font-size: 20px;
+}
+
+.search, h1 {
+	margin-bottom: 100px;
+	}
 
