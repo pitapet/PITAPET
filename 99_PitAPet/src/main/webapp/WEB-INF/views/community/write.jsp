@@ -95,52 +95,42 @@
          
 	      <home class="main__home">
             <div class="main__home__categories box">
-              <p>게시글 작성하기</p>
+              <p>게시글 작성</p>
             </div>
             
             <div class="main__home__board box">
-				<form action="${ pageContext.request.contextPath }/community/write" method="post"
-				enctype="multipart/form-data">
-					<table id='tbl-board'>
-						<tr>
-							<th>제목</th>
-							<td><input type="text" name="title" id="title"></td>
-						</tr>
-						<tr>
-							<th>작성자</th>
-							<td><input type="text" name="writerId" value="${ loginMember.id }" readonly></td>
-						</tr>
-						<tr>
-							<th>카테고리</th>
-							<td><select name="job">
-								    <option value="free">자유게시판</option>
-								    <option value="question">질문게시판</option>
-								    <option value="user">중고거래</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<th>첨부파일1</th>
-							<td><input type="file" name="upfile"></td>
-						</tr>
-						<!-- 
-						<tr>
-							<th>첨부파일2</th>
-							<td><input type="file" name="upfile"></td>
-						</tr>
-						-->
-						<tr>
-							<th>내용</th>
-							<td><textarea name="content" cols="80" rows="35" ></textarea></td>
-						</tr>
-						<tr>
-							<th colspan="2">
-								<input type="submit" value="등록">
-								<input type="reset" value="취소">
-							</th>
-						</tr>
-					</table>
-				</form>
+            <div id="write_all">
+            	<form action="${ pageContext.request.contextPath }/community/write" method="post" enctype="multipart/form-data">
+				<div class="form-type">
+					<p class="write_title">제목</p>
+					<input type="text" class="form-control" id="title"
+						placeholder="제목을 입력해 주세요." name="title" required="required">
+				</div>
+				<!--  
+					<p class="write_title">카테고리 선택</p> <br>
+					<select id="select-type" name="type">
+						<option value="자유게시판">자유게시판</option>
+						<option value="질문게시판">질문게시판</option>
+						<option value="중고거래">중고거래</option>
+					</select>
+				-->	
+				
+					<!------------- html편집기?????? ------------->
+	
+					 <!-- 내용 작성 -->
+				<div class="form-type">
+					<p class="write_title">글작성</p>
+					<input type="file" name="upfile" placeholder="파일첨부">
+					<textarea class="form-control" rows="15" id="form-content"
+						name="content" placeholder="내용을 입력해주세요." required="required"></textarea>
+				</div>
+				<div>
+					<button type="reset" class="btn-insert" onclick="location.href='${ pageContext.request.contextPath }/community/list'">취소</button>
+					<button type="submit" class="btn-insert">등록</button>
+				</div>
+			</form>
+				
+			</div>
 			</div>
 		</home>
 		

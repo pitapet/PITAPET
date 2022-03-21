@@ -14,6 +14,8 @@ public class Reply {
 	
 	private int boardNo;
 	
+	private int replyMember;
+	
 	private int writerNo;
 	
 	private String writerId;

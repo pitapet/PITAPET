@@ -70,9 +70,9 @@
               <div>
                 <ul>
                   <li><a href="${ path }/community/list">전체게시판</a></li>
-                  <li><a href="${ path }/community/free">자유게시판</a></li>  <!--  -->
+                  <li><a href="${ path }/community/free">자유게시판</a></li> 
                   <li><a href="${ path }/community/question">질문게시판</a></li>
-                  <li><a href="${ path }/community/used">중고거래</a></li>
+                   <!--<li><a href="${ path }/community/used">중고거래</a></li>   -->
                 </ul>
               </div>
             </div>
@@ -99,27 +99,33 @@
             	<c:if test="${ empty loginMember }">
 					<button type="button" id="btn-add" onclick="javascript:alert('로그인 후 작성 가능합니다.')">글쓰기</button>
 				</c:if>	
-					
-					<form action="list.do" method="get"> <%-- <c:if test="${condition eq 'titlename' }">selected</c:if>	 --%>
-						<label for="condition">검색조건</label>
-						<select name="condition" id="condition">
-							<option value="titlename" <c:if test="${condition eq 'titlename' }">selected</c:if>>제목+파일명</option>
-							<option value="title" <c:if test="${condition eq 'title' }">selected</c:if>>제목</option>
-							<option value="writer" <c:if test="${condition eq 'writer' }">selected</c:if>>작성자</option>
-						</select>
-						<input id="id1" type="text" name="search_here" placeholder =" 검색어를 입력해 주세요." required >
-						<button type="submit">검색</button>
-					</form><!-- condition이라는 파라미터 명으로 넘어간다. -->
+					<br>
+					 
+				   <!-- 검색 -->
+				  <form name=""form1 action="list.do" method="post">
+	                  <label for="condition">검색조건</label>   
+	                  <select name="search_option" id="board_condition">
+	                  	 <option value="all" <c:if test="${map.search_option == 'all'}">selected</c:if>>전체</option>
+	                     <option value="title" <c:if test="${map.search_option == 'title'}">selected</c:if>>제목</option>
+	                     <option value="content" <c:if test="${map.search_option == 'content'}">selected</c:if>>내용</option>
+	                     <option value="writerId" <c:if test="${map.search_option == 'writerId'}">selected</c:if>>작성자</option>
+	                  </select>
+	                  
+	                  <input id="id1" name="keyword" value="${map.keyword}" placeholder =" 검색어를 입력해 주세요." required >
+	                  <input type="submit" value="검색" id="btn_search"></input>
+               	  </form> <!-- condition이라는 파라미터 명으로 넘어간다. -->
+				   
+				   
 					
 					<c:choose>
-						<c:when test="${not empty keyword }">
+						<c:when test="${ !empty keyword }">
 							<p>
-								<strong>${keyword} </strong>키워드로 검색된
-								<strong>${totalRow }</strong>개의 파일이 있습니다.
+								<strong>${ keyword } </strong>키워드로 검색된
+								<strong>${ totalRow }</strong>개의 게시글이 있습니다.
 							</p>
 						</c:when>
 						<c:otherwise>
-							<p><strong>${totalRow }</strong>개의 파일이 있습니다.</p>
+							<p><strong>${ totalRow }</strong>개의 파일이 있습니다.</p>
 						</c:otherwise>
 				</c:choose>
 			
@@ -131,7 +137,7 @@
           <home class="main__home">
             <div class="main__home__categories box">
               <p>전체게시판</p>
-              <span>총 84 게시글</span>
+              <span>총 ${ fn:length(list) }개 게시글</span>
             </div>
 		 	
             <div class="main__home__board box">
@@ -144,26 +150,35 @@
 	              <div class="infinite">
 	              <article>
 	                <div class="article__one">
-	                  <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />
+	                   <a href="${ path }/community/view?no=${ board.no }">	
+	                   	 <c:if test="${ !empty board.originalFileName }">
+	                  		<img class="imgbox" src="${ path }/images/Community/boardImgs/${ board.originalFileName }" alt="board___file" />
+	                  	 </c:if>	
+	                   	 <c:if test="${ empty board.originalFileName }">
+	                     	<img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="board___file" />
+		                 </c:if>  	
+	                   </a>
 	                </div>
 	                <div class="article__two">
 	                  <div class="two__div">
 	                    <div class="two__div__one">
-	                      <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />
-	                      <span>${ board.writerId }</span>
+		                    <!-- <img class="imgbox" src="${ path }/images/Community/boardImgs/no-image.png" alt="" />  -->
+		                    <span><a href="${ path }/community/view?no=${ board.no }"><b>${ board.title }</b></a></span>
+		                       
 	                    </div>
 	                    <div class="two__div__two">
-	                      <span>1일전</span>
+	                      <span>${ board.writerId }</span>
 	                    </div>
 	                  </div>
 	                  <div class="two__div__description">
-	                  	  <a href="${ path }/community/view?no=${ board.no }">${ board.title }</a>
+	                  &emsp;&emsp;&emsp;
+	                  	  <!-- ${ board.writerId }  -->
 	                    <span
-	                      >${board.content }</span
-	                    >
+	                      >${board.content }</span>
 	                  </div>
 	                  <div class="two__div__footer">
-	                    <span>5 댓글</span>
+	                  	<span><fmt:formatDate pattern="yyyy-MM-dd" value="${ board.createDate }"/> 작성</span>
+	                    <span>${ count } 댓글</span>
 	                    <span>${ board.readCount } 조회</span>
 	                  </div>
 	                </div>
@@ -171,7 +186,49 @@
 	                </div>
 	                <div class="pagination"></div>
 	          	</c:forEach>    
+	          	
+	          	<div id="board_pageBar">
+					<!-- 맨 처음으로 -->
+					<button onclick="location.href='${ path }/community/list?page=1'">&lt;&lt;</button>
+			
+					<!-- 이전 페이지로 -->
+					<button onclick="location.href='${ path }/community/list?page=${ pageInfo.prevPage }'">&lt;</button>
+			
+					<!--  10개 페이지 목록 -->
+					<c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" varStatus="status">
+						<c:if test="${ status.current == pageInfo.currentPage }">				
+							<button disabled>${ status.current }</button>
+						</c:if>
+						
+						<c:if test="${ status.current != pageInfo.currentPage }">				
+							<button onclick="location.href='${ path }/community/list?page=${ status.current }&count=${ pageInfo.listLimit }'">${ status.current }</button>
+						</c:if>
+					</c:forEach>
+			
+					<!-- 다음 페이지로 -->
+					<button onclick="location.href='${ path }/community/list?page=${ pageInfo.nextPage }'">&gt;</button>
+			
+					<!-- 맨 끝으로 -->
+					<button onclick="location.href='${ path }/community/list?page=${ pageInfo.maxPage }'">&gt;&gt;</button>
+				</div>	
+
+	</div>
+	          	
+	          	
+	          	
+	          	<!--   더보기 구현
+	          	<div id="more_btn_div" align="center">
+	          		<a id="more_btn_a" href="javascript:moreList();">
+	          			더보기
+	          		</a>
+	          	</div>
+	          	 -->
 	         </c:if>	
+	          	
+	         
+	         
+
+
 	          	
             </div>
           </home>

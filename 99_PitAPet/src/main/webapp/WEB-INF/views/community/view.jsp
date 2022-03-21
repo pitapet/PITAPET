@@ -66,118 +66,139 @@
                 </ul>
               </div>
             </div>
+            
+            <div class="main__header__best box">
+              <p>실시간 베스트</p>   
+              <div>
+                <p>갑자기 너무 추워요</p>
+                <span>32 댓글</span>
+              </div>
+              <div>
+                <p>흠좀무..</p>
+                <span>32 댓글</span>
+              </div>
+              <div>
+                <p>송파구 맛집좀</p>
+                <span>32 댓글</span>
+              </div>
+            </div>
+            
+            <div class="main__header__read box">
+            </div>
+            
           </header> 
-                 
-      <h2>게시판 상세 조회</h2>
-		<table id="tbl-board">
-			<tr>
-				<th>글번호</th>
-				<td>${ board.no }</td>
-			</tr>
-			<tr>
-				<th>제 목</th>
-				<td>${ board.title }</td>
-			</tr>
-			<tr>
-				<th>작성자</th>
-				<td>${ board.writerId }</td>
-			</tr>
-			<tr>
-				<th>조회수</th>
-				<td>${ board.readCount }</td>
-			</tr>
-			<tr>
-				<th>첨부파일</th>
-				<td>
-					<c:if test="${ empty board.originalFileName }">
-						<span> - </span>
-					</c:if>
-					<c:if test="${ !empty board.originalFileName }">
-						<img src="${ pageContext.request.contextPath }/resources/images/file.png" width="20" height="20"/>
-						<%-- 
-						<a href="${ pageContext.request.contextPath }/resources/upload/board/${board.renamedFileName}"
-							download=${ board.originalFileName }>
-							<c:out value="${ board.originalFileName }" />
-						</a>
-						--%>
-						<a href="javascript:fileDownload('${ board.originalFileName }', '${board.renameFileName}')">
-							<c:out value="${ board.originalFileName }" />
-						</a>
-					</c:if>
-				</td>
-			</tr>
-			<tr>
-				<th>내 용</th>
-				<td>${ board.content }</td>
-			</tr>
-			<%--글작성자/관리자인경우 수정삭제 가능 --%>
-			<tr>
-				<th colspan="2">
-					<c:if test="${ ! empty loginMember && loginMember.id == board.writerId }">
-						<button type="button" onclick="location.href='${ pageContext.request.contextPath }/board/update?no=${ board.no }'">수정</button>
-						<button type="button" id="btnDelete">삭제</button>
-					</c:if>
-					
-					<button type="button" onclick="location.href='${ pageContext.request.contextPath }/board/list'">목록으로</button>
-				</th>
-			</tr>
-		</table>
-		<div id="comment-container">
-		   	<div class="comment-editor">
-		   		<form action="${ pageContext.request.contextPath }/board/reply" method="POST">
-		   			<input type="hidden" name="boardNo" value="${ board.no }">
-					<textarea name="content" id="replyContent" cols="55" rows="3"></textarea>
-					<button type="submit" id="btn-insert">등록</button>	    			
-		   		</form>
-		   	</div>
-		</div>
-		<table id="tbl-comment">
-		 	<c:forEach var="reply" items="${ board.replies }">
-		   	<tr class="level1">
-		   		<td>
-		   			<sub class="comment-writer"><c:out value="${ reply.writerId }"/></sub>
-		   			<sub class="comment-date"><fmt:formatDate type="date" value="${ reply.createDate }"/></sub>
-		   			<br>
-		   			<c:out value="${ reply.content }"/>
-		   		</td>
-		   		<td>
-		   			<c:if test="${ ! empty loginMember && loginMember.id == reply.writerId }">
-		  					<button class="btn-delete">삭제</button>
-					</c:if>
-		   		</td>
-		   	</tr>
-		  	</c:forEach>
-		</table>
-		   
-		<script>
-			$(document).ready(() => {
-				$("#btnDelete").on("click", () => {
-					if(confirm("정말로 게시글을 삭제 하시겠습니까?")) {
-						location.replace("${ pageContext.request.contextPath }/board/delete?no=${ board.no }");
-					}
-				})
-				
-				/*
-				$("#replyContent").on("focus", (e) => {
-					if(${ empty loginMember }) {
-						alert("로그인 후 이용해주세요!");
-						
-						$("#userId").focus();				
-					}
-				});
-				*/
-			});
-			
-			function fileDownload(oname, rname) {
-				
-				// encodeURIComponent()
-				//  - 아스키문자(a~z, A~Z, 1~9, ... )는 그대로 전달하고 기타 문자(한글, 특수 문자 등)만 %XX(16진수 2자리)와 같이 변환된다.
-				location.assign("${ pageContext.request.contextPath }/board/fileDown?oname=" + encodeURIComponent(oname) + "&rname=" + encodeURIComponent(rname));
-			}
-		</script>           
-                   
-           
+          
+      	  <home class="main__home">
+          	<div class="main__home__categories box">
+            	<p>게시글 상세보기</p>
+            </div>
+            
+            <div class="main__home__board box">
+            <div id="view_all">
+              <div id="board_top"><b> 조회수 : ${ board.readCount } </b></div>
+              <div id="board_top"><b> 작성일 : <fmt:formatDate pattern="yyyy-MM-dd" value="${ board.createDate }"/> </b></div>	
+              <h1 class="board_tit">${ board.title }</h1>
+              <br><br>
+              <div class="board_writer">           
+                  <div class="board_writer_view">
+	                      <span id="a_kind"><b>작성자 | ${ board.writerId }&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+	                      					   애완동물 | ${ board.writerPet }</b></span>
+	              </div>
+              </div>
+              <div class="view_cont_file">
+              	<c:if test="${ !empty board.originalFileName }">
+              		<img class="view_cont_file_img" src="${ path }/images/Community/boardImgs/${ board.originalFileName }" alt="board___file" />
+              	</c:if>
+              	<c:if test="${ empty board.originalFileName }">
+	                <img class="view_cont_file_img" src="${ path }/images/Community/boardImgs/no-image.png" alt="board___file" />
+		        </c:if>  		
+              </div>
+              <div class="board_contents">
+                ${ board.content }
+              </div>
+              
+              
+               <%--글작성자/관리자인경우 수정삭제 가능 --%>
+               <tr>
+                  <th colspan="2">
+                     <c:if test="${ ! empty loginMember && loginMember.id == board.writerId }">
+                        <button type="button" class="btn-insert" onclick="location.href='${ pageContext.request.contextPath }/community/update?no=${ board.no }'">수정</button>
+                        <button type="button" id="btnDelete" class="btn-insert">삭제</button>
+                     </c:if>
+                     
+                  </th>
+               </tr>
+               
+	            
+           <!---------------------------- 댓글 ---------------------------->
+	            <div id="comment-container">
+	            <div class="comment-editor">
+		            <form action="${ path }/community/writeReply" method="POST" id="frm-comment">
+		            	<input type=hidden name="rv_no" value="${ reply.no }">
+		            	<textarea name="cm_content" id="commentContent" rows="3" cols="30" placeholder="댓글을 입력해주세요."></textarea>
+		            	<button type="submit" class="btn-insert">등록</button> 
+		            </form>
+			    </div>
+	            </div>
+	           
+	           <table id="tbl-comment">
+			    	<c:forEach var="reply" items="${ board.replies }">
+				    	<tr class="level1">
+				    		<td>
+				    			<sub class="comment-writer"><c:out value="${ reply.writerId }"/></sub>
+				    			<sub class="comment-date"><fmt:formatDate type="date" value="${ reply.createDate }"/></sub>
+				    			<br>
+				    			<c:out value="${ reply.content }"/>
+				    		</td>
+				    		<td>
+				    			<c:if test="${ ! empty loginMember && loginMember.id == reply.writerId }">
+			    					<button class="btn-delete">삭제</button>
+		    					</c:if>
+				    		</td>
+				    	</tr>
+			    	</c:forEach>
+			    </table>
+	           
+	            
+	            
+	        <div>
+	            <button id="btn_list" type="button" onclick="location.href='${ pageContext.request.contextPath }/community/list'">목록으로</button>
+	         </div>
+	         
+	         
+	         
+	            <script>
+	               $(document).ready(() => {
+	                  $("#btnDelete").on("click", () => {
+	                     if(confirm("정말로 게시글을 삭제 하시겠습니까?")) {
+	                        location.replace("${ pageContext.request.contextPath }/community/delete?no=${ board.no }");
+	                     }
+	                  })
+	                  
+	                  /*
+	                  $("#replyContent").on("focus", (e) => {
+	                     if(${ empty loginMember }) {
+	                        alert("로그인 후 이용해주세요!");
+	                        
+	                        $("#userId").focus();            
+	                     }
+	                  });
+	                  */
+	               });
+	               
+	               function fileDownload(oname, rname) {
+	                  
+	                  // encodeURIComponent()
+	                  //  - 아스키문자(a~z, A~Z, 1~9, ... )는 그대로 전달하고 기타 문자(한글, 특수 문자 등)만 %XX(16진수 2자리)와 같이 변환된다.
+	                  location.assign("${ pageContext.request.contextPath }/board/fileDown?oname=" + encodeURIComponent(oname) + "&rname=" + encodeURIComponent(rname));
+	               }
+	            </script>           
+            
+		 	
+		     
+        	</div> 
         </div>
+       </home> 
       </section>
     </main>
   </body>

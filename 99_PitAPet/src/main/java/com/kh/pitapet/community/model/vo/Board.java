@@ -19,6 +19,8 @@ public class Board {
 	
 	private String writerId;
 	
+	private String writerPet;
+	
 	private String title;
 	
 	private String content;

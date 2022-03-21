@@ -22,7 +22,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="${ path }/css/plugin/jquery.fullPage.css" />
     <link rel="stylesheet" href="${ path }/css/community.css" />
+    
+    <!-- SmartEditor2 라이브러리 
+    <script type="text/javascript" src="${ path }/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${ path }//code.jquery-1.11.0.min.js"></script> -->
+    
   </head>
+  
   <body>
     <header id="header">
       <logo class="header__logo">
@@ -50,17 +56,7 @@
       </c:if>
     </header>
     <main id="fullpage">
-      <!-- Section 1 Title -->
-      <section class="section">
-        <div class="title__box">
-          <img src="${ path }/images/Community/logo/logo.png" alt="" />
-          <p class="title">
-            “To effectively communicate, we must realize that we are all different in the way we perceive the world and use this understanding as a guide to our communication with others.”<br />– Tony
-            Robbins
-          </p>
-          <i class="fa-solid fa-angles-down"></i>
-        </div>
-      </section>
+     
       <!-- Section 2 Announcement about Pit A Pet -->
       <section class="section">
         <div class="main">
@@ -70,22 +66,16 @@
               <div>
                 <ul>
                   <li><a href="${ path }/community/list">전체게시판</a></li>
-                  <li><a href="${ path }/community/free">자유게시판</a></li>  <!--  -->
+                  <li><a href="${ path }/community/free">자유게시판</a></li>  
                   <li><a href="${ path }/community/question">질문게시판</a></li>
                   <li><a href="${ path }/community/used">중고거래</a></li>
                 </ul>
               </div>
             </div>
-            
-             <!-- 글쓰기
-            <c:if test="${ !empty loginMember }">
-				<button type="button" id="btn-add"
-				onclick="location.href='${ path }/board/write'">글쓰기</button>	
-			</c:if>
            
            
             <div class="main__header__best box">
-              <p>실시간 베스트</p>      쿼리문으로 정렬?????????????????????? 
+              <p>실시간 베스트</p>     
               <div>
                 <p>갑자기 너무 추워요</p>
                 <span>32 댓글</span>
@@ -99,13 +89,52 @@
                 <span>32 댓글</span>
               </div>
             </div>
-            <div class="main__header__read box"></div> -->
+           
+            <div class="main__header__read box"></div>
           </header> 
          
-	          
-           
+	      <home class="main__home">
+            <div class="main__home__categories box">
+              <p>게시글 수정</p>
+            </div>
+            
+            <div class="main__home__board box">
+            <div id="write_all">
+            	<form action="${ pageContext.request.contextPath }/community/write" method="post" enctype="multipart/form-data">
+				<div class="form-type">
+					<p class="write_title">제목</p>
+					<input type="text" class="form-control" id="title" value="${ board.title }"
+						placeholder="제목을 입력해 주세요." name="title" required="required">
+				</div>				
+				
+					<!------------- html편집기?????? ------------->
+	
+					 <!-- 내용 작성 -->
+				<div class="form-type">
+					<p class="write_title">글작성</p>
+					<input type="file" name="upfile" placeholder="파일첨부">
+					<c:if test="${ !empty board.originalFileName }">
+					<img src="${ pageContext.request.contextPath }/resources/images/file.png" width="20" height="20"/>
+					<c:out value="${ board.originalFileName }"></c:out>
+				</c:if>
+					<textarea class="form-control" rows="15" id="form-content"
+						name="content" placeholder="내용을 입력해주세요." required="required"></textarea>
+				</div>
+				<div>
+					<button type="reset" class="btn-insert" onclick="location.href='${ pageContext.request.contextPath }/community/list'">취소</button>
+					<button type="submit" class="btn-insert">등록</button>
+				</div>
+			</form>
+				
+			</div>
+			</div>
+		</home>
+		
         </div>
       </section>
     </main>
   </body>
 </html>
+
+<!-- SmartEditor2 -->
+<script type="text/javascript" src = "${ path }/js/community.js"></script>

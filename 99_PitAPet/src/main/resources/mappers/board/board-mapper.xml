@@ -9,6 +9,7 @@
 		        B.TITLE, 
 		        B.WRITER_NO,
 		        M.ID, 
+		        M.pet,
 		        B.READCOUNT, 
 		        B.ORIGINAL_FILENAME, 
 		        B.RENAME_FILENAME, 
@@ -19,12 +20,13 @@
 		JOIN MEMBER M ON(B.WRITER_NO = M.NO)
 		WHERE B.STATUS = 'Y'
 	</sql>
-
+	
 	<resultMap type="Board" id="boardListResultMap">
 		<id property="no" column="BOARD_NO"/>
 		<result property="title" column="TITLE"/>
 		<result property="writerNo" column="WRITER_NO"/>
 		<result property="writerId" column="ID"/>
+		<result property="writerPet" column="PET"/>		
 		<result property="readCount" column="READCOUNT"/>
 		<result property="originalFileName" column="ORIGINAL_FILENAME"/>
 		<result property="renameFileName" column="RENAME_FILENAME"/>
@@ -34,15 +36,20 @@
 	</resultMap>
 	
 	<resultMap type="Reply" id="replyResultMap">
-		<id property="replyNo" column="REPLY_NO"/>
-		<result property="boardNo" column="BOARD_NO"/>
-		<result property="writerId" column="ID"/>
-		<result property="content" column="CONTENT"/>
-		<result property="createDate" column="CREATE_DATE"/>
-		<result property="modifyDate" column="MODIFY_DATE"/>
-	</resultMap>
-
+      <id property="no" column="REPLY_NO"/>
+      <result property="boardNo" column="REPLY_BOARD"/>
+      <result property="replyMember" column="REPLY_MEMBER"/>
+      <result property="writerId" column="ID"/>
+      <result property="content" column="REPLY_CONT"/>
+      <result property="createDate" column="REPLY_DATE"/>
+      <result property="modifyDate" column="REPLY_MODIFY"/>
+   </resultMap>
+	
 	<resultMap type="Board" extends="boardListResultMap" id="boardDetailResultMap">
+		<collection property="replies" javaType="arraylist" columnPrefix="R_" resultMap="replyResultMap"/>
+	</resultMap>
+	
+	<resultMap type="Reply" extends="replyResultMap" id="replyDetailResultMap">
 		<collection property="replies" javaType="arraylist" columnPrefix="R_" resultMap="replyResultMap"/>
 	</resultMap>
 	
@@ -62,6 +69,26 @@
 		ORDER BY B.BOARD_NO DESC
 	</select>
 	
+	<select id="listAll" parameterType="map" resultMap="boardListResultMap">
+		<!-- <include refid="boardListSql"/>  -->
+		<include refid="search"/>
+			ORDER BY B.BOARD_NO DESC
+	</select>
+	
+	<sql id="search">
+        <choose>
+            <when test="search_option == 'all' ">
+                where  
+                      writerId like '%'||#{keyword}||'%'
+                      or content like '%' || #{keyword}||'%'
+                      or title like '%'||#{keyword}||'%'   
+            </when>
+            <otherwise>
+                where ${search_option} like '%'||#{keyword}||'%'
+            </otherwise>
+        </choose>
+    </sql>
+	
 	<select id="getBoardCount" parameterType="map" resultType="_int">
 		SELECT COUNT(*) 
 		FROM BOARD
@@ -78,7 +105,6 @@
 			</when>
 		</choose>
 	</select>
-	
 	
 	<select id="selectBoardListByFilters" parameterType="map" resultMap="boardListResultMap">
 		<include refid="boardListSql"/>
@@ -101,6 +127,7 @@
 		  </foreach>
 		</if>
 	</select>
+	
 	<select id="selectBoardByNo" parameterType="_int" resultMap="boardDetailResultMap">
 		SELECT B.BOARD_NO,
 		       B.TITLE,
@@ -112,21 +139,34 @@
 		       B.CONTENT,
 		       B.CREATE_DATE, 
 		       B.MODIFY_DATE,
-		       R.REPLY_NO AS R_NO, 
-		       R.BOARD_BOARD AS R_BOARD_NO, 
-		       R.CONTENT AS R_CONTENT, 
-		       M2.ID AS R_ID, 
-		       R.CREATE_DATE AS R_CREATE_DATE, 
-		       R.MODIFY_DATE AS R_MODIFY_DATE
+		       R.REPLY_NO,  
+		       R.REPLY_BOARD,  
+		       R.REPLY_CONT, 
+		       M.ID,  
+		       M.pet,
+		       R.REPLY_DATE,  
+		       R.REPLY_MODIFY
 		FROM BOARD B
 		JOIN MEMBER M ON(B.WRITER_NO = M.NO)
 		LEFT OUTER JOIN REPLY R ON(B.BOARD_NO = R.REPLY_BOARD)
-		LEFT OUTER JOIN MEMBER M2 ON(R.WRITER_NO = M2.NO)
-		WHERE B.STATUS = 'Y' AND B.NO = #{no}
+		LEFT OUTER JOIN MEMBER M2 ON(R.REPLY_MEMBER = M2.NO)
+		WHERE B.STATUS = 'Y' AND B.BOARD_NO = #{no}
+	</select>
+	
+	<select id="selectReplyByNo" parameterType="_int" resultMap="replyDetailResultMap">
+		SELECT R.REPLY_NO,  
+		       R.REPLY_BOARD,  
+		       R.REPLY_CONT, 
+		       M.ID,  
+		       R.REPLY_DATE,  
+		       R.REPLY_MODIFY
+		FROM REPLY R
+		JOIN MEMBER M ON(R.REPLY_MEMBER = M.NO)
+		WHERE R.REPLY_STATUS = 'Y'
 	</select>
 	
 	<insert id="insertBoard" parameterType="Board"
-			useGeneratedKeys="true" keyProperty="no" keyColumn="NO">
+			useGeneratedKeys="true" keyProperty="no" keyColumn="BOARD_NO">
 		INSERT INTO BOARD (
 			BOARD_NO,
 			WRITER_NO,
@@ -147,8 +187,8 @@
 			#{renameFileName},
 			DEFAULT,
 			DEFAULT,
-			DEFAULT,
-			DEFAULT
+			#{createDate},
+			#{modifyDate}
 		)
 	</insert>
 	
@@ -176,5 +216,59 @@
 	<update id="updateStatus" parameterType="map">
 		UPDATE BOARD SET STATUS = #{status} WHERE BOARD_NO = #{no}
 	</update>
+	
+	<!-- 댓글 -->
+	<select id="getReplyCount" parameterType="map" resultType="_int">
+      SELECT COUNT(*) 
+      FROM REPLY
+      WHERE REPLY_STATUS = 'Y'
+      <choose>
+         <when test="writer != null">
+            AND M.ID LIKE '%' || #{writer} || '%'
+         </when>
+         <when test="content != null">
+            AND R.REPLY_CONT LIKE '%' || #{content} || '%'
+         </when>
+      </choose>
+   </select>
+
+   <insert id="insertReply" parameterType="Reply"
+         useGeneratedKeys="true" keyProperty="no" keyColumn="REPLY_NO">
+      INSERT REPLY (
+         REPLY_NO,
+         REPLY_BOARD,
+         REPLY_MEMBER,
+         REPLY_CONT,
+         REPLY_STATUS,
+         REPLY_DATE,
+         REPLY_MODIFY
+      ) VALUES (
+         SEQ_REPLY_NO.NEXTVAL,
+         #{boardNo},
+         #{replyMember},
+         #{content},
+         DEFAULT,
+         #{createDate},
+         #{modifyDate}
+      )
+   </insert>
+
+   <update id="updateReply" parameterType="Reply">
+          UPDATE BOARD
+          <trim prefix="SET" suffixOverrides=",">
+          <if test="content != null">
+             CONTENT = #{content},
+          </if>
+          MODIFY_DATE = SYSDATE 
+          </trim>
+       WHERE 
+          REPLY_NO = #{no}
+   </update>
+   
+   <update id="updateReplyStatus" parameterType="map">
+      UPDATE REPLY SET STATUS = #{status} WHERE REPLY_NO = #{no}
+   </update>
+	
+	
 	
 </mapper>

@@ -3,7 +3,12 @@ package com.kh.pitapet.community.controller;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import javax.inject.Inject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -13,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,22 +26,30 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.pitapet.common.util.FileProcess;
 import com.kh.pitapet.common.util.PageInfo;
 import com.kh.pitapet.community.model.service.BoardService;
+import com.kh.pitapet.community.model.service.ReplyService;
 import com.kh.pitapet.community.model.vo.Board;
+import com.kh.pitapet.community.model.vo.Reply;
 import com.kh.pitapet.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
+@SessionAttributes("loginMember")
 @RequestMapping("/community")
 public class BoardController {
 	@Autowired
 	private BoardService service;
+	
+	@Autowired
+	   private ReplyService  replyService;
 	
 	@Autowired
 	private ResourceLoader resourceLoader;
@@ -43,7 +57,7 @@ public class BoardController {
 	@GetMapping("/list")
 	public ModelAndView list(ModelAndView model, 
 			@RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "10")int count) {
+			@RequestParam(defaultValue = "5")int count) {
 		PageInfo pageInfo = null;
 		List<Board> list = null;
 		
@@ -62,7 +76,7 @@ public class BoardController {
 	@GetMapping("/free")
 	public ModelAndView free(ModelAndView model, 
 			@RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "10")int count) {
+			@RequestParam(defaultValue = "5")int count) {
 		PageInfo pageInfo = null;
 		List<Board> list = null;
 		
@@ -81,7 +95,7 @@ public class BoardController {
 	@GetMapping("/question")
 	public ModelAndView question(ModelAndView model, 
 			@RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "10")int count) {
+			@RequestParam(defaultValue = "5")int count) {
 		PageInfo pageInfo = null;
 		List<Board> list = null;
 		
@@ -96,43 +110,49 @@ public class BoardController {
 		
 		return model;
 	}
-	// 중고거래
-	@GetMapping("/used")
-	public ModelAndView used(ModelAndView model, 
+	
+	
+	// 게시글 검색
+	@RequestMapping("/list.do")
+	public ModelAndView search(ModelAndView model, 
 			@RequestParam(defaultValue = "1") int page,
-			@RequestParam(defaultValue = "10")int count) {
+			@RequestParam(defaultValue = "5")int count,
+			@RequestParam(defaultValue = "writerId") String search_option, //기본 검색 옵션값을 작성자로
+			@RequestParam(defaultValue = "") String keyword //키워드의 기본값을 ""으로 한다.
+			
+			)
+			throws Exception{ 
+		
 		PageInfo pageInfo = null;
-		List<Board> list = null;
+		List<Board> list = service.listAll(search_option, keyword, pageInfo);
 		
 		log.info("page number : {}", page);
 		
 		pageInfo = new PageInfo(page, 10, service.getBoardCount(), count);
 		list = service.getBoardList(pageInfo);
 		
-		model.addObject("pageInfo", pageInfo);
-		model.addObject("list", list);
-		model.setViewName("community/used");
+		ModelAndView mav = new ModelAndView();
+        Map<String,Object> map = new HashMap<>(); 
+        
+        map.put("list", list);
+        map.put("pageInfo", pageInfo);
+        map.put("count", count);
+        map.put("search_option", search_option);
+        map.put("keyword", keyword);
+        mav.addObject("map", map);
+        
+        System.out.println("map : " + map);
+        mav.setViewName("community/list.do");
 		
-		return model;
+//		model.addObject("pageInfo", pageInfo);
+//		model.addObject("list", list);
+//		model.setViewName("community/list");
+		
+//		return model;
+        return mav;
 	}
+		
 	
-	// 게시글 검색
-	public class Criteria {
-		public int pageNum;
-		public int amount;
-		
-		// 검색에 필요한 키워드 선언
-		public String serachName;
-		
-		public Criteria() {
-			this(1, 10);
-		}
-		
-		public Criteria(int pageNum, int amount) {
-			this.pageNum = pageNum;
-			this.amount = amount;
-		}
-	}
 	
 	
 	@GetMapping("/write")
@@ -153,25 +173,24 @@ public class BoardController {
 		// 파일을 업로드하지 않으면 true, 파일을 업로드하면 false 
 		log.info("Upfile is Empty : {}", upfile.isEmpty());
 		
-//		// 1. 파일을 업로드 했는지 확인 후 파일을 저장
-//		if(upfile != null && !upfile.isEmpty()) {
-//			// 파일을 저장하는 로직 작성
-//			String location = null;
-//			String renamedFileName = null;
-////			String location = request.getSession().getServletContext().getRealPath("resources/upload/board");
-//
-//			try {
-//				location = ResourceLoader.getResource("resources/upload/board").getFile().getPath();
-//				renamedFileName = FileProcess.save(upfile, location);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//			
-//			if(renamedFileName != null) {
-//				board.setOriginalFileName(upfile.getOriginalFilename());
-//				board.setRenamedFileName(renamedFileName);
-//			}
-//		}
+		// 1. 파일을 업로드 했는지 확인 후 파일을 저장
+		if(upfile != null && !upfile.isEmpty()) {
+			// 파일을 저장하는 로직 작성
+			String location = null;
+			String renameFileName = null;
+
+			try {
+				location = resourceLoader.getResource("resources/images/Community/boardImgs").getFile().getPath();
+				renameFileName = FileProcess.save(upfile, location);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			if(renameFileName != null) {
+				board.setOriginalFileName(upfile.getOriginalFilename());
+				board.setRenameFileName(renameFileName);
+			}
+		}
 		
 		// 2. 작성한 게시글 데이터를 데이터 베이스에 저장
 		board.setWriterNo(loginMember.getNo());
@@ -187,7 +206,7 @@ public class BoardController {
 		
 		model.setViewName("common/msg");
 		
-		return model;
+		return model; 
 	}
 	
 	@GetMapping("/view")
@@ -251,55 +270,55 @@ public class BoardController {
 		return model;
 	}
 	
-//	@PostMapping("/update")
-//	public ModelAndView update(ModelAndView model, 
-//			@SessionAttribute("loginMember") Member loginMember,
-//			@ModelAttribute Board board, @RequestParam("upfile") MultipartFile upfile) {
-//		
-//		int result;
-//		
-//		if (loginMember.getId().equals(board.getWriterId())) {
-//			if(upfile != null && !upfile.isEmpty()) {
-//				String renamedFileName = null;
-//				String location = null;
-//				
-//				try {
-//					location = resourceLoader.getResource("resources/upload/board").getFile().getPath();
-//					
-//					if(board.getRenamedFileName() != null) {
-//						// 이전에 업로드된 첨부파일 삭제
-//						FileProcess.delete(location + "/" + board.getRenamedFileName());
-//					}
-//					
-//					renamedFileName = FileProcess.save(upfile, location);
-//					
-//					if(renamedFileName != null) {
-//						board.setOriginalFileName(upfile.getOriginalFilename());
-//						board.setRenamedFileName(renamedFileName);
-//					}
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			
-//			result = service.save(board);
-//			
-//			if(result > 0) {
-//				model.addObject("msg", "게시글이 정상적으로 수정되었습니다.");
-//				model.addObject("location", "/community/view?no=" + board.getNo());
-//			} else {
-//				model.addObject("msg", "게시글 수정을 실패하였습니다.");
-//				model.addObject("location", "/community/update?no=" + board.getNo());
-//			}
-//		} else {
-//			model.addObject("msg", "잘못된 접근입니다.");
-//			model.addObject("location", "/community/list");
-//		}
-//		
-//		model.setViewName("common/msg");
-//		
-//		return model;
-//	}
+	@PostMapping("/update")
+	public ModelAndView update(ModelAndView model, 
+			@SessionAttribute("loginMember") Member loginMember,
+			@ModelAttribute Board board, @RequestParam("upfile") MultipartFile upfile) {
+		
+		int result;
+		
+		if (loginMember.getId().equals(board.getWriterId())) {
+			if(upfile != null && !upfile.isEmpty()) {
+				String renamedFileName = null;
+				String location = null;
+				
+				try {
+					location = resourceLoader.getResource("resources/upload/community").getFile().getPath();
+					
+					if(board.getRenameFileName() != null) {
+						// 이전에 업로드된 첨부파일 삭제
+						FileProcess.delete(location + "/" + board.getRenameFileName());
+					}
+					
+					renamedFileName = FileProcess.save(upfile, location);
+					
+					if(renamedFileName != null) {
+						board.setOriginalFileName(upfile.getOriginalFilename());
+						board.setRenameFileName(renamedFileName);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			result = service.save(board);
+			
+			if(result > 0) {
+				model.addObject("msg", "게시글이 정상적으로 수정되었습니다.");
+				model.addObject("location", "/community/view?no=" + board.getNo());
+			} else {
+				model.addObject("msg", "게시글 수정을 실패하였습니다.");
+				model.addObject("location", "/community/update?no=" + board.getNo());
+			}
+		} else {
+			model.addObject("msg", "잘못된 접근입니다.");
+			model.addObject("location", "/community/list");
+		}
+		
+		model.setViewName("common/msg");
+		
+		return model;
+	}
 	
 	@GetMapping("/delete")
 	public ModelAndView delete(ModelAndView model,
@@ -325,8 +344,38 @@ public class BoardController {
 		}
 		
 		model.setViewName("common/msg");
-		
+		 
 		return model;
 	}
 
+	
+	
+	// 댓글 관련
+	
+	
+
+	
+	// 댓글 등록
+	   @PostMapping("/community/writeReply")
+	   public ModelAndView writeReply(
+			   ModelAndView model,
+			   @SessionAttribute(name="loginMember") Member loginMember,
+			   @ModelAttribute Board board, @ModelAttribute Reply reply) {
+		   int result = 0;
+		   reply.setWriterNo(loginMember.getNo());
+		   
+		   result = replyService.saveReply(reply);
+		   
+		   if(result > 0) {
+			   model.addObject("msg", "댓글이 등록되었습니다.");
+			   model.addObject("location", "/community/view?no=" + board.getNo());
+		   } else {
+			   model.addObject("msg", "댓글이 등록에 실패하였습니다.");
+			   model.addObject("location", "/community/view?no=" + board.getNo());
+		   }
+		   
+		   model.setViewName("common/msg");
+		   
+		   return model;
+	   }
 }
