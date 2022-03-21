@@ -30,6 +30,15 @@ public class BoardServiceImpl implements BoardService {
 		
 		return mapper.findAll(rowBounds);
 	}
+	
+	@Override
+	public List<Board> listAll(String search_option, String keyword, PageInfo pageInfo) {
+		int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getListLimit();
+		int limit = pageInfo.getListLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return mapper.findAll(rowBounds);
+	}
 
 	@Override
 	public Board findBoardByNo(int no) {
