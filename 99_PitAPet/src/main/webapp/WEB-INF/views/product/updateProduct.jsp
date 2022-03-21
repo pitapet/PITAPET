@@ -45,8 +45,8 @@
 	                      </td>
 	                  </tr>
 	                  <tr>
-	                      <th>카테고리 설명</th>
-	                      <td><input type="text" name="content" id="content" value="${ product.content }"></td>
+	                      <th>카테고리 내용</th>
+	                      <td><textarea name="content" id="content">${ product.content }</textarea></td>
 	                  </tr>
 	                </tbody>
 	              </table>

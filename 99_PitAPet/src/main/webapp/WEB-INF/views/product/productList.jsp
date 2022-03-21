@@ -89,7 +89,7 @@
                 <tr>
                   <th class="table__no">카테고리 번호</th>
                   <th class="table__title">카테고리명</th>
-                  <th class="table__content">카테고리 설명</th>
+                  <th class="table__content">카테고리 내용</th>
                   <th class="table__btn" colspan="2"></th>
                 </tr>
               </thead>
@@ -97,7 +97,7 @@
               <c:if test="${ empty products }">
                 <tbody class="table__tbody">
                   <tr>
-                    <td colspan="6">조회된 상품이 없습니다.</td>
+                    <td colspan="5">조회된 상품 카테고리가 없습니다.</td>
                   </tr>
                 </tbody>
               </c:if>
@@ -106,7 +106,7 @@
               <tbody class="table__tbody">
                 <c:forEach var="product" items="${ products }">
 	                <tr>
-	                  <td><!-- <input type="hidden" class="product__no" name="no" value="${ product.no }"> -->${ product.no }</td>
+	                  <td>${ product.no }</td>
 	                  <td>${ product.title }</td>
 	                  <td>${ product.content }</td>
 	                  <td><button type="button" class="btnUpdate" value="${ product.no }">수정</button></td>

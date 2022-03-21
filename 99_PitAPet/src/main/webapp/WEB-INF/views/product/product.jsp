@@ -161,16 +161,14 @@
                 <form id="addCartFrm" action="${ path }/product/cart/add" method="post">
 	              <select name="productInfoNo" id="selectProductInfo">
 	                <c:forEach var="productInfo" items="${ product.productInfoes }">
-	                  <option value="${ productInfo.no }">${ productInfo.colorName }</option>
+	                  <option value="${ productInfo.no }">${ productInfo.colorName } (${ productInfo.price } 원)</option>
 	                </c:forEach>
 	              </select>
-                  <input type="number" name="count" id="count" value="1"/>
-                  <div class="product__btn">
-                    <input type="submit" id="btnCart" value="Cart"/>
-                  </div>
+                  <input type="number" class="product__input" name="count" id="count" value="1"/> 개
+                  <input type="submit" id="btnCart" class="btnCart" value="Cart"/>
                 </form>
                 <c:forEach var="productInfo" items="${ product.productInfoes }">
-	             <input type="hidden" name="price" id="${ productInfo.no }" value="${ productInfo.price }"/>
+	             <input type="hidden" class="product__input" name="price" id="${ productInfo.no }" value="${ productInfo.price }"/>
                 </c:forEach>
 	             <input type="hidden" name="memberNo" id="memberNo" value="${ loginMember.no }"/>
 	             <input type="hidden" name="name" id="name" value="${ loginMember.name }"/>
@@ -194,24 +192,14 @@
         $(".btnBuy").on('click', () => {
         	// 셀렉트한 상품번호, 가격 가져오기
         	var productInfoNo = $("#selectProductInfo option:selected").val();
-        	console.log("productInfoNo: " + productInfoNo);
-        	
-        	//var priceNo = $('input[name=price]').attr('id');
-        	//var price = $('input[name=price]').val();
-        	//cosole.log("price: " + price);
-        	
-        	// count 가져오기
+       		var price = $('input[id=' + productInfoNo + ']').val();
         	var count = $('input[name=count]').val();
-    	    console.log("count: " + count);
-        	// 로그인멤버 정보 가져오기
+    	    var amount = (price * count);
+    	    
         	var memberNo = $('input[name=memberNo]').val();
-        	console.log("memberNo: " + memberNo);
         	var name = $('input[name=name]').val();
-        	console.log("name: " + name);
         	var email = $('input[name=email]').val();
-        	console.log("email: " + email);
         	var phone = $('input[name=phone]').val();
-        	console.log("phone: " + phone);
         	
             // 결제 요청
             IMP.request_pay({
@@ -219,7 +207,7 @@
                 pay_method : 'card', 
                 merchant_uid : 'merchant_' + new Date().getTime(),
                 name : productInfoNo,
-                amount : 1,
+                amount : amount,
                 buyer_email : email,
                 buyer_name : name,
                 buyer_tel : phone
@@ -240,7 +228,8 @@
                     var data = {
                     	"productInfoNo" : productInfoNo,
     					"memberNo" : memberNo,
-    					"count" : count
+    					"count" : count,
+    					"amount" : amount
                     }
 
                     console.log("결제 성공" + data.productInfoNo);
@@ -267,6 +256,7 @@
                     var msg = '결제에 실패하였습니다.';
                     msg += '에러내용 : ' + rsp.error_msg;
 	                console.log(msg);
+	                location.replace("http://localhost:8088/pitapet/product/product");
                 }
             
             }); // pay

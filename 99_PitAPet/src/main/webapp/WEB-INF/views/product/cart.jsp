@@ -29,23 +29,39 @@
 <body>
 <header id="header">
       <logo class="header__logo">
-        <img src="img/logo.png" alt="logo" class="logo__img" />
+        <img src="${ path }/images/logo.png" alt="logo" class="logo__img" />
       </logo>
+      <!-- 로그인 전 버튼들 -->
+      <c:if test="${ empty loginMember }">
       <ul class="header__menu">
-        <li data-menuanchor="section1"><a href="index.html">Home</a></li>
-        <li data-menuanchor="section2"><a href="product.html">Product</a></li>
-        <li data-menuanchor="section3"><a href="community.html">Community</a></li>
-        <li data-menuanchor="section4"><a href="organization.html">Organization</a></li>
-        <li data-menuanchor="section5"><a href="login.html">Login</a></li>
+        <li data-menuanchor="section1"><a href="${ path }/">Home</a></li>
+        <li data-menuanchor="section2"><a href="${ path }/product/product">Product</a></li>
+        <li data-menuanchor="section3"><a href="${ path }/community/list">Community</a></li>
+        <li data-menuanchor="section4"><a href="${ path }/organization/organization">Organization</a></li>
+        <li data-menuanchor="section5"><a href="${ path }/member/login">Login</a></li>
       </ul>
+      </c:if>
+      <!-- 로그인 후 버튼들 -->
+      <c:if test="${ !empty loginMember }">
+      <ul class="header__menu">
+        <li data-menuanchor="section1"><a href="${ path }/">Home</a></li>
+        <li data-menuanchor="section2"><a href="${ path }/product/product">Product</a></li>
+        <li data-menuanchor="section3"><a href="${ path }/community/list">Community</a></li>
+        <li data-menuanchor="section4"><a href="${ path }/organization/organization">Organization</a></li>
+        <li data-menuanchor="section5"><a href="${ path }/logout">Logout</a></li>
+        <c:if test="${ loginMember.role == 'ROLE_ADMIN' }">
+          <li data-menuanchor="section6"><a href="${ path }/product/list/product">Admin</a></li>
+        </c:if>
+      </ul>
+      </c:if>
     </header>
+    
     <main id="fullpage">
       <!-- Section 1 MyPage -->
       <section class="section">
         <main id="main">
           <section class="main__user">
             <div class="main__user__header">
-              <img class="main__user__header__profile" src="" alt="" />
               <div class="main__user__header__description">
                 <p>${ loginMember.name }님 환영합니다.</p>
                 <c:if test="${ loginMember.role == 'ROLE_USER' }">
@@ -57,6 +73,7 @@
               <div class="main__user__body__category">
                 <button class="category board" onclick="location.href='./mypage.html';">게시글 관리</button>
                 <button class="category cart active" onclick="location.href='${ path }/product/cart/list';">장바구니</button>
+                <button class="category buy" onclick="location.href='${ path }/product/buy/list';">구매목록</button>
                 <button class="category prefernce" onclick="location.href='./profileEdit.html';">정보 수정</button>
                 <button class="category resign" onclick="location.href='${ path }/';">회원 탈퇴</button>
               </div>
@@ -66,19 +83,19 @@
                 <table class="main__user__body__table">
                   <thead>
                     <tr>
-                      <th class="table__sel">선택</th>
-                      <th class="table__title">상품 카테고리</th>
+                      <th class="table__title">카테고리</th>
+                      <th class="table__image">상품 사진</th>
                       <th class="table__color">색상</th>
                       <th class="table__price">가격</th>
                       <th class="table__count">수량</th>
-                      <th class="table__delete">삭제</th>
+                      <th class="table__btn"></th>
                     </tr>
                   </thead>
 
                   <c:if test="${ empty cartList }">
                     <tbody class="table__tbody">
                       <tr>
-                        <td colspan="6">조회된 상품이 없습니다.</td>
+                        <td colspan="7">조회된 상품이 없습니다.</td>
                       </tr>
                     </tbody>
                   </c:if>
@@ -87,9 +104,6 @@
                   <tbody class="table__tbody">
                     <c:forEach var="cart" items="${ cartList }">
                     <tr>
-                      <td>
-                      	<input type="checkbox" name="no" value="${ cart.no }"/>
-                      </td>
                       <c:forEach var="productInfo" items="${ productInfoList }">
                         <c:if test="${ cart.productInfoNo == productInfo.no }">
                           <c:forEach var="product" items="${ productList }">
@@ -97,12 +111,14 @@
 		                      <td>${ product.title }</td>
                             </c:if>
                           </c:forEach>
-		                  <td>${ productInfo.colorName }</td>
-	                      <td>${ productInfo.price }</td>
+		                  <td><img class="product__img" src="${ path }/images/product/${ productInfo.renamedFileName }.png" alt=""></td>
+		                  <td><button class="color__button" style="background-color: ${ productInfo.colorCode };"></button>
+		                      ${ productInfo.colorName }</td>
+	                      <td>${ productInfo.price } 원</td>
 	                      <td>
 	                      	<form id="updateCartFrm" action="${ path }/product/cart/update" method="post">
 	                      	  <input type="hidden" id="no" name="no" value="${ cart.no }"/>
-	                      	  <input id="count" class="count" name="count" type="number" min="1" max="${ productInfo.stock }" value="${ cart.count }"/>
+	                      	  <input id="count${ cart.no }" class="count" name="count" type="number" min="1" max="${ productInfo.stock }" value="${ cart.count }"/>
 	                      	  <input type="submit" class="btnUpdateCart" value="변경"/>
 	                      	</form>
 	                      </td>
@@ -111,8 +127,8 @@
                       <td>
                       	<button type="button" class="btnDelete" value="${ cart.no }">삭제</button>
                       	<button type="button" class="btnBuy" value="${ cart.no }">구매</button>
+                      
                       	<input type="hidden" name="productInfoNo" value="${ cart.productInfoNo }"/>
-                      	<input type="hidden" name="count" value="${ cart.count }"/>
                       	<c:forEach var="productInfo" items="${ productInfoList }">
                       	  <c:if test="${ cart.productInfoNo == productInfo.no }">
                       	    <input type="hidden" name="price" value="${ productInfo.price }"/>
@@ -128,10 +144,6 @@
                   </tbody>
                   </c:if>
                 </table>
-                
-                <div class="product__btn">
-                  
-                </div>
 
                 <div id="pageBar">
                   <!-- 맨 처음으로 -->
@@ -173,26 +185,17 @@
 
         $(".btnBuy").click(function(){
     	    var cartNo = $(this).attr('value');
-    	    console.log("cartNo: " + cartNo);
-        
         	var productInfoNo = $('input[name=productInfoNo]').val();
-        	console.log("productInfoNo: " + productInfoNo);
-        	
         	var price = $('input[name=price]').val();
-        	console.log("price: " + price);
-        	
-        	var count = $('input[name=count]').val();
-    	    console.log("count: " + count);
+        	var count = $('input[id=count' + cartNo + ']').val();
+        	//var count = $('input[name=count]').val();
+        	var amount = (price * count);
 
         	// 로그인멤버 정보 가져오기
         	var memberNo = $('input[name=memberNo]').val();
-        	console.log("memberNo: " + memberNo);
         	var name = $('input[name=name]').val();
-        	console.log("name: " + name);
         	var email = $('input[name=email]').val();
-        	console.log("email: " + email);
         	var phone = $('input[name=phone]').val();
-        	console.log("phone: " + phone);
         	
             // 결제 요청
             IMP.request_pay({
@@ -200,7 +203,7 @@
                 pay_method : 'card', 
                 merchant_uid : 'merchant_' + new Date().getTime(),
                 name : productInfoNo,
-                amount : price,
+                amount : amount,
                 buyer_email : email,
                 buyer_name : name,
                 buyer_tel : phone
@@ -213,6 +216,7 @@
                     	"productInfoNo" : productInfoNo,
     					"memberNo" : memberNo,
     					"count" : count,
+    					"amount" : amount,
     					"cartNo" : cartNo
                     }
 

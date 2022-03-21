@@ -8,7 +8,6 @@ $(() => {
 });
 
 $(document).ready(() => {
-		
 		$("#btnAddProduct").on("click", () => {
 			const url = "http://localhost:8088/pitapet/product/add/product";
 			const status = "left=300px,top=200px,width=1200px,height=500px";
@@ -31,7 +30,7 @@ $(document).ready(() => {
 			console.log(no);
 			
 			const url = "http://localhost:8088/pitapet/product/update/product?no=";
-			const status = "left=200px,top=150px,width=1200px,height=500px";
+			const status = "left=300px,top=200px,width=1200px,height=500px";
 					
 			window.open(url + no, "", status);	
 	    

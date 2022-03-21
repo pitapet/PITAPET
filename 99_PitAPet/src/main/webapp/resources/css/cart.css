@@ -152,18 +152,9 @@ body,
   width: 100%;
   display: flex;
   justify-content: space-evenly;
-  padding-bottom: 50px;
+  padding-bottom: 20px;
   margin-bottom: 30px;
   border-bottom: 1px solid black;
-}
-
-.main__user__header__profile {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  border: 1px solid var(--color-white);
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-  margin-right: 30px;
 }
 
 .main__user__header__description {
@@ -173,12 +164,10 @@ body,
   justify-content: center;
   font-size: 35px;
   padding-left: 60px;
-  border-left: 1px solid black;
 }
 
 .main__user__header__description > p:nth-child(2) {
   font-size: 20px;
-  padding-left: 20px;
   padding-top: 10px;
 }
 
@@ -214,9 +203,8 @@ body,
 }
 
 .main__user__body__product p {
-  padding-left: 20px;
   padding-bottom: 15px;
-  padding-top: 15px;
+  padding-top: 20px;
   font-size: 25px;
 }
 
@@ -230,17 +218,6 @@ body,
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   padding: 14px;
   margin-bottom: 30px;
-}
-
-.main__user__body__table button {
-  background: transparent;
-  border: none;
-/*  font-size: 18px;*/
-  transition: all var(--animation-duration) ease-in;
-}
-
-.main__user__body__table button:hover {
-  color: var(--color-dark-pink);
 }
 
 th {
@@ -259,12 +236,12 @@ td {
   border-collapse: collapse;
 }
 
-.table__sel {
-  width: 10%;
+.table__title {
+  width: 20%;
 }
 
-.table__title {
-  width: 30%;
+.table__image {
+  width: 10%
 }
 
 .table__color {
@@ -272,15 +249,15 @@ td {
 }
 
 .table__price {
-  width: 20%;
+  width: 15%;
 }
 
 .table__count {
-  width: 10%;
+  width: 20%;
 }
 
-.table__delete {
-  width: 10%
+.table__btn {
+  width: 15%
 }
 
 #count {
@@ -379,10 +356,13 @@ td {
 }
 
 /* Ãß°¡ */
-.btnDelete, .btnBuy {
-  margin-left: 20px;
-  width: 80px;
-  height: 30px;
+.btnDelete, .btnBuy, .btnUpdateCart {
+  width: auto;
+  height: auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
   border: none;
   outline: none;
   border: 0.1px solid var(--color-light-white);
@@ -390,9 +370,57 @@ td {
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.5s ease-in-out;
   cursor: pointer;
+  background: transparent;
+  border: none;
+  font-family: "Gowun Dodum", sans-serif;
   font-size: var(--font-regular);
 }
 
 .btnDelete:hover, .btnBuy:hover {
   background: var(--color-light-white);
 }
+
+.product__img {
+  width: 60%;
+}
+
+/*
+.btnBuy, .btnDelete {
+  width: 40px;
+  height: 30px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  background: transparent;
+  font-size: small;
+  transition: all var(--animation-duration) ease-in;
+}
+*/
+/*
+.main__user__body__table button {
+  background: transparent;
+  border: none;
+  transition: all var(--animation-duration) ease-in;
+}
+*/
+
+.table__tbody input {
+  font-family: "Gowun Dodum", sans-serif;
+  text-align: center;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: var(--font-regular);
+}
+
+.color__button {
+  height: 20px;
+  width: 40px;
+  border-radius: 2px;
+  margin: 5px;
+  border: 1px solid gray;
+  outline: 0;
+}
+

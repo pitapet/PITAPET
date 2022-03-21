@@ -18,33 +18,4 @@ $(document).ready(() => {
 		    }	
 	    
 	    });
-	    
-	    /*
-	    $("#buyBtn").click(function(){
-	    	var noArray = [];
-	    	
-	    	$('input[name=no]:checked').each(function(i){
-	    		noArray.push($(this).attr('value'));
-	    	});
-	    	
-	    	console.log(noArray);
-	    	
-	    	$.ajax({
-	    		url: '../buy/check',
-	    		type: 'GET',
-	    		data : {
-	    			cartNo : noArray
-	    		},
-	    		success:function(data){
-	    			console.log("data : "+JSON.stringify(data));
-	    		},
-	    		error : function(request,status,error) {
-	            	//console.log("code:"+request.status+"\n\n"+"message:"+request.responseText+"\n\n"+"error:"+error);
-	            	//alert($(request.responseText.replace(/(\r\n|\n|\r)/gm,"")).text());
-	            	alert("처리에 실패하였습니다.\ncode:"+request.status+"\n"+"error:"+error);
-		        }
-	    	});
-	    	
-	    });
-	    */
 });

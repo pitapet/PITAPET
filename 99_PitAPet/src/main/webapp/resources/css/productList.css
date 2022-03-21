@@ -268,11 +268,7 @@ td {
 }
 
 .table__content {
-  width: 35%;
-}
-
-.table__price {
-  width: 20%;
+  width: 30%;
 }
 
 .table__btn {
@@ -310,8 +306,8 @@ td {
 
 .product__btn > button {
   margin-left: 20px;
-  width: 80px;
   height: 30px;
+  width: auto;
   border: none;
   outline: none;
   border: 0.1px solid var(--color-light-white);
@@ -319,6 +315,10 @@ td {
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.5s ease-in-out;
   cursor: pointer;
+  padding-top: 5px; /* 추가 */
+  padding-bottom: 5px; /* 추가 */
+  padding-left: 10px; /* 추가 */
+  padding-right: 10px; /* 추가 */
 }
 
 .product__btn button:hover {

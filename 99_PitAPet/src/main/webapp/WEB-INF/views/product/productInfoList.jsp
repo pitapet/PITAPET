@@ -74,7 +74,7 @@
                   <a id="btn__productInfo" href="${ path }/product/list/productInfo">상품 상세정보</a>
                 </div>
               <div class="product__btn" id="btn__search">
-                <span>상품명 : &nbsp;</span>
+                <span>카테고리명 : &nbsp;</span>
                 <select class="search" name="title" id="selectTitle">
                   <option value="0" selected>------------</option>
                   <c:forEach var="product" items="${ productList }">
@@ -89,10 +89,9 @@
             <table class="main__user__body__table">
               <thead>
                 <tr>
-                  <th class="table__no"></th>
+                  <th class="table__no">상품번호</th>
+                  <th class="table__title">카테고리명</th>
                   <th class="table__img">상품사진</th>
-                  <th class="table__title">카테고리</th>
-                  <th class="table__content">상품설명</th>
                   <th class="table__color">색상</th>
                   <th class="table__price">가격</th>
                   <th class="table__stock">재고수량</th>
@@ -103,7 +102,7 @@
               <c:if test="${ empty productInfoList }">
                 <tbody class="table__tbody">
                   <tr>
-                    <td colspan="9">조회된 상품이 없습니다.</td>
+                    <td colspan="8">조회된 상품이 없습니다.</td>
                   </tr>
                 </tbody>
               </c:if>
@@ -112,17 +111,16 @@
               <tbody class="table__tbody">
                   <c:forEach var="productInfo" items="${ productInfoList }">
 	                <tr>
-	                  <td><input type="hidden" class="product__no" name="no" value="${ productInfo.no }"></td>
-	                  <td><img class="product__img" src="${ path }/images/product/${ productInfo.renamedFileName }.png" alt=""></td>
+	                  <td>${ productInfo.no }</td>
 	                  <c:forEach var="product" items="${ productList }">
 	                    <c:if test="${ productInfo.productNo == product.no }">
 	                      <td class="title">${ product.title }</td>
-	                      <td class="content">${ product.content }</td>
 	                    </c:if>
 	                  </c:forEach>
-	                  <td><input type="color" class="product__color" name="colorName" id="colorName" value="${ productInfo.colorCode }">
-	                        &nbsp${ productInfo.colorName } 
-	                        <br>(${ productInfo.colorCode })
+	                  <td><img class="product__img" src="${ path }/images/product/${ productInfo.renamedFileName }.png" alt=""></td>
+	                  <td>
+	                  <button class="color__button" style="background-color: ${ productInfo.colorCode };"></button>
+	                        ${ productInfo.colorName }&nbsp(${ productInfo.colorCode })
 	                  </td>
 	                  <td>${ productInfo.price } 원</td>
 	                  <td>${ productInfo.stock } 개</td>

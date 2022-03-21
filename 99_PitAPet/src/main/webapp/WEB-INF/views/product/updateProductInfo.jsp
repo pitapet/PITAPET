@@ -52,11 +52,11 @@
                     </td>
                   </tr>
                   <tr>
-                    <th class="table__title">상품명</th>
+                    <th class="table__title">카테고리명</th>
                     <td colspan="3"><input type="text" name="title" id="title" value="${ product.title }" readonly></td>
                   </tr>
                   <tr>
-                    <th class="table__content">상품설명</th>
+                    <th class="table__content">카테고리 내용</th>
                     <td colspan="3">
                       <textarea name="content" id="content" cols="50" rows="2" readonly>${ product.content }</textarea>
                     </td>

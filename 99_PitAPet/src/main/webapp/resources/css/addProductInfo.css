@@ -212,7 +212,7 @@ td {
   }
 }
 
-#btnAdd {
+#addProductInfo, #btnClose {
   width: 40px;
   height: 30px;
   border: none;
@@ -224,19 +224,42 @@ td {
   cursor: pointer;
   background: transparent;
   border: none;
+  font-family: "Gowun Dodum", sans-serif;
 }
 
-#btnAdd:hover {
-  color: var(--color-dark-pink);
+#addProductInfo:hover, #btnClose:hover {
+  background: var(--color-light-white);
 }
 
 .product__img {
   max-width: 100%;
 }
 
-.table__tbody input, #content {
+.table__tbody input {
   font-family: "Gowun Dodum", sans-serif;
   text-align: center;
   border: none;
-  background-color: #f2f2f2;
+  background: transparent;
+  outline: none;
+  font-size: var(--font-regular);
+}
+
+.table__tbody input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset;
+}
+
+.table__tbody input:-webkit-autofill, .table__tbody input:-webkit-autofill:hover, .table__tbody input:-webkit-autofill:focus, .table__tbody input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+#btnUpload, #colorName {
+  width: 100%;
+}
+
+.table__tbody select {
+  width: 150px;
+  border: 1px solid #999;
+  font-family: "Gowun Dodum", sans-serif;
+  border-radius: 0px;
+  -moz-appearance: none;
 }

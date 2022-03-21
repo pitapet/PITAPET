@@ -76,9 +76,11 @@
 	
 	<resultMap type="Buy" id="buyListResultMap">
 		<id property="no" column="NO"/>
-		<result property="count" column="COUNT"/>
-		<result property="memberNo" column="MEMBER_NO"/>
 		<result property="productInfoNo" column="PRODUCT_INFO_NO"/>
+		<result property="memberNo" column="MEMBER_NO"/>
+		<result property="count" column="COUNT"/>
+		<result property="amount" column="AMOUNT"/>
+		<result property="buyDate" column="BUY_DATE"/>
 	</resultMap>
 	
 	<resultMap type="Product" extends="productListResultMap" id="productDetailResultMap">
@@ -341,22 +343,28 @@
 			useGeneratedKeys="true" keyColumn="NO" keyProperty="no">
 		INSERT INTO BUY(
 			NO,
-			COUNT,
+			PRODUCT_INFO_NO,
 			MEMBER_NO,
-			PRODUCT_INFO_NO
+			COUNT,
+			AMOUNT,
+			BUY_DATE
 		)VALUES(
 			SEQ_BUY_NO.NEXTVAL, 
-			#{count}, 
+			#{productInfoNo},
 			#{memberNo}, 
-			#{productInfoNo}
+			#{count}, 
+			#{amount}, 
+			DEFAULT
 		)
 	</insert>
 	
 	<select id="selectAllBuy" parameterType="_int" resultMap="buyListResultMap">
 		SELECT NO, 
-		       COUNT,
+		       PRODUCT_INFO_NO,
 		       MEMBER_NO,
-		       PRODUCT_INFO_NO
+		       COUNT,
+		       AMOUNT,
+		       BUY_DATE
 		FROM BUY
 		WHERE MEMBER_NO = #{no}
 	</select>

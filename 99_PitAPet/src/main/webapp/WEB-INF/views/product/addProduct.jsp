@@ -43,14 +43,8 @@
 	                  </tr>
 	                  <tr>
 	                      <th>카테고리 내용</th>
-	                      <td><input type="text" name="content" id="content"></td>
+	                      <td><textarea name="content" id="content"></textarea></td>
 	                  </tr>
-	                  <!-- 
-	                  <tr>
-	                      <th>가격</th>
-	                      <td><input type="number" name="price" id="price"> 원</td>
-	                  </tr>
-	                   -->
 	                </tbody>
 	              </table>
 	              <input type="submit" id="addProduct" value="등록"></input>
