@@ -98,9 +98,8 @@ button:hover:before,button:hover:after{
 </head>
 <body>
 	<header id="header">
-<<<<<<< HEAD
-		<logo class="header__logo"> <img
-			src="${ path }/images/logo.png" alt="logo" class="logo__img" /> </logo>
+		<logo class="header__logo"> 
+		<img src="${ path }/images/logo.png" alt="logo" class="logo__img" /> </logo>
 		<!-- 로그인 전 버튼들 -->
 		<c:if test="${ empty loginMember }">
 			<ul class="header__menu">
@@ -139,11 +138,9 @@ button:hover:before,button:hover:after{
 			</div>
 		</section>
 
-
 		<!-- Section 2 Announcement about Pit A Pet -->
 		<section class="section">
 			<div class="section__container">
-
 				<div class="simuruk_dog">
 					<h1>
 						PIT A PET <br />
@@ -153,16 +150,13 @@ button:hover:before,button:hover:after{
 				</div>
 				<span><br />인간과 동물의 관계를 떠나, 자연의 법칙에 의해 탄생된 모든 생명은 <br />
 				<br /> 생명자체로서 보호받고 존중받을 권리가 있습니다.</span>
-
-
 			</div>
 		</section>
-
 
 		<!-- Section 3 Page Description 옆으로 넘기는 페이지-->
 		<section id="section" class="section">
 			<div class="slide">
-	<!-- 첫번째 옆페이지 -->
+				<!-- 첫번째 옆페이지 -->
 				<div class="center_utube_box" >
 				</br>
 				</br></br></br>
@@ -171,36 +165,28 @@ button:hover:before,button:hover:after{
 						title="YouTube video player" frameborder="0"
 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 						allowfullscreen></iframe>
-
-					
+	
 				</div>
-<!-- 두번째 옆페이지 -->
 			</div>
+			
+			<!-- 두번째 옆페이지 -->
 			<div class="slide" >
-				
-			<div class="left_pic_box">
-			
-			   <img src="${ path }/images/dontbuy.JPG" alt="입양하세요." width="50%"
-                  height="70%">
-                  
-                  </div>
-                  
-                  <div class="right_pic_box">
-			<!-- 버튼들 -->
-				<a href="https://www.animal.go.kr/front/index.do"><button>동물보호관리시스템 홈페이지</button></a>
-				</br></br></br>
-				<a href="https://www.animal.or.kr/front/index.do"><button>동물자유연대 홈페이지</button></a>
-				</br></br></br>
-				<a href="http://pawinhand.kr/"><button>포인핸드 홈페이지</button></a>
-				</br></br></br>
-				<a href="https://www.karma.or.kr/"><button>한국동물구조관리협회 홈페이지</button></a></br>
-				
+				<div class="left_pic_box">
+				   <img src="${ path }/images/dontbuy.JPG" alt="입양하세요." width="50%"
+	                  height="70%">
+	            </div>
+	              
+	            <div class="right_pic_box">
+					<!-- 버튼들 -->
+					<a href="https://www.animal.go.kr/front/index.do"><button>동물보호관리시스템 홈페이지</button></a>
+					</br></br></br>
+					<a href="https://www.animal.or.kr/front/index.do"><button>동물자유연대 홈페이지</button></a>
+					</br></br></br>
+					<a href="http://pawinhand.kr/"><button>포인핸드 홈페이지</button></a>
+					</br></br></br>
+					<a href="https://www.karma.or.kr/"><button>한국동물구조관리협회 홈페이지</button></a></br>
+				</div>
 			</div>
-
-
-
-			</div>
-			
 			
 			<div class="slide">
 				<h3>"I LOVE ♥ PET"</h3>
@@ -209,51 +195,6 @@ button:hover:before,button:hover:after{
 			</div>
 		</section>
 
-
-		<!-- Section 4 Quotes 
-		<section class="section">
-			<div class="section__container">
-				<p>
-					Pets have given us their absolute all<br /> We are the center of
-					their universe<br /> We are the focus of their <strong>love</strong>
-					and faith and trust<br /> They serve us in return for scraps<br />
-					It is without a doubt the best deal man has ever made<br />
-				</p>
-				<span>- Pit A Pet -</span>
-			</div>
-		</section>
-		-->
-		
-		      <!-- Section 5 About Us -->
-=======
-      <logo class="header__logo">
-        <img src="${ path }/images/logo.png" alt="logo" class="logo__img" />
-      </logo>
-      <!-- 로그인 전 버튼들 -->
-      <c:if test="${ empty loginMember }">
-      <ul class="header__menu">
-        <li data-menuanchor="section1"><a href="${ path }/">Home</a></li>
-        <li data-menuanchor="section2"><a href="${ path }/product/product">Product</a></li>
-        <li data-menuanchor="section3"><a href="${ path }/community/list">Community</a></li>
-        <li data-menuanchor="section4"><a href="${ path }/organization/organization">Organization</a></li>
-        <li data-menuanchor="section5"><a href="${ path }/member/login">Login</a></li>
-      </ul>
-      </c:if>
-      <!-- 로그인 후 버튼들 -->
-      <c:if test="${ !empty loginMember }">
-      <ul class="header__menu">
-        <li data-menuanchor="section1"><a href="${ path }/">Home</a></li>
-        <li data-menuanchor="section2"><a href="${ path }/product/product">Product</a></li>
-        <li data-menuanchor="section3"><a href="${ path }/community/list">Community</a></li>
-        <li data-menuanchor="section4"><a href="${ path }/organization/organization">Organization</a></li>
-        <li data-menuanchor="section5"><a href="${ path }/member/mypage">Mypage</a></li>
-        <li data-menuanchor="section6"><a href="${ path }/logout">Logout</a></li>
-      </ul>
-      </c:if>
-    </header>
-    <main id="fullpage">
-      <!-- Section 1 Title -->
->>>>>>> 7e69ff4cb0ab0ff28dfd8f05b393d32449d4a8fe
       <section class="section">
         <div class="center">
           <div class="fisrt">
@@ -462,6 +403,5 @@ button:hover:before,button:hover:after{
           </div>
         </div>
       </section>
-	</main>
 </body>
 </html>
