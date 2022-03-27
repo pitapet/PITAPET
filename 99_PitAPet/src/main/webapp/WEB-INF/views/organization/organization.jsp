@@ -22,10 +22,13 @@ String result = String.format("%s", a);
 <title>Pit A Pet</title>
 <link rel="icon" type="image/png" sizes="152x152"
    href="${ path }/images/logo.png" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
 <link rel="stylesheet" href="${ path }/css/plugin/jquery.fullPage.css" />
 <link rel="stylesheet" href="${ path }/css/organization.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
 <script src="https://kit.fontawesome.com/91b5983e4b.js"
    crossorigin="anonymous"></script>
 <script src="${ path }/js/plugin/jquery-3.6.0.min.js"></script>
@@ -1034,78 +1037,30 @@ html, body {
          <script type="text/javascript"
             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e66a2e2d52d266c1e2f95dde68a87b8b"></script>
 
-         <script>
-  /*      var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-       mapOption = { 
-           center: new kakao.maps.LatLng(37.4989972, 127.0307203), // 지도의 중심좌표
-           level: 3 // 지도의 확대 레벨
-       };
+  <script>
+  
+  var mapContainer = document.getElementById('map'), //지도를 표시할 div 
+  mapOption = { 
+      center: new kakao.maps.LatLng(37.4989972, 127.0307203),  //지도의 중심좌표 -->왜안되냐
+      level: 3 // 지도의 확대 레벨
+ };
 
-      var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다 */
-     
-      //지도에 마커를 생성하고 표시한다.
-     // var marker = new kakao.maps.Marker({
-       //   position: new kakao.maps.LatLng(37.4989972, 127.0307203), // 마커의 좌표(위도,경도)
-       //   map: map // 마커를 표시할 지도 객체
-      //});
-      
-      // 마커 위에 표시할 인포윈도우를 생성한다()
-      //var infowindow = new kakao.maps.InfoWindow({
-      //    content : '<div style= "padding:5px;">(임시로KH교육원)</div>' // 인포윈도우에 표시할 내용
-      //});
-      // 인포윈도우를 지도에 표시한다
-      //infowindow.open(map, marker);
-      
+ var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+ 
+   // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+ var mapTypeControl = new kakao.maps.MapTypeControl();
 
-   /*    // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
-      var mapTypeControl = new kakao.maps.MapTypeControl();
+// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+// kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+ map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 
-   // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
-   // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
-      map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-
-   // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
-      var zoomControl = new kakao.maps.ZoomControl();
-      map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-        */
-       </script>
-         <!-- 중간에 blank 값 -->
-         <div style="width: 5%; height: 500px; padding: 10px; float: left"></div>
-
-         <div class="section__container"
-            style="overflow: scroll; width: 40%; height: 500px; padding: 10px; float: left">
-            <!-- 스크롤칸 못쨍이 -->
-            <div class='organizationList'></div>
-         </div>
-      </section>
-   </main>
-
-   <script>
-        var mapContainer = document.getElementById('map'), //지도를 표시할 div 
-        mapOption = { 
-            center: new kakao.maps.LatLng(37.4989972, 127.0307203),  //지도의 중심좌표 -->왜안되냐
-            level: 3 // 지도의 확대 레벨
-       };
-
-       var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-       
-         // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
-       var mapTypeControl = new kakao.maps.MapTypeControl();
-
-    // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
-    // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
-       map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-
-    // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
-       var zoomControl = new kakao.maps.ZoomControl();
-       map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-         
-       //let a = $('input[name=search_here]').val();
-      
-      
-       //url 값 넣어주기.
-          
-          //console.log($('#id1').val());
+// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+ var zoomControl = new kakao.maps.ZoomControl();
+ map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+   
+    
+ ajax();
+        //함수시작
           function ajax(){
             fetch("https://openapi.gg.go.kr/OrganicAnimalProtectionFacilit?KEY=f3345def06304416bd7e0a492ae18e39&Type=json").then(function(response){
                 if(response.status !=200 ){
@@ -1114,8 +1069,8 @@ html, body {
                     return response.json();
                 }
             }).then(function(jsonData){
-               //console.log(data)
-               //var data = jsonData.OrganicAnimalProtectionFacilit;
+             
+               
                var data = jsonData.OrganicAnimalProtectionFacilit[1].row; //
                
                var organizationList = document.querySelector(".organizationList");
@@ -1123,28 +1078,11 @@ html, body {
                var tag = ""; //
               //되는것(숫자): SIGUN_CD, SUM_YY, 
                var res = data.filter(it =>it.SIGUN_NM.includes('<%=result%>')); 
+           
               
-               
                for(var i= 0; i < res.length; i++){
-                   //console.log(data[i]); 오브젝트형태..
-                    
-                 //''사이에 search_here값이 들어가게...?
-              // var res = data.filter(it => it.SUM_YY.includes($('#search_here').val()));   
-             //  var res = data.filter(it => it.SUM_YY.includes($('input[name=search_here]').val())); //네임값은 이거임.
-            
-            
-               //맞는건데 잠시수정해본다,,,,
-                   //var SUM_YY = data[i].SUM_YY; //집계년도
-                  // var SIGUN_NM = data[i].SIGUN_NM; //시군명
-                  // var SIGUN_CD = data[i].SIGUN_CD; //시군코드
-                  // var ENTRPS_NM = data[i].ENTRPS_NM //업체명
-                  // var TEL_NO = data[i].ENTRPS_TELNO //업체 전화번호
-                   //MAP 위도 와 경도 
-                 //  var X_LAT = data[i].REFINE_WGS84_LAT //위도
-                  // var Y_LOGT = data[i].REFINE_WGS84_LOGT //경도
-                  
-                  //수정후
-                  
+            	   
+     
                   var SUM_YY = res[i].SUM_YY; //집계년도
                   var SIGUN_NM = res[i].SIGUN_NM; //시군명
                    var SIGUN_CD = res[i].SIGUN_CD; //시군코드
@@ -1154,24 +1092,25 @@ html, body {
                    var X_LAT = res[i].REFINE_WGS84_LAT //위도
                    var Y_LOGT = res[i].REFINE_WGS84_LOGT //경도
                    
-                   
-     
-
-
-              //   console.log(SUM_YY);
+           
                
             //이건 위에 데이터에 나와있는 기관의 핀넘버 넣는곳
-             var marker = new kakao.maps.Marker({
-               position: new kakao.maps.LatLng(X_LAT, Y_LOGT), // 마커의 좌표(위도,경도)
-                map: map // 마커를 표시할 지도 객체
-            });
+          
              mapOption = { 
                      center: new kakao.maps.LatLng(res[0].REFINE_WGS84_LAT, res[0].REFINE_WGS84_LOGT), // 지도의 중심좌표 -->왜안되냐
-                     level: 3 // 지도의 확대 레벨
+                     level: 4 // 지도의 확대 레벨
                  };
+                   //console.log(res[i].REFINE_WGS84_LAT)
 
-                var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-            // 마커 위에 표시할 인포윈도우를 생성한다()
+               // var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+                var marker = new kakao.maps.Marker({
+                	
+                    position: new kakao.maps.LatLng(X_LAT, Y_LOGT), // 마커의 좌표(위도,경도)
+                    map: map // 마커를 표시할 지도 객체
+                    
+                 });
+              //  console.log(Y_LOGT);
+                // 마커 위에 표시할 인포윈도우를 생성한다()
             var infowindow = new kakao.maps.InfoWindow({
                content : '<div style= "padding:5px;">'+ENTRPS_NM+'</div>' // 인포윈도우에 표시할 내용(업체명)
             });
@@ -1186,26 +1125,13 @@ html, body {
               
                   tag += ' <div class="organization">';
                   tag += ' <div class="inner">';
-                  tag += '<h3 class="ENTRPS_NM">'+ENTRPS_NM+"<br/><br/>"+'</h3>'; //업체명 --->>>이거 누르면 네이버 어디로 이동하게
-                 //누르면 네이버로이동하게!! https://www.naver.com/
-                 //tag += '<div onclick="location='www.naver.com'">'+"링크" +'</div>';
-                 //밑에 되는 코드
-                  //tag += '<h3 class="ENTRPS_NM">'+'<a href="https://www.naver.com/">'+"링크이동"+"</a>"+'</h3>';
-                  //target="_" 를해야 새창으로 넘어간다.
-                  //tag += '<h3 class="ENTRPS_NM">'+'<a href="https://www.naver.com/" target="_">'+"링크이동"+"</a>"+'</h3>';
-                 //tag += '<h3 class="ENTRPS_NM">'+'<a href="https://www.search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query='+'ENTRPS_NM'">'+"링크이동"+"</a>"+'</h3>';
-                 
-                 //tag += '<button type="button" onClick="window.open(${url})">'+"버튼내용"+'</button>';
-           
-               // ` tag += <form method="get" action="${url}"><button>"버튼입니다"</button type="submit"></form>;`
-                //tag += '<button type="button" onClick="window.open(\${url})">'+"버튼내용"+'</button>';
-                
-               
-               //var searchNm = document.getElementBy(res[i].ENTRPS_NM);
-                console.log(ENTRPS_NM);
+                  tag += '<h3 class="ENTRPS_NM">'+'<a href="https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q=${ENTRPS_NM}"  target="_">'+ENTRPS_NM+"<br/><br/>"+'</a>'+'</h3>'; //업체명 --->>>이거 누르면 네이버 어디로 이동하게
+        
+    
+            //    console.log(ENTRPS_NM);
                // tag += `<a href="https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+\ENTRPS_NM  target="_">"이곳을 누르세요"</a>` ;
                
-                tag += `<a href="https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+"${ENTRPS_NM}"  target="_">"이곳을 누르세요"</a>` ;
+              //  tag += '<a href="https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q=강아지와고양이"  target="_">'+'<button>'+ENTRPS_NM+"으로 이동"+'</button>'+'</a>' ;
                 
                 
                 //tag += '<a href="#" onclick="location.href =https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q="+ target="_" return false">'+'<buttom>'+"버튼을 누르세요"+'</buttom>'+'</a>' ;    
@@ -1230,9 +1156,21 @@ html, body {
             })
         }
         
-            ajax();
+        //   ajax();
         
 
        </script>
+         <!-- 중간에 blank 값 -->
+         <div style="width: 5%; height: 500px; padding: 10px; float: left"></div>
+
+         <div class="section__container"
+            style="overflow: scroll; width: 40%; height: 500px; padding: 10px; float: left">
+            <!-- 스크롤칸 못쨍이 -->
+            <div class='organizationList'></div>
+         </div>
+      </section>
+   </main>
+
+   
 </body>
 </html>
